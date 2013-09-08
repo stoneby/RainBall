@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PathAnimationController : MonoBehaviour
 {
-    public static PathAnimationController Instance;
-
     public event EventHandler<EventArgs> AnimationStarted;
     public event EventHandler<EventArgs> AnimationStopped;
 
@@ -26,18 +24,6 @@ public class PathAnimationController : MonoBehaviour
         if (AnimationStopped != null)
         {
             AnimationStopped(this, new EventArgs());
-        }
-    }
-
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else if (Instance != this)
-        {
-            Debug.LogError("Singleton dude.");
         }
     }
 }

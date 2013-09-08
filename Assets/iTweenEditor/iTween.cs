@@ -4621,6 +4621,7 @@ public class iTween : MonoBehaviour{
 	}	
 	
 	void TweenUpdate(){
+        //Debug.Log("On Tween Update: name" + name + ", position: " + gameObject.transform.position);
 		apply();
 		CallBack("onupdate");
 		UpdatePercentage();		

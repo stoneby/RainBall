@@ -1,47 +1,51 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MoveDirection
+{
+    Forward,
+    Backward
+}
+
 public class BallUpdater : MonoBehaviour
 {
-    public GameObject BrotherBall;
+    public GameObject NextBall;
 
-    public string Name;
+    public GameObject LastBall;
 
-    public float Factor { get; set; }
-    
+    public float IntersectFactor { get; set; }
+
+    public float DistanceFactor { get; set; }
+
     public float DiaMeter { get; set; }
 
     public float Theta { get; set; }
 
     public bool Running { get; set; }
 
-    private Queue<Vector3> trackingTail;
+    public int Index { get; set; }
 
-    void Born(object sender, EventArgs args)
+    public MoveDirection MoveDirection { get; set; }
+
+    public LinkedList<Vector3> TrackingTail { get; set; }
+
+    public Vector3 TailingPoint
     {
-        Running = true;
-        trackingTail = new Queue<Vector3>();
+        get { return (TrackingTail.Count > 0) ? TrackingTail.Last.Value : Utils.InvalidPoint; }
     }
 
-    void Die(object sender, EventArgs args)
+    public void UpdateBrotherBall()
     {
-        Running = false;
-        trackingTail.Clear();
-    }
-
-    private void UpdateBrotherBall()
-    {
-        if (trackingTail.Count == 0)
+        var brotherBall = (MoveDirection == MoveDirection.Forward) ? NextBall : LastBall;
+        if (brotherBall == null || TrackingTail.Count == 0)
         {
-            trackingTail.Enqueue(transform.position);
+            TrackingTail.AddLast(transform.position);
             return;
         }
 
-        var begin = trackingTail.Peek();
+        var begin = TrackingTail.First.Value;
         var end = transform.position;
         var distance = Vector3.Distance(begin, end);
-        //Debug.Log("name: " + name + ", distance: " + distance + ", begin: " + begin + ", end: " + end + ", tracking list count: " + trackingTail.Count);
 
         if (distance <= Theta)
         {
@@ -49,39 +53,68 @@ public class BallUpdater : MonoBehaviour
             return;
         }
 
-        trackingTail.Enqueue(end);
+        TrackingTail.AddLast(end);
 
+        //Debug.Log("name: " + name + ", distance: " + distance + ", begin: " + begin + ", end: " + end + ", tracking list count: " + TrackingTail.Count);
+
+        var farAway = (distance >= DiaMeter / 2);
+        var lessBegin = TrackingTail.First.Value;
         while (distance >= DiaMeter)
         {
-            begin = trackingTail.Dequeue();
+            farAway = true;
+
+            begin = TrackingTail.First.Value;
+
+            TrackingTail.RemoveFirst();
+            
             //Debug.Log("name: " + name + ", dequeue point: " + begin);
-            distance = Vector3.Distance(trackingTail.Peek(), end);
+
+            lessBegin = TrackingTail.First.Value;
+
+            distance = Vector3.Distance(lessBegin, end);
         }
 
-        //Debug.Log("name: " + name + ", distance adjust: " + distance);
+        //Debug.Log("name: " + name + ", distance adjust: " + distance + ", first: " + TrackingTail.First.Value + ", last: " +
+        //          TrackingTail.Last.Value + ", tracking list count: " + TrackingTail.Count);
 
-        var final = (begin - end);
-        final.Normalize();
-        final.Scale(new Vector3(DiaMeter * Factor, 1, DiaMeter * Factor));
-        BrotherBall.transform.position = final + end;
-    }
-
-    void Start()
-    {
-        DraganBallManager.Instance.BallUpdaterList.Add(this);
-
-        DraganBallManager.Instance.OnBorn += Born;
-        DraganBallManager.Instance.OnDying += Die;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (!Running)
+        // [NOTE] Update brother ball only if we are FAR AWAY enough, (head to end distance greater than half diameter).
+        // Case study: Only left one position in hands.
+        // All positions are far away to current position.
+        // This happens when shooter hit the ball list, the header balls are running fast.
+        // begin position: the one that neareast to one diameter of current ball, but greater than.
+        // lessBegin position: the one that neareast to one diameter of current ball, but smaller than.
+        if (farAway)
         {
-            return;
-        }
+            begin = new Vector3((lessBegin.x * IntersectFactor + begin.x * (1 - IntersectFactor)), (lessBegin.y * IntersectFactor + begin.y * (1 - IntersectFactor)),
+                                (lessBegin.z * IntersectFactor + begin.z * (1 - IntersectFactor)));
+            //begin = Vector3.Slerp(lessBegin, begin, IntersectFactor);
 
-        UpdateBrotherBall();
+            //Debug.Log("begin position: " + begin);
+
+            var final = (begin - end);
+            final.Normalize();
+            final.Scale(new Vector3(DiaMeter * DistanceFactor, 1, DiaMeter * DistanceFactor));
+            brotherBall.transform.position = final + end;
+
+            //Debug.Log("Name: " + name + "Current ball position: " + transform.position + ", Brother ball position: " + brotherBall.transform.position + ", distance: " + Vector3.Distance(brotherBall.transform.position, end) + ", distance vector: " + final.magnitude);
+        }
+    }
+
+    public void CopySettings(BallUpdater other)
+    {
+        DiaMeter = other.DiaMeter;
+        DistanceFactor = other.DistanceFactor;
+        IntersectFactor = other.IntersectFactor;
+        Theta = other.Theta;
+    }
+
+    void OnMouseDown()
+    {
+        Debug.Log("Dragon ball, I am touching you.");
+    }
+
+    void Awake()
+    {
+        TrackingTail = new LinkedList<Vector3>();
     }
 }

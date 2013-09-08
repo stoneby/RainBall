@@ -1,0 +1,17 @@
+1. selection detector script. (done)
+2. editor script for value (0, 1) (done)
+
+Feature:
+1. Running ball with shooting.
+2. Balls booming with (3, 4, 5 balls) effects.
+3. Balls could moving backward (now forward only.)
+
+Bug:
+1. shooter ball collision test. (Ray cast hit test not good. sphear test is using) (done)
+
+Enhancement:
+1. Ballupdater does not care about ball util ball's running out of one diameter.
+2. First ball <-> Second ball tracking list generation (intersection point is not so good). (done) (issue is TrimTargetPosition())
+3. Shooting ball inserting to the list. The movement need improve.
+4. Shooting ball insertion decision. (insert before or after hitting ball, now alway after..)
+5. Ball goes rolling together with the path.

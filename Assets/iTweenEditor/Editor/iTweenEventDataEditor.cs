@@ -273,13 +273,13 @@ public class iTweenEventDataEditor : Editor {
 						}
 						else {
 							for(var i = 0; i < paths.Length; ++i) {
-								if(paths[i].pathName == val.pathName) {
+								if(paths[i].PathName == val.pathName) {
 									index = i;
 								}
 							}
-							index = EditorGUILayout.Popup(index, (GameObject.FindObjectsOfType(typeof(iTweenPath)) as iTweenPath[]).Select(path => path.pathName).ToArray());	
+							index = EditorGUILayout.Popup(index, (GameObject.FindObjectsOfType(typeof(iTweenPath)) as iTweenPath[]).Select(path => path.PathName).ToArray());	
 							
-							val.pathName = paths[index].pathName;
+							val.pathName = paths[index].PathName;
 						}
 					}
 					values[key] = val;
