@@ -168,88 +168,35 @@ public class Shooter : MonoBehaviour
                 shootBallUpdater.CopySettings(currentBallUpdater);
                 shootBallUpdater.Index = currentBallUpdater.Index;
 
-                // Not the last ball, backward last ball to one ball space.
+                // handle last ball, configure backing path.
+                var ballList = Utils.BallManager.BallUpdaterList;
+                var lastBall = ballList[ballList.Count - 1];
+                lastBall.MoveDirection = MoveDirection.Backward;
+                var pathNodes = Utils.LevelManager.GetPathNodes();
+                var nodeList = Utils.TrimPath(pathNodes, lastBall.transform.position, MoveDirection.Backward, Utils.BallManager.Diameter);
+                Utils.ConfigureTweenPath(lastBall.gameObject, nodeList, "LeadingPath");
+                iTweenEvent.GetEvent(lastBall.gameObject, "Move").Play();
+
+                // insert shoot ball to list.
                 if (nextBall)
                 {
                     var nextBallUpdater = nextBall.GetComponent<BallUpdater>();
-                    nextBallUpdater.LastBall = shootBall;
-                    var ballList = Utils.BallManager.BallUpdaterList;
+                    nextBallUpdater.LastBall = currentBall;
+
                     ballList.Insert(nextBallUpdater.Index, shootBallUpdater);
-
-                    Debug.Log("Insert ball " + shootBallUpdater.name + ", to index: " + nextBallUpdater.Index);
-
-                    // handle the last ball.
-                    var lastBall = ballList[ballList.Count - 1];
-                    var targetPositon = TrimToTargetPosition(lastBall.TrackingTail);
-                    iTween.MoveTo(lastBall.gameObject, new Hashtable
-                                                           {
-                                                               {"position", targetPositon},
-                                                               {"time", BoomedDuration},
-                                                               {"easetype", iTween.EaseType.linear}
-                                                           });
-                    ++lastBall.Index;
-                    // handle balls at shoot ball till the last, excluded.
-                    for (var index = shootBallUpdater.Index + 1; index < ballList.Count - 1; ++index)
-                    {
-                        var firstBall = ballList[index];
-                        var secondBall = ballList[index + 1];
-
-                        //Debug.Log("First ball: " + firstBall.name + ", Second ball: " + secondBall.name);
-
-                        // handle first ball's tracking tail list.
-                        firstBall.TrackingTail.Clear();
-                        var p1 = secondBall.transform.position;
-                        var p2 = (secondBall.NextBall == null) ? targetPositon : secondBall.NextBall.transform.position;
-                        var intersectionList = Utils.GetIntersectionList(p1, p2, BoomedIntersectionNum);
-                        foreach (var position in intersectionList)
-                        {
-                            firstBall.TrackingTail.AddLast(position);
-                        }
-
-                        //Debug.Log("First ball's tracking list: " + firstBall.TrackingTail.Count + ", Second Ball's tracking list:" + secondBall.TrackingTail.Count);
-
-                        // move first ball to second ball's location.
-                        iTween.MoveTo(firstBall.gameObject, new Hashtable
-                            {
-                                {"position", secondBall.transform.position},
-                                {"time", BoomedDuration},
-                                {"easetype", iTween.EaseType.linear}
-                            });
-
-                        // increase index
-                        ++ballList[index].Index;
-                    }
                 }
-                // insert at the last ball case.
                 else
                 {
-                    var targetPositon = TrimToTargetPosition(currentBallUpdater.TrackingTail);
-                    var p1 = currentBall.transform.position;
-                    var p2 = targetPositon;
-                    // handle shoot ball's tracking list.
-                    foreach (var position in currentBallUpdater.TrackingTail)
-                    {
-                        shootBallUpdater.TrackingTail.AddLast(position);
-                    }
-                    // handle shoot ball's index.
-                    shootBallUpdater.Index = currentBallUpdater.Index + 1;
-                    // handle shoot ball movement.
-                    iTween.MoveTo(shootBall, new Hashtable
-                                                 {
-                                                     {"position", targetPositon},
-                                                     {"time", BoomedDuration},
-                                                     {"easetype", iTween.EaseType.linear}
-                                                 });
-                    Utils.BallManager.BallUpdaterList.Add(shootBallUpdater);
-                    
-                    // handle current ball's tracking list.
-                    currentBallUpdater.TrackingTail.Clear();
-                    var intersectionList = Utils.GetIntersectionList(p1, p2, BoomedIntersectionNum);
-                    foreach (var position in intersectionList)
-                    {
-                        currentBallUpdater.TrackingTail.AddLast(position);
-                    }
+                    ballList.Add(shootBallUpdater);
                 }
+
+                // update following balls' index.
+                for (var index = currentBallUpdater.Index + 1; index < ballList.Count; ++index)
+                {
+                    ++ballList[index].Index;
+                }
+
+                Debug.Log("Insert ball " + shootBallUpdater.name + ", to index: " + shootBallUpdater.Index);
 
                 currentBallUpdater.NextBall = shootBall;
                 shootBallUpdater.NextBall = nextBall;

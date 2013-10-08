@@ -23,9 +23,9 @@ public class GUIMenu : MonoBehaviour
     public float LeadingBallSpeed;
 
     public MoveDirection MoveDirection;
-	
-	public Transform BeginLocation;
-	public Transform EndLocation;
+
+    public Transform BeginLocation;
+    public Transform EndLocation;
 
     void OnGUI()
     {
@@ -92,31 +92,27 @@ public class GUIMenu : MonoBehaviour
             {
                 return;
             }
-			
-			Utils.LevelManager.CurrentLevel = 0;
-			var detailPath = Utils.LevelManager.GetDetailPath();
-            var pathNodes = new List<Vector3>();
-            pathNodes.AddRange(iTweenPath.GetPath(detailPath));
+
+            Utils.LevelManager.CurrentLevel = 0;
+            var pathNodes = Utils.LevelManager.GetPathNodes();
             var nodeList = Utils.TrimPath(pathNodes, ballUpdater.gameObject.transform.position, MoveDirection);
             Utils.ConfigureTweenPath(ballUpdater.gameObject, nodeList, "LeadingPath");
         }
-		
-		if (GUILayout.Button("Generate Path Between Two Position"))
-		{
-			if (BeginLocation == null || EndLocation == null)
-			{
-				Debug.LogError("Please do make sure BeginLocatin and EndLocation have all been set.");
-				return;
-			}
 
-			Utils.LevelManager.CurrentLevel = 0;
-			var detailPath = Utils.LevelManager.GetDetailPath();
-            var pathNodes = new List<Vector3>();
-            pathNodes.AddRange(iTweenPath.GetPath(detailPath));
+        if (GUILayout.Button("Generate Path Between Two Position"))
+        {
+            if (BeginLocation == null || EndLocation == null)
+            {
+                Debug.LogError("Please do make sure BeginLocatin and EndLocation have all been set.");
+                return;
+            }
+
+            Utils.LevelManager.CurrentLevel = 0;
+            var pathNodes = Utils.LevelManager.GetPathNodes();
             var nodeList = Utils.TrimPath(pathNodes, BeginLocation.position, EndLocation.position);
-			var ballUpdater = BeginLocation.GetComponent<BallUpdater>();
-			Utils.ConfigureTweenPath(ballUpdater.gameObject, nodeList, "LeadingPath_" + ballUpdater.name);	
-		}
+            var ballUpdater = BeginLocation.GetComponent<BallUpdater>();
+            Utils.ConfigureTweenPath(ballUpdater.gameObject, nodeList, "LeadingPath_" + ballUpdater.name);
+        }
 
         if (GUILayout.Button("Moving Forward"))
         {

@@ -42,17 +42,6 @@ public class DraganBallManager : MonoBehaviour
         CommanderBall.animation.Play("Path");
     }
 
-    public void SetupMoveForward()
-    {
-        BallUpdaterList.ForEach(ball => ball.MoveDirection = MoveDirection.Forward);
-        BallUpdaterList.ForEach(ball => ball.TrackingTail.Clear());
-    }
-
-    public void SetupMoveBackward()
-    {
-        BallUpdaterList.ForEach(ball => ball.MoveDirection = MoveDirection.Backward);
-    }
-
     void MoveStart(string leaderName)
     {
         var leaderBall = transform.FindChild(leaderName).gameObject;
@@ -61,6 +50,7 @@ public class DraganBallManager : MonoBehaviour
             Debug.LogWarning("Please make sure you add leader name to onstartparams correctly itween.");
             return;
         }
+
         OnStart(leaderBall);
 
         if (OnBorn != null)
@@ -105,34 +95,27 @@ public class DraganBallManager : MonoBehaviour
 
     private void OnStart(GameObject leaderBall)
     {
-        Setup(leaderBall);
-
-        if (MoveDirection == MoveDirection.Forward)
+        var ballUpdater = leaderBall.GetComponent<BallUpdater>();
+        ballUpdater.Running = true;
+        do
         {
-            SetupMoveForward();
-        }
-        else
-        {
-            SetupMoveBackward();
-        }
-    }
-
-    private void Setup(GameObject leaderBall)
-    {
-        Running = true;
-
-        //var leaderBallUpdater = leaderBall.GetComponent<BallUpdater>();
-        BallUpdaterList.ForEach(ball => ball.DiaMeter = Diameter);
-        BallUpdaterList.ForEach(ball => ball.Theta = Theta);
-        BallUpdaterList.ForEach(ball => ball.DistanceFactor = DistanceFactor);
-        BallUpdaterList.ForEach(ball => ball.IntersectFactor = IntersectFactor);
-        BallUpdaterList.ForEach(ball => ball.Running = true);
+            var brotherBall = ballUpdater.MoveDirection == MoveDirection.Forward
+                                  ? ballUpdater.NextBall
+                                  : ballUpdater.LastBall;
+            Debug.Log("Brother ball - " + brotherBall.name);
+            if (brotherBall == null)
+            {
+                break;
+            }
+            var brotherBallUpdater = brotherBall.GetComponent<BallUpdater>();
+            brotherBallUpdater.CopySettings(ballUpdater);
+            brotherBallUpdater.Running = true;
+            brotherBallUpdater.MoveDirection = ballUpdater.MoveDirection;
+        } while (true);
     }
 
     private void OnStop(GameObject leaderBall)
     {
-        Running = false;
-
         BallUpdaterList.ForEach(ball => ball.Running = false);
         BallUpdaterList.ForEach(
             ball => Debug.Log("TrackingTail list cout: " + ball.TrackingTail.Count + ", gameobject: " + ball.name));
@@ -156,23 +139,40 @@ public class DraganBallManager : MonoBehaviour
     /// <remarks>Since leading ball's itween move in update, computing in late update, or leading ball move forward one frame</remarks>
     void LateUpdate()
     {
-        if (!Running)
+        do
         {
-            return;
-        }
+            var brotherBall = ballUpdater.MoveDirection == MoveDirection.Forward
+                                  ? ballUpdater.NextBall
+                                  : ballUpdater.LastBall;
+            Debug.Log("Brother ball - " + brotherBall.name);
+            if (brotherBall == null)
+            {
+                break;
+            }
+            var brotherBallUpdater = brotherBall.GetComponent<BallUpdater>();
+            brotherBallUpdater.CopySettings(ballUpdater);
+            brotherBallUpdater.Running = true;
+            brotherBallUpdater.MoveDirection = ballUpdater.MoveDirection;
+        } while (true);
 
         if (MoveDirection == MoveDirection.Forward)
         {
             for (var i = 0; i < BallUpdaterList.Count; ++i)
             {
-                BallUpdaterList[i].UpdateBrotherBall();
+                if (BallUpdaterList[i].Running)
+                {
+                    BallUpdaterList[i].UpdateBrotherBall();
+                }
             }
         }
         else
         {
             for (var i = BallUpdaterList.Count - 1; i >= 0; --i)
             {
-                BallUpdaterList[i].UpdateBrotherBall();
+                if (BallUpdaterList[i].Running)
+                {
+                    BallUpdaterList[i].UpdateBrotherBall();
+                }
             }
         }
     }

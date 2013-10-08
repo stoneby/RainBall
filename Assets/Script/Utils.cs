@@ -16,7 +16,7 @@ public static class Utils
     private static Shooter shooter;
     private static SelectionDetector selectionDetector;
     private static PathSampler pathSampler;
-	private static LevelManager levelManager;
+    private static LevelManager levelManager;
 
     #region Instance Helper
 
@@ -91,7 +91,7 @@ public static class Utils
             return pathSampler;
         }
     }
-	
+
     public static LevelManager LevelManager
     {
         get
@@ -267,11 +267,11 @@ public static class Utils
         Debug.Log("Path node count: " + path.NodeCount + ", right count: " + path.Nodes.Count);
     }
 
-    private static int GetTrimNodeIndex(List<Vector3> nodeList, Vector3 position)
+    private static int GetTrimNodeIndex(Vector3[] nodeList, Vector3 position)
     {
         var index = -1;
         var maxAngle = 0f;
-        for (var i = 0; i < nodeList.Count - 2; ++i)
+        for (var i = 0; i < nodeList.Length - 2; ++i)
         {
             var left = nodeList[i];
             var right = nodeList[i + 1];
@@ -285,7 +285,7 @@ public static class Utils
         return index;
     }
 
-    public static List<Vector3> TrimPath(List<Vector3> nodeList, Vector3 position, MoveDirection direction)
+    public static List<Vector3> TrimPath(Vector3[] nodeList, Vector3 position, MoveDirection direction)
     {
         var index = GetTrimNodeIndex(nodeList, position);
         if (index == -1)
@@ -298,7 +298,7 @@ public static class Utils
         if (direction == MoveDirection.Forward)
         {
             result.Add(position);
-            for (var i = index + 1; i < nodeList.Count; ++i)
+            for (var i = index + 1; i < nodeList.Length; ++i)
             {
                 result.Add(nodeList[i]);
             }
@@ -313,46 +313,117 @@ public static class Utils
         }
         return result;
     }
-	
-	public static List<Vector3> TrimPath(List<Vector3> nodeList, Vector3 begin, Vector3 end)
-	{
-		var beginIndex = GetTrimNodeIndex(nodeList, begin);
-		var endIndex = GetTrimNodeIndex(nodeList, end);
+
+    public static List<Vector3> TrimPath(List<Vector3> nodeList, Vector3 position, MoveDirection direction)
+    {
+        return TrimPath(nodeList.ToArray(), position, direction);
+    }
+
+    public static List<Vector3> TrimPath(Vector3[] nodeList, Vector3 begin, Vector3 end)
+    {
+        var beginIndex = GetTrimNodeIndex(nodeList, begin);
+        var endIndex = GetTrimNodeIndex(nodeList, end);
         if (beginIndex == -1 || endIndex == -1)
         {
             Debug.Log("Are you sure the position: " + begin + " and " + end + " are part of path from node list?");
             return null;
         }
-		
-		if (beginIndex == endIndex)
-		{
-			Debug.Log("Begin position and end position are too close, please check it out.");
-			return null;
-		}
-				
-		Debug.Log("Begin node index: " + beginIndex + ", end node index: " + endIndex);
-		
-		var result = new List<Vector3>();
-		if (beginIndex < endIndex)
-		{
-			result.Add(begin);
-			for (var i = beginIndex + 1; i <= endIndex; ++i)
-			{
-				result.Add(nodeList[i]);
-			}
-			result.Add(end);
-		}
-		else
-		{
-			result.Add(begin);
-			for (var i = beginIndex; i > endIndex; --i)
-			{
-				result.Add(nodeList[i]);
-			}
-			result.Add(end);
-		}
-		return result;
-	}
+
+        if (beginIndex == endIndex)
+        {
+            Debug.Log("Begin position and end position are too close, please check it out.");
+            return null;
+        }
+
+        Debug.Log("Begin node index: " + beginIndex + ", end node index: " + endIndex);
+
+        var result = new List<Vector3>();
+        if (beginIndex < endIndex)
+        {
+            result.Add(begin);
+            for (var i = beginIndex + 1; i <= endIndex; ++i)
+            {
+                result.Add(nodeList[i]);
+            }
+            result.Add(end);
+        }
+        else
+        {
+            result.Add(begin);
+            for (var i = beginIndex; i > endIndex; --i)
+            {
+                result.Add(nodeList[i]);
+            }
+            result.Add(end);
+        }
+        return result;
+    }
+
+    public static List<Vector3> TrimPath(List<Vector3> nodeList, Vector3 begin, Vector3 end)
+    {
+        return TrimPath(nodeList.ToArray(), begin, end);
+    }
+
+    public static List<Vector3> TrimPath(Vector3[] nodeList, Vector3 position, MoveDirection direction, float distance)
+    {
+        var result = new List<Vector3>();
+
+        var beginIndex = GetTrimNodeIndex(nodeList, position);
+        beginIndex = (direction == MoveDirection.Forward) ? beginIndex + 1 : beginIndex;
+        var startPosition = nodeList[beginIndex];
+        var firstDistance = Mathf.Abs(Vector3.Distance(position, nodeList[beginIndex]));
+        if (firstDistance < distance)
+        {
+            // edge case.
+            if ((beginIndex == 0 && direction == MoveDirection.Backward) || (beginIndex == nodeList.Length - 1 && direction == MoveDirection.Forward))
+            {
+                result.Add(position);
+                result.Add(startPosition);
+            }
+            else
+            {
+                var endIndex = (direction == MoveDirection.Forward) ? beginIndex + 1 : beginIndex - 1;
+                var secondDistance = Math.Abs(Vector3.Distance(position, nodeList[endIndex]));
+                if (secondDistance < distance)
+                {
+                    Debug.LogError(
+                        "TrimPath fails. The node list distance between nodes are too tightly. Better to be done with greater or equal to ball's diameter.");
+                    return null;
+                }
+
+                var finalPosition = (nodeList[beginIndex] + nodeList[endIndex]) / 2;
+                var finalVecgtor = finalPosition - position;
+                finalVecgtor.Normalize();
+                finalVecgtor = finalVecgtor*distance;
+                finalPosition = position + finalVecgtor;
+
+                result.Add(position);
+                result.Add(startPosition);
+                result.Add(finalPosition);
+
+                Debug.Log("Begin node index: " + beginIndex + ", end node index: " + endIndex);
+            }
+        }
+        else
+        {
+            var finalPosition = (position + startPosition) / 2;
+            var finalVecgtor = finalPosition - position;
+            finalVecgtor.Normalize();
+            finalVecgtor = finalVecgtor * distance;
+            finalPosition = position + finalVecgtor;
+
+            result.Add(position);
+            result.Add(finalPosition);
+
+            Debug.Log("The node index: " + beginIndex);
+        }
+        return result;
+    }
+
+    public static List<Vector3> TrimPath(List<Vector3> nodeList, Vector3 position, MoveDirection direction, float distance)
+    {
+        return TrimPath(nodeList.ToArray(), position, direction, distance);
+    }
 
     #endregion
 }
