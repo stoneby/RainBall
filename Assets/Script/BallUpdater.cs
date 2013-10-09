@@ -21,8 +21,6 @@ public class BallUpdater : MonoBehaviour
 
     public float Theta { get; set; }
 
-    public bool Running { get; set; }
-
     public int Index { get; set; }
 
     public MoveDirection MoveDirection { get; set; }
