@@ -98,12 +98,17 @@ public class BallUpdater : MonoBehaviour
         }
     }
 
-    public void CopySettings(BallUpdater other)
+    public void Set(BallUpdater other)
     {
-        DiaMeter = other.DiaMeter;
-        DistanceFactor = other.DistanceFactor;
-        IntersectFactor = other.IntersectFactor;
-        Theta = other.Theta;
+        Set(other.DiaMeter, other.DistanceFactor, other.IntersectFactor, other.Theta);
+    }
+
+    public void Set(float diaMeter, float distanceFactor, float intersectFactor, float theta)
+    {
+        DiaMeter = diaMeter;
+        DistanceFactor = distanceFactor;
+        IntersectFactor = intersectFactor;
+        Theta = theta;
     }
 
     void OnMouseDown()

@@ -37,6 +37,18 @@ public class DraganBallManager : MonoBehaviour
 
     private const float Theta = 0.1f;
 
+    public void Set()
+    {
+        foreach (var ballUpdater in BallUpdaterList)
+        {
+            ballUpdater.DiaMeter = Diameter;
+            ballUpdater.DistanceFactor = DistanceFactor;
+            ballUpdater.IntersectFactor = IntersectFactor;
+            ballUpdater.Theta = Theta;
+            ballUpdater.MoveDirection = MoveDirection;
+        }
+    }
+
     void MoveStart(string leaderName)
     {
         CommanderBall = transform.FindChild(leaderName).gameObject;
@@ -91,20 +103,7 @@ public class DraganBallManager : MonoBehaviour
     {
         Running = true;
 
-        var ballUpdater = CommanderBall.GetComponent<BallUpdater>();
-        GameObject brotherBall;
-        do
-        {
-            brotherBall = ballUpdater.MoveDirection == MoveDirection.Forward
-                                  ? ballUpdater.NextBall
-                                  : ballUpdater.LastBall;
-            
-            Debug.Log("Brother ball - " + brotherBall.name);
-
-            var brotherBallUpdater = brotherBall.GetComponent<BallUpdater>();
-            brotherBallUpdater.CopySettings(ballUpdater);
-            brotherBallUpdater.MoveDirection = ballUpdater.MoveDirection;
-        } while (brotherBall != null);
+        Set();
     }
 
     private void OnStop()
@@ -133,23 +132,20 @@ public class DraganBallManager : MonoBehaviour
     /// <remarks>Since leading ball's itween move in update, computing in late update, or leading ball move forward one frame</remarks>
     void LateUpdate()
     {
-        //if (!Running)
-        //{
-        //    return;
-        //}
+        if (!Running)
+        {
+            return;
+        }
 
-        //var ballUpdater = CommanderBall.GetComponent<BallUpdater>();
-        //GameObject brotherBall;
-        //do
-        //{
-        //    brotherBall = ballUpdater.MoveDirection == MoveDirection.Forward
-        //                      ? ballUpdater.NextBall
-        //                      : ballUpdater.LastBall;
+        var currentBall = CommanderBall;
+        while (currentBall != null)
+        {
+            var currentBallUpdater = currentBall.GetComponent<BallUpdater>();
+            currentBallUpdater.UpdateBrotherBall();
 
-        //    //Debug.Log("LateUpdate(): Brother ball - " + brotherBall.name);
-
-        //    var brotherBallUpdater = brotherBall.GetComponent<BallUpdater>();
-        //    brotherBallUpdater.UpdateBrotherBall();
-        //} while (brotherBall != null);
+            currentBall = currentBallUpdater.MoveDirection == MoveDirection.Forward
+                              ? currentBallUpdater.NextBall
+                              : currentBallUpdater.LastBall;
+        }
     }
 }
