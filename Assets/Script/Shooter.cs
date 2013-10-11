@@ -165,7 +165,7 @@ public class Shooter : MonoBehaviour
 
                 // handle shoot ball.
                 var shootBallUpdater = shootBall.AddComponent<BallUpdater>();
-                shootBallUpdater.CopySettings(currentBallUpdater);
+                shootBallUpdater.Set(currentBallUpdater);
                 shootBallUpdater.Index = currentBallUpdater.Index;
 
                 // handle last ball, configure backing path.
