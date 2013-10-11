@@ -102,7 +102,6 @@ public class DraganBallManager : MonoBehaviour
     private void OnStart()
     {
         Running = true;
-
         Set();
     }
 
@@ -112,6 +111,9 @@ public class DraganBallManager : MonoBehaviour
 
         BallUpdaterList.ForEach(
             ball => Debug.Log("TrackingTail list cout: " + ball.TrackingTail.Count + ", gameobject: " + ball.name));
+        
+        Debug.Log("Clear up tracking tail list.");
+        BallUpdaterList.ForEach(ball => ball.TrackingTail.Clear());
     }
 
     void Awake()

@@ -62,7 +62,7 @@ public class GUIMenu : MonoBehaviour
             Manager.BallUpdaterList.ForEach(ball => iTweenEvent.GetEvent(ball.gameObject, "Fear").Play());
         }
 
-        if (GUILayout.Button("Generate Path By Tracking Tail"))
+        if (GUILayout.Button("Generate Path By One Position"))
         {
             BallUpdater ballUpdater;
 
@@ -70,33 +70,7 @@ public class GUIMenu : MonoBehaviour
             {
                 return;
             }
-
-            var nodeList = new List<Vector3>();
-            nodeList.AddRange(ballUpdater.TrackingTail);
-            var pathLength = Utils.PathLength(nodeList);
-            TrimNodeCount = (UseTrimNodeCount) ? TrimNodeCount : ((int)(pathLength / Manager.Diameter) + 1);
-            TrimNodeCount = (TrimNodeCount >= iTweenPath.MaxNodeCount) ? iTweenPath.MaxNodeCount : TrimNodeCount;
-
-            Debug.Log("Path length: " + pathLength + ", Trim node count: " + TrimNodeCount);
-
-            var trimmedNodeList = Utils.TrimList(nodeList, TrimNodeCount);
-            trimmedNodeList.Reverse();
-            Utils.ConfigureTweenPath(ballUpdater.gameObject, trimmedNodeList, "LeadingPath");
-        }
-
-        if (GUILayout.Button("Generate Path By Original Path"))
-        {
-            BallUpdater ballUpdater;
-
-            if (!CheckGeneratePath(out ballUpdater))
-            {
-                return;
-            }
-
-            Utils.LevelManager.CurrentLevel = 0;
-            var pathNodes = Utils.LevelManager.GetPathNodes();
-            var nodeList = Utils.TrimPath(pathNodes, ballUpdater.gameObject.transform.position, MoveDirection);
-            Utils.ConfigureTweenPath(ballUpdater.gameObject, nodeList, "LeadingPath");
+            Utils.ConfigureTweenPath(ballUpdater.gameObject, MoveDirection);
         }
 
         if (GUILayout.Button("Generate Path Between Two Position"))
@@ -107,27 +81,26 @@ public class GUIMenu : MonoBehaviour
                 return;
             }
 
-            Utils.LevelManager.CurrentLevel = 0;
             var pathNodes = Utils.LevelManager.GetPathNodes();
             var nodeList = Utils.TrimPath(pathNodes, BeginLocation.position, EndLocation.position);
             var ballUpdater = BeginLocation.GetComponent<BallUpdater>();
-            Utils.ConfigureTweenPath(ballUpdater.gameObject, nodeList, "LeadingPath_" + ballUpdater.name);
+            Utils.ConfigureTweenPath(ballUpdater.gameObject, nodeList, Utils.PathName(ballUpdater.name));
         }
 
         if (GUILayout.Button("Moving Forward"))
         {
+            Utils.BallManager.MoveDirection = MoveDirection.Forward;
+            
             var leadingBall = Utils.BallManager.BallUpdaterList[0];
-            var endingBall = Utils.BallManager.BallUpdaterList[Utils.BallManager.BallUpdaterList.Count - 1];
-
-            MoveFreely(endingBall, leadingBall);
+            MoveFreely(leadingBall);
         }
 
         if (GUILayout.Button("Moving Backward"))
         {
+            Utils.BallManager.MoveDirection = MoveDirection.Backward;
+            
             var leadingBall = Utils.BallManager.BallUpdaterList[Utils.BallManager.BallUpdaterList.Count - 1];
-            var endingBall = Utils.BallManager.BallUpdaterList[0];
-
-            MoveFreely(endingBall, leadingBall);
+            MoveFreely(leadingBall);
         }
     }
 
@@ -154,14 +127,12 @@ public class GUIMenu : MonoBehaviour
             Destroy(path);
         }
 
-        Debug.Log("Selection object: " + selectedObject.name + ", ball updater: " + ballUpdater.TrackingTail.Count);
+        Debug.Log("Selection object: " + selectedObject.name);
         return true;
     }
 
-    private void MoveFreely(BallUpdater endingBall, BallUpdater leadingBall)
+    private void MoveFreely(BallUpdater leadingBall)
     {
-        endingBall.TrackingTail.Clear();
-
         var path = leadingBall.GetComponent<iTweenPath>();
         if (path == null)
         {
@@ -170,17 +141,9 @@ public class GUIMenu : MonoBehaviour
         }
 
         var moveEvent = iTweenEvent.GetEvent(leadingBall.gameObject, "Move");
-        moveEvent.Values["onstartparams"] = LeaderBall.name;
-        moveEvent.Values["oncompleteparams"] = LeaderBall.name;
+        moveEvent.Values["onstartparams"] = leadingBall.name;
+        moveEvent.Values["oncompleteparams"] = leadingBall.name;
         moveEvent.Play();
-
-        //iTween.MoveTo(leadingBall.gameObject, new Hashtable
-        //    {
-        //        {"path", path.Nodes.ToArray()},
-        //        //{"position", path.Nodes[path.NodeCount - 1]},
-        //        {"speed", LeadingBallSpeed},
-        //        {"easetype", iTween.EaseType.linear}
-        //    });
     }
 
     IEnumerator Generate()
@@ -190,5 +153,10 @@ public class GUIMenu : MonoBehaviour
         iTween.MoveTo(Manager.CommanderBall, startPoint, 1f);
         yield return new WaitForSeconds(1f);
         Generator.Generate();
+    }
+
+    void Start()
+    {
+        Utils.LevelManager.CurrentLevel = 0;
     }
 }

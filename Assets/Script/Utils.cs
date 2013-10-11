@@ -245,6 +245,11 @@ public static class Utils
 
     #region Path
 
+    public static string PathName(string name)
+    {
+        return "LeadingPath_" + name;
+    }
+
     /// <summary>
     /// Configure tween path to game object
     /// </summary>
@@ -265,6 +270,13 @@ public static class Utils
         positionList.ForEach(position => path.Nodes.Add(position));
         path.enabled = true;
         Debug.Log("Path node count: " + path.NodeCount + ", right count: " + path.Nodes.Count);
+    }
+
+    public static void ConfigureTweenPath(GameObject gameObject, MoveDirection moveDirection)
+    {
+        var pathNodes = LevelManager.GetPathNodes();
+        var nodeList = TrimPath(pathNodes, gameObject.transform.position, moveDirection);
+        ConfigureTweenPath(gameObject, nodeList, PathName(gameObject.name));
     }
 
     private static int GetTrimNodeIndex(Vector3[] nodeList, Vector3 position)
@@ -305,7 +317,7 @@ public static class Utils
         }
         else
         {
-            for (var i = 0; i <= index; ++i)
+            for (var i = index; i >= 0; --i)
             {
                 result.Add(nodeList[i]);
             }

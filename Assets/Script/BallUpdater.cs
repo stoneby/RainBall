@@ -27,11 +27,6 @@ public class BallUpdater : MonoBehaviour
 
     public LinkedList<Vector3> TrackingTail { get; set; }
 
-    public Vector3 TailingPoint
-    {
-        get { return (TrackingTail.Count > 0) ? TrackingTail.Last.Value : Utils.InvalidPoint; }
-    }
-
     public void UpdateBrotherBall()
     {
         var brotherBall = (MoveDirection == MoveDirection.Forward) ? NextBall : LastBall;
