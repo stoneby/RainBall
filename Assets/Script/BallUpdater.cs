@@ -108,7 +108,7 @@ public class BallUpdater : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log("Dragon ball, I am touching you.");
+        Debug.Log(string.Format("Dragon ball {0}, I am touching you.", name));
     }
 
     void Awake()

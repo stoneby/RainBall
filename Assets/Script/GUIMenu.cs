@@ -31,6 +31,8 @@ public class GUIMenu : MonoBehaviour
     {
         if (GUILayout.Button("ITween path"))
         {
+            Utils.BallManager.MoveDirection = MoveDirection.Forward;
+
             var moveEvent = iTweenEvent.GetEvent(LeaderBall, "Move");
             moveEvent.Values["onstartparams"] = LeaderBall.name;
             moveEvent.Values["oncompleteparams"] = LeaderBall.name;
@@ -80,11 +82,7 @@ public class GUIMenu : MonoBehaviour
                 Debug.LogError("Please do make sure BeginLocatin and EndLocation have all been set.");
                 return;
             }
-
-            var pathNodes = Utils.LevelManager.GetPathNodes();
-            var nodeList = Utils.TrimPath(pathNodes, BeginLocation.position, EndLocation.position);
-            var ballUpdater = BeginLocation.GetComponent<BallUpdater>();
-            Utils.ConfigureTweenPath(ballUpdater.gameObject, nodeList, Utils.PathName(ballUpdater.name));
+            Utils.ConfigureTweenPath(BeginLocation.gameObject, BeginLocation.position, EndLocation.position);
         }
 
         if (GUILayout.Button("Moving Forward"))
@@ -143,6 +141,7 @@ public class GUIMenu : MonoBehaviour
         var moveEvent = iTweenEvent.GetEvent(leadingBall.gameObject, "Move");
         moveEvent.Values["onstartparams"] = leadingBall.name;
         moveEvent.Values["oncompleteparams"] = leadingBall.name;
+        moveEvent.Values["path"] = Utils.PathName(leadingBall.name);
         moveEvent.Play();
     }
 

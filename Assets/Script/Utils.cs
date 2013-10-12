@@ -279,6 +279,13 @@ public static class Utils
         ConfigureTweenPath(gameObject, nodeList, PathName(gameObject.name));
     }
 
+    public static void ConfigureTweenPath(GameObject gameObject, Vector3 begin, Vector3 end)
+    {
+        var pathNodes = LevelManager.GetPathNodes();
+        var nodeList = TrimPath(pathNodes, begin, end);
+        ConfigureTweenPath(gameObject, nodeList, PathName(gameObject.name));
+    }
+
     private static int GetTrimNodeIndex(Vector3[] nodeList, Vector3 position)
     {
         var index = -1;
@@ -317,11 +324,11 @@ public static class Utils
         }
         else
         {
+            result.Add(position);
             for (var i = index; i >= 0; --i)
             {
                 result.Add(nodeList[i]);
             }
-            result.Add(position);
         }
         return result;
     }
