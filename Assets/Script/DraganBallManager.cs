@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DraganBallManager : MonoBehaviour
 {
-    public GameObject CommanderBall;
+    public GameObject KeyBall;
 
     public List<BallUpdater> BallUpdaterList { get; set; }
 
@@ -51,10 +51,10 @@ public class DraganBallManager : MonoBehaviour
 
     void MoveStart(string leaderName)
     {
-        CommanderBall = transform.FindChild(leaderName).gameObject;
-        if (CommanderBall == null)
+        KeyBall = transform.FindChild(leaderName).gameObject;
+        if (KeyBall == null)
         {
-            Debug.LogWarning("Please make sure you add leader name to onstartparams correctly itween.");
+            Debug.LogWarning(string.Format("Please make sure you add leader name {0} to onstartparams correctly itween.", leaderName));
             return;
         }
 
@@ -68,10 +68,10 @@ public class DraganBallManager : MonoBehaviour
 
     void MoveComplete(string leaderName)
     {
-        CommanderBall = transform.FindChild(leaderName).gameObject;
-        if (CommanderBall == null)
+        KeyBall = transform.FindChild(leaderName).gameObject;
+        if (KeyBall == null)
         {
-            Debug.LogWarning("Please make sure you add leader name to onstartparams correctly itween.");
+            Debug.LogWarning(string.Format("Please make sure you add leader name {0} to oncompleteparams correctly itween.", leaderName));
             return;
         }
 
@@ -87,16 +87,30 @@ public class DraganBallManager : MonoBehaviour
     {
         Debug.Log("On Booming Start");
 
-        iTween.Pause(CommanderBall);
-        Running = false;
+        iTween.Pause(KeyBall);
+        Running = true;
     }
 
     void OnBoomingComplete(object sender, EventArgs args)
     {
         Debug.Log("On Booming Complete");
 
-        iTween.Resume(CommanderBall);
-        Running = true;
+        var shooter = sender as Shooter;
+        var shootBallUpdater = shooter.ShootBalls[0].GetComponent<BallUpdater>();
+        var currentBallUpdater = BallUpdaterList[shootBallUpdater.Index - 1];
+        currentBallUpdater.NextBall = shootBallUpdater.gameObject;
+        shootBallUpdater.LastBall = BallUpdaterList[shootBallUpdater.Index - 1].gameObject;
+        GameObject nextBall = null;
+        if (shootBallUpdater.Index + 1 < BallUpdaterList.Count)
+        {
+            nextBall = BallUpdaterList[shootBallUpdater.Index + 1].gameObject;
+            var nextballUpdater = nextBall.GetComponent<BallUpdater>();
+            nextballUpdater.LastBall = shootBallUpdater.gameObject;
+        }
+        shootBallUpdater.NextBall = nextBall;
+
+        iTween.Resume(KeyBall);
+        Running = false;
     }
 
     private void OnStart()
@@ -119,7 +133,7 @@ public class DraganBallManager : MonoBehaviour
     void Awake()
     {
         BallUpdaterList = new List<BallUpdater>();
-        Diameter = CommanderBall.GetComponent<SphereCollider>().radius * 2;
+        Diameter = KeyBall.GetComponent<SphereCollider>().radius * 2;
     }
 
     void Start()
@@ -139,7 +153,7 @@ public class DraganBallManager : MonoBehaviour
             return;
         }
 
-        var currentBall = CommanderBall;
+        var currentBall = KeyBall;
         while (currentBall != null)
         {
             var currentBallUpdater = currentBall.GetComponent<BallUpdater>();

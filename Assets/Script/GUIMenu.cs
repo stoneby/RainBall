@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GUIMenu : MonoBehaviour
 {
-    public GameObject LeaderBall;
-
     public GameObject Puzzle;
 
     public DraganBallManager Manager;
@@ -32,21 +30,17 @@ public class GUIMenu : MonoBehaviour
         if (GUILayout.Button("ITween path"))
         {
             Utils.BallManager.MoveDirection = MoveDirection.Forward;
-
-            var moveEvent = iTweenEvent.GetEvent(LeaderBall, "Move");
-            moveEvent.Values["onstartparams"] = LeaderBall.name;
-            moveEvent.Values["oncompleteparams"] = LeaderBall.name;
-            moveEvent.Play();
+            Utils.MoveLevel(Utils.BallManager.BallUpdaterList[0].gameObject);
         }
 
         if (GUILayout.Button("Pause Itween"))
         {
-            iTween.Pause(Manager.CommanderBall);
+            iTween.Pause(Manager.KeyBall);
         }
 
         if (GUILayout.Button("Resume Itween"))
         {
-            iTween.Resume(Manager.CommanderBall);
+            iTween.Resume(Manager.KeyBall);
         }
 
         if (GUILayout.Button("Sample All Paths"))
@@ -138,18 +132,14 @@ public class GUIMenu : MonoBehaviour
             return;
         }
 
-        var moveEvent = iTweenEvent.GetEvent(leadingBall.gameObject, "Move");
-        moveEvent.Values["onstartparams"] = leadingBall.name;
-        moveEvent.Values["oncompleteparams"] = leadingBall.name;
-        moveEvent.Values["path"] = Utils.PathName(leadingBall.name);
-        moveEvent.Play();
+        Utils.Move(leadingBall.gameObject);
     }
 
     IEnumerator Generate()
     {
         Manager.BallUpdaterList.Clear();
         var startPoint = iTweenPath.GetPath(Path)[0];
-        iTween.MoveTo(Manager.CommanderBall, startPoint, 1f);
+        iTween.MoveTo(Manager.KeyBall, startPoint, 1f);
         yield return new WaitForSeconds(1f);
         Generator.Generate();
     }

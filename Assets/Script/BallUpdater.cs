@@ -23,6 +23,10 @@ public class BallUpdater : MonoBehaviour
 
     public int Index { get; set; }
 
+    public int Color { get; set; }
+
+    public string Name { get { return string.Format("ball_{0}_color_{1}", Index + 1, Color); } }
+
     public MoveDirection MoveDirection { get; set; }
 
     public LinkedList<Vector3> TrackingTail { get; set; }
@@ -42,13 +46,13 @@ public class BallUpdater : MonoBehaviour
 
         if (distance <= Theta)
         {
-            //Debug.Log("name: " + name + "Too small update, pass by this vector.");
+            Debug.Log("name: " + name + "Too small update, pass by this vector.");
             return;
         }
 
         TrackingTail.AddLast(end);
 
-        //Debug.Log("name: " + name + ", distance: " + distance + ", begin: " + begin + ", end: " + end + ", tracking list count: " + TrackingTail.Count);
+        Debug.Log("name: " + name + ", distance: " + distance + ", begin: " + begin + ", end: " + end + ", tracking list count: " + TrackingTail.Count);
 
         var farAway = (distance >= DiaMeter / 2);
         var lessBegin = TrackingTail.First.Value;
@@ -60,15 +64,15 @@ public class BallUpdater : MonoBehaviour
 
             TrackingTail.RemoveFirst();
             
-            //Debug.Log("name: " + name + ", dequeue point: " + begin);
+            Debug.Log("name: " + name + ", dequeue point: " + begin);
 
             lessBegin = TrackingTail.First.Value;
 
             distance = Vector3.Distance(lessBegin, end);
         }
 
-        //Debug.Log("name: " + name + ", distance adjust: " + distance + ", first: " + TrackingTail.First.Value + ", last: " +
-        //          TrackingTail.Last.Value + ", tracking list count: " + TrackingTail.Count);
+        Debug.Log("name: " + name + ", distance adjust: " + distance + ", first: " + TrackingTail.First.Value + ", last: " +
+                  TrackingTail.Last.Value + ", tracking list count: " + TrackingTail.Count);
 
         // [NOTE] Update brother ball only if we are FAR AWAY enough, (head to end distance greater than half diameter).
         // Case study: Only left one position in hands.
@@ -82,14 +86,14 @@ public class BallUpdater : MonoBehaviour
                                 (lessBegin.z * IntersectFactor + begin.z * (1 - IntersectFactor)));
             //begin = Vector3.Slerp(lessBegin, begin, IntersectFactor);
 
-            //Debug.Log("begin position: " + begin);
+            Debug.Log("begin position: " + begin);
 
             var final = (begin - end);
             final.Normalize();
             final.Scale(new Vector3(DiaMeter * DistanceFactor, 1, DiaMeter * DistanceFactor));
             brotherBall.transform.position = final + end;
 
-            //Debug.Log("Name: " + name + "Current ball position: " + transform.position + ", Brother ball position: " + brotherBall.transform.position + ", distance: " + Vector3.Distance(brotherBall.transform.position, end) + ", distance vector: " + final.magnitude);
+            Debug.Log("Name: " + name + "Current ball position: " + transform.position + ", Brother ball position: " + brotherBall.transform.position + ", distance: " + Vector3.Distance(brotherBall.transform.position, end) + ", distance vector: " + final.magnitude);
         }
     }
 

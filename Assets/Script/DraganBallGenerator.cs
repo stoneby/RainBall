@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DraganBallGenerator : MonoBehaviour
 {
-    public GameObject CommanderBall;
+    public GameObject Parent;
 
     public GameObject KeyBall;
 
@@ -17,15 +17,7 @@ public class DraganBallGenerator : MonoBehaviour
     {
         for (var i = 0; i < transform.childCount; ++i)
         {
-            var child = transform.GetChild(i);
-            if (child.gameObject == CommanderBall)
-            {
-                Destroy(CommanderBall.GetComponent<BallUpdater>());
-            }
-            else
-            {
-                Destroy(transform.GetChild(i).gameObject);
-            }
+            Destroy(transform.GetChild(i).gameObject);
         }
     }
 
@@ -33,28 +25,19 @@ public class DraganBallGenerator : MonoBehaviour
     {
         DestroyChildren();
 
-        var path = iTweenEvent.GetEvent(CommanderBall, "Move").Values["path"] as string;
-        CommanderBall.transform.position = iTweenPath.GetPath(path)[0];
+        var startLocation = iTweenPath.GetPath(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path)[0];
 
         for (var i = 0; i < Size; ++i)
         {
-            GameObject currentBall = null;
-            if (i == 0)
-            {
-                currentBall = CommanderBall;
-            }
-            else
-            {
-                currentBall = Instantiate(KeyBall, CommanderBall.transform.position, CommanderBall.transform.rotation) as GameObject;
-                currentBall.transform.parent = CommanderBall.transform.parent;
-                //newBall.transform.position = CommanderBall.transform.position;
-                var index = Random.Range(0, Utils.Settings.ColorList.Count);
-                currentBall.renderer.material.color = Utils.Settings.ColorList[index];
-                currentBall.name = "Ball_" + (i + 1) + "_Color_" + index;
-            }
+            var currentBall = Instantiate(KeyBall, startLocation, Quaternion.identity) as GameObject;
+            currentBall.transform.parent = Parent.transform;
+            var index = Random.Range(0, Utils.Settings.ColorList.Count);
+            currentBall.renderer.material.color = Utils.Settings.ColorList[index];
 
             var ballUpdater = currentBall.AddComponent<BallUpdater>();
             ballUpdater.Index = i;
+            ballUpdater.Color = index;
+            currentBall.name = ballUpdater.Name;
             Utils.BallManager.BallUpdaterList.Add(ballUpdater);
 
             Debug.Log("Current ball: " + currentBall.name + " adding to dragan ball manager.");

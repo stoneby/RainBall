@@ -279,6 +279,13 @@ public static class Utils
         ConfigureTweenPath(gameObject, nodeList, PathName(gameObject.name));
     }
 
+    public static void ConfigureTweenPath(GameObject gameObject, MoveDirection moveDirection, float distance)
+    {
+        var pathNodes = LevelManager.GetPathNodes();
+        var nodeList = TrimPath(pathNodes, gameObject.transform.position, moveDirection, distance);
+        ConfigureTweenPath(gameObject.gameObject, nodeList, PathName(gameObject.name));
+    }
+
     public static void ConfigureTweenPath(GameObject gameObject, Vector3 begin, Vector3 end)
     {
         var pathNodes = LevelManager.GetPathNodes();
@@ -442,6 +449,29 @@ public static class Utils
     public static List<Vector3> TrimPath(List<Vector3> nodeList, Vector3 position, MoveDirection direction, float distance)
     {
         return TrimPath(nodeList.ToArray(), position, direction, distance);
+    }
+
+    #endregion
+
+    #region Tween
+
+    public static void Move(GameObject gameObject)
+    {
+        Move(gameObject, PathName(gameObject.name));
+    }
+
+    public static void MoveLevel(GameObject gameObject)
+    {
+        Move(gameObject, LevelManager.LevelList[levelManager.CurrentLevel].Path);
+    }
+
+    private static void Move(GameObject gameObject, string path)
+    {
+        var moveEvent = iTweenEvent.GetEvent(gameObject.gameObject, "Move");
+        moveEvent.Values["onstartparams"] = gameObject.name;
+        moveEvent.Values["oncompleteparams"] = gameObject.name;
+        moveEvent.Values["path"] = path;
+        moveEvent.Play();
     }
 
     #endregion

@@ -76,6 +76,9 @@ public class Shooter : MonoBehaviour
         shootBall.transform.parent = transform.parent;
         shootBall.layer = LayerMask.NameToLayer("Ignore Raycast");
         ShootBalls.Add(shootBall);
+
+        var shootBallUpdater = shootBall.AddComponent<BallUpdater>();
+        shootBallUpdater.Color = index;
     }
 
     private void BoomingOccuring()
@@ -99,12 +102,12 @@ public class Shooter : MonoBehaviour
 
         canShoot = true;
 
-        Reset(false);
-
         if (BoomingEndingEvent != null)
         {
             BoomingEndingEvent(this, new EventArgs());
         }
+
+        Reset(false);
     }
 
     // Update is called once per frame
@@ -164,79 +167,61 @@ public class Shooter : MonoBehaviour
                 currentBallUpdater.NextBall = null;
 
                 // handle shoot ball.
-                var shootBallUpdater = shootBall.AddComponent<BallUpdater>();
+                var shootBallUpdater = shootBall.GetComponent<BallUpdater>();
                 shootBallUpdater.Set(currentBallUpdater);
                 shootBallUpdater.Index = currentBallUpdater.Index;
+                shootBall.transform.parent = currentBall.transform.parent;
+                shootBall.layer = currentBall.layer;
 
-                // handle last ball, configure backing path.
                 var ballList = Utils.BallManager.BallUpdaterList;
-                var lastBall = ballList[ballList.Count - 1];
-                lastBall.MoveDirection = MoveDirection.Backward;
-                var pathNodes = Utils.LevelManager.GetPathNodes();
-                var nodeList = Utils.TrimPath(pathNodes, lastBall.transform.position, MoveDirection.Backward, Utils.BallManager.Diameter);
-                Utils.ConfigureTweenPath(lastBall.gameObject, nodeList, "LeadingPath");
-                iTweenEvent.GetEvent(lastBall.gameObject, "Move").Play();
-
-                // insert shoot ball to list.
-                if (nextBall)
-                {
-                    var nextBallUpdater = nextBall.GetComponent<BallUpdater>();
-                    nextBallUpdater.LastBall = currentBall;
-
-                    ballList.Insert(nextBallUpdater.Index, shootBallUpdater);
-                }
-                else
-                {
-                    ballList.Add(shootBallUpdater);
-                }
+                ballList.Insert((nextBall == null) ? ballList.Count : (nextBall.GetComponent<BallUpdater>().Index), shootBallUpdater);
 
                 // update following balls' index.
                 for (var index = currentBallUpdater.Index + 1; index < ballList.Count; ++index)
                 {
                     ++ballList[index].Index;
+                    ballList[index].name = ballList[index].Name;
                 }
 
                 Debug.Log("Insert ball " + shootBallUpdater.name + ", to index: " + shootBallUpdater.Index);
 
-                currentBallUpdater.NextBall = shootBall;
-                shootBallUpdater.NextBall = nextBall;
-                shootBallUpdater.LastBall = currentBall;
-                shootBall.transform.parent = currentBall.transform.parent;
-                shootBall.layer = currentBall.layer;
-                shootBall.name = "Shooter" + "_" + shootBallUpdater.Index;
+                // configure last ball's final backing path.
+                Utils.BallManager.MoveDirection = MoveDirection.Backward;
+                var lastBall = ballList[ballList.Count - 1];
+                Utils.ConfigureTweenPath(lastBall.gameObject, MoveDirection.Backward, Utils.BallManager.Diameter);
+
+                var finalPath = iTweenPath.GetPath(Utils.PathName(lastBall.name));
+                // insert shoot ball to list.
+                if (nextBall)
+                {
+                    Utils.ConfigureTweenPath(shootBall,
+                                             new List<Vector3>
+                                                 {
+                                                     shootBall.transform.position,
+                                                     nextBall.transform.position
+                                                 }, Utils.PathName(shootBall.name));
+
+                    Utils.Move(lastBall.gameObject);
+
+                    var nextBallUpdater = nextBall.GetComponent<BallUpdater>();
+                    nextBallUpdater.LastBall = null;
+                }
+                else
+                {
+                    Utils.ConfigureTweenPath(shootBall,
+                                             new List<Vector3>
+                                                 {
+                                                     shootBall.transform.position,
+                                                     finalPath[finalPath.Length - 1]
+                                                 }, Utils.PathName(shootBall.name));
+                }
+
+                Utils.Move(shootBall);
 
                 BoomingEnding();
 
                 StopCoroutine("StartShoot");
             }
         }
-    }
-
-    private Vector3 TrimToTargetPosition(LinkedList<Vector3> trackingList)
-    {
-        var startPosition = trackingList.Last.Value;
-        Vector3 endPosition, preEndPosition;
-        do
-        {
-            endPosition = trackingList.Last.Value;
-            float distance = Mathf.Abs(Vector3.Distance(startPosition, endPosition));
-
-            if (distance >= Utils.BallManager.Diameter)
-            {
-                break;
-            }
-
-            trackingList.RemoveLast();
-
-            preEndPosition = endPosition;
-            trackingList.RemoveLast();
-        } while (true);
-
-        var result = endPosition - startPosition;
-        result.Normalize();
-        result *= Utils.BallManager.Diameter;
-        result += startPosition;
-        trackingList.AddLast(result);
-        return result;
     }
 }
