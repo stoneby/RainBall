@@ -12,12 +12,6 @@ public class Shooter : MonoBehaviour
 
     public float LifeTime = 5f;
 
-    /// <summary>
-    /// Intersection point number between distance in one diameter
-    /// </summary>
-    /// <remarks>Used to re-generate ball's tracking point list</remarks>
-    public int BoomedIntersectionNum = 10;
-
     public float BoomedDuration = 1f;
 
     public float BoomedWaitDuration = 1f;
@@ -85,7 +79,7 @@ public class Shooter : MonoBehaviour
     {
         if (BoomingOccuringEvent != null)
         {
-            BoomingOccuringEvent(this, new EventArgs());
+            BoomingOccuringEvent(ShootBalls[0], new EventArgs());
         }
     }
 
@@ -104,7 +98,7 @@ public class Shooter : MonoBehaviour
 
         if (BoomingEndingEvent != null)
         {
-            BoomingEndingEvent(this, new EventArgs());
+            BoomingEndingEvent(ShootBalls[0], new EventArgs());
         }
 
         Reset(false);
@@ -174,6 +168,7 @@ public class Shooter : MonoBehaviour
                 shootBall.layer = currentBall.layer;
 
                 var ballList = Utils.BallManager.BallUpdaterList;
+                // update ball list.
                 ballList.Insert((nextBall == null) ? ballList.Count : (nextBall.GetComponent<BallUpdater>().Index), shootBallUpdater);
 
                 // update following balls' index.
@@ -185,38 +180,25 @@ public class Shooter : MonoBehaviour
 
                 Debug.Log("Insert ball " + shootBallUpdater.name + ", to index: " + shootBallUpdater.Index);
 
-                // configure last ball's final backing path.
+                // get last ball's final position.
                 Utils.BallManager.MoveDirection = MoveDirection.Backward;
-                var lastBall = ballList[ballList.Count - 1];
-                Utils.ConfigureTweenPath(lastBall.gameObject, MoveDirection.Backward, Utils.BallManager.Diameter);
+                var lastBall = (nextBall == null) ? ballList[ballList.Count - 2] : ballList[ballList.Count - 1];
+                var finalBallNodeList = Utils.TrimPath(Utils.LevelManager.GetPathNodes(), lastBall.transform.position,
+                                                       MoveDirection.Backward, Utils.BallManager.Diameter);
+                var finalBallPosition = finalBallNodeList[finalBallNodeList.Count - 1];
 
-                var finalPath = iTweenPath.GetPath(Utils.PathName(lastBall.name));
-                // insert shoot ball to list.
+                for (var i = shootBallUpdater.Index; i < ballList.Count - 1; ++i)
+                {
+                    Utils.MoveDirectly(ballList[i].gameObject, ballList[i + 1].transform.position, Utils.Settings.InsertSpeed);
+                }
+                Utils.MoveDirectly(ballList[ballList.Count - 1].gameObject, finalBallPosition, Utils.Settings.InsertSpeed);
+
+                // update next ball's linkage.
                 if (nextBall)
                 {
-                    Utils.ConfigureTweenPath(shootBall,
-                                             new List<Vector3>
-                                                 {
-                                                     shootBall.transform.position,
-                                                     nextBall.transform.position
-                                                 }, Utils.PathName(shootBall.name));
-
-                    Utils.Move(lastBall.gameObject);
-
                     var nextBallUpdater = nextBall.GetComponent<BallUpdater>();
                     nextBallUpdater.LastBall = null;
                 }
-                else
-                {
-                    Utils.ConfigureTweenPath(shootBall,
-                                             new List<Vector3>
-                                                 {
-                                                     shootBall.transform.position,
-                                                     finalPath[finalPath.Length - 1]
-                                                 }, Utils.PathName(shootBall.name));
-                }
-
-                Utils.Move(shootBall);
 
                 BoomingEnding();
 

@@ -27,7 +27,7 @@ public class DraganBallManager : MonoBehaviour
     public float DistanceFactor;
 
     /// <summary>
-    /// Move direction type
+    /// MovePartical direction type
     /// </summary>
     [HideInInspector]
     public MoveDirection MoveDirection;
@@ -88,15 +88,18 @@ public class DraganBallManager : MonoBehaviour
         Debug.Log("On Booming Start");
 
         iTween.Pause(KeyBall);
-        Running = true;
+
+        // shooter ball as key ball.
+        KeyBall = sender as GameObject;
+        KeyBall.GetComponent<BallUpdater>().Running = true;
     }
 
     void OnBoomingComplete(object sender, EventArgs args)
     {
         Debug.Log("On Booming Complete");
 
-        var shooter = sender as Shooter;
-        var shootBallUpdater = shooter.ShootBalls[0].GetComponent<BallUpdater>();
+        var shooter = sender as GameObject;
+        var shootBallUpdater = shooter.GetComponent<BallUpdater>();
         var currentBallUpdater = BallUpdaterList[shootBallUpdater.Index - 1];
         currentBallUpdater.NextBall = shootBallUpdater.gameObject;
         shootBallUpdater.LastBall = BallUpdaterList[shootBallUpdater.Index - 1].gameObject;
@@ -110,18 +113,19 @@ public class DraganBallManager : MonoBehaviour
         shootBallUpdater.NextBall = nextBall;
 
         iTween.Resume(KeyBall);
-        Running = false;
+        KeyBall.GetComponent<BallUpdater>().Running = false;
     }
 
     private void OnStart()
     {
-        Running = true;
+        KeyBall.GetComponent<BallUpdater>().Running = true;
         Set();
     }
 
     private void OnStop()
     {
-        Running = false;
+        KeyBall.GetComponent<BallUpdater>().Running = false;
+        KeyBall = BallUpdaterList[0].gameObject;
 
         BallUpdaterList.ForEach(
             ball => Debug.Log("TrackingTail list cout: " + ball.TrackingTail.Count + ", gameobject: " + ball.name));
@@ -148,7 +152,7 @@ public class DraganBallManager : MonoBehaviour
     /// <remarks>Since leading ball's itween move in update, computing in late update, or leading ball move forward one frame</remarks>
     void LateUpdate()
     {
-        if (!Running)
+        if (KeyBall == null || KeyBall.GetComponent<BallUpdater>() == null || !KeyBall.GetComponent<BallUpdater>().Running)
         {
             return;
         }

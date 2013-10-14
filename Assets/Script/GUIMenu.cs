@@ -30,7 +30,7 @@ public class GUIMenu : MonoBehaviour
         if (GUILayout.Button("ITween path"))
         {
             Utils.BallManager.MoveDirection = MoveDirection.Forward;
-            Utils.MoveLevel(Utils.BallManager.BallUpdaterList[0].gameObject);
+            Utils.MoveLevel(Utils.BallManager.BallUpdaterList[0].gameObject, Utils.Settings.MoveSpeed);
         }
 
         if (GUILayout.Button("Pause Itween"))
@@ -132,7 +132,7 @@ public class GUIMenu : MonoBehaviour
             return;
         }
 
-        Utils.Move(leadingBall.gameObject);
+        Utils.MovePartical(leadingBall.gameObject, Utils.Settings.MoveSpeed);
     }
 
     IEnumerator Generate()

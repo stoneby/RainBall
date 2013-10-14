@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -455,23 +456,33 @@ public static class Utils
 
     #region Tween
 
-    public static void Move(GameObject gameObject)
+    public static void MovePartical(GameObject gameObject, float speed)
     {
-        Move(gameObject, PathName(gameObject.name));
+        Move(gameObject, PathName(gameObject.name), speed);
     }
 
-    public static void MoveLevel(GameObject gameObject)
+    public static void MoveLevel(GameObject gameObject, float speed)
     {
-        Move(gameObject, LevelManager.LevelList[levelManager.CurrentLevel].Path);
+        Move(gameObject, LevelManager.LevelList[levelManager.CurrentLevel].Path, speed);
     }
 
-    private static void Move(GameObject gameObject, string path)
+    private static void Move(GameObject gameObject, string path, float speed)
     {
         var moveEvent = iTweenEvent.GetEvent(gameObject.gameObject, "Move");
         moveEvent.Values["onstartparams"] = gameObject.name;
         moveEvent.Values["oncompleteparams"] = gameObject.name;
         moveEvent.Values["path"] = path;
+        moveEvent.Values["speed"] = speed;
         moveEvent.Play();
+    }
+
+    public static void MoveDirectly(GameObject gameObject, Vector3 position, float speed)
+    {
+        iTween.MoveTo(gameObject, new Hashtable
+            {
+                {"position", position},
+                {"speed", speed}
+            });
     }
 
     #endregion
