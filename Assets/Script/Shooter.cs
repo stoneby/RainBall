@@ -16,7 +16,10 @@ public class Shooter : MonoBehaviour
 
     public float BoomedWaitDuration = 1f;
 
-    public List<GameObject> ShootBalls { get; private set; }
+    public GameObject ShootBall { get; private set; }
+    public GameObject HittingBall { get; private set; }
+
+    public Vector3 ShootDirection { get; private set; }
 
     public EventHandler<EventArgs> BoomingOccuringEvent;
     public EventHandler<EventArgs> BoomingEndingEvent;
@@ -27,9 +30,9 @@ public class Shooter : MonoBehaviour
 
     private float rot;
 
-    private Vector3 shootDirection;
-
     private Vector3 stackerPoint;
+
+    private StateMachine stateMachine = new StateMachine();
 
     IEnumerator StartShoot()
     {
@@ -45,33 +48,29 @@ public class Shooter : MonoBehaviour
     {
         if (destroy)
         {
-            Destroy(ShootBalls[0]);
+            Destroy(ShootBall);
         }
-        ShootBalls.RemoveAt(0);
         GenerateBall();
     }
 
     void Start()
     {
-        ShootBalls = new List<GameObject>();
         stackerPoint = new Vector3(gameObject.transform.position.x, KeyBall.transform.position.y,
                                    gameObject.transform.position.z);
-
         GenerateBall();
     }
 
     private void GenerateBall()
     {
-        var shootBall =
+        ShootBall =
             Instantiate(KeyBall, new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z),
                         new Quaternion()) as GameObject;
         var index = Random.Range(0, Utils.Settings.ColorList.Count);
-        shootBall.renderer.material.color = Utils.Settings.ColorList[index];
-        shootBall.transform.parent = transform.parent;
-        shootBall.layer = LayerMask.NameToLayer("Ignore Raycast");
-        ShootBalls.Add(shootBall);
+        ShootBall.renderer.material.color = Utils.Settings.ColorList[index];
+        ShootBall.transform.parent = transform.parent;
+        ShootBall.layer = LayerMask.NameToLayer("Ignore Raycast");
 
-        var shootBallUpdater = shootBall.AddComponent<BallUpdater>();
+        var shootBallUpdater = ShootBall.AddComponent<BallUpdater>();
         shootBallUpdater.Color = index;
     }
 
@@ -79,7 +78,7 @@ public class Shooter : MonoBehaviour
     {
         if (BoomingOccuringEvent != null)
         {
-            BoomingOccuringEvent(ShootBalls[0], new EventArgs());
+            BoomingOccuringEvent(ShootBall, new EventArgs());
         }
     }
 
@@ -98,7 +97,7 @@ public class Shooter : MonoBehaviour
 
         if (BoomingEndingEvent != null)
         {
-            BoomingEndingEvent(ShootBalls[0], new EventArgs());
+            BoomingEndingEvent(ShootBall, new EventArgs());
         }
 
         Reset(false);
@@ -130,42 +129,43 @@ public class Shooter : MonoBehaviour
             rot = transform.rotation.eulerAngles.y;
             Debug.Log("euler angle is: " + rot);
 
-            shootDirection = direction;
+            ShootDirection = direction;
             StartCoroutine("StartShoot");
         }
 
         if (shooting)
         {
-            var shootBall = ShootBalls[0];
+            var deta = ShootDirection * Time.deltaTime * Speed;
+            ShootBall.transform.position += deta;
 
-            var deta = shootDirection * Time.deltaTime * Speed;
-            shootBall.transform.position += deta;
+            Debug.DrawRay(ShootBall.transform.position, direction * Utils.BallManager.Diameter / 2, Color.red);
 
-            var shooterPoint = new Vector3(shootBall.transform.position.x, KeyBall.transform.position.y,
-                                           shootBall.transform.position.z);
-            Debug.DrawRay(shootBall.transform.position, direction * Utils.BallManager.Diameter / 2, Color.red);
+            stateMachine.Go();
+
             // Collision occurs.
-            var currentBall = Utils.FindNearestBySphear(shooterPoint, Utils.BallManager.Diameter / 2, direction);
-            if (currentBall != null)
+            var shooterPoint = new Vector3(ShootBall.transform.position.x, KeyBall.transform.position.y,
+                                           ShootBall.transform.position.z);
+            HittingBall = Utils.FindNearestBySphear(shooterPoint, Utils.BallManager.Diameter / 2, ShootDirection);
+            if (HittingBall != null)
             {
-                Debug.Log("Current hitting ball: " + currentBall.name);
+                Debug.Log("Current hitting ball: " + HittingBall.name);
 
                 BoomingOccuring();
 
                 // [TODO] Correct the hit point. (may overlap this time two balls)
                 // [TODO] Check shoot ball join before or after current ball.
                 // [FIXME] Shoot ball join after the current ball.
-                var currentBallUpdater = currentBall.GetComponent<BallUpdater>();
+                var currentBallUpdater = HittingBall.GetComponent<BallUpdater>();
                 var nextBall = currentBallUpdater.NextBall;
                 // Break link between current ball and next ball.
                 currentBallUpdater.NextBall = null;
 
                 // handle shoot ball.
-                var shootBallUpdater = shootBall.GetComponent<BallUpdater>();
+                var shootBallUpdater = ShootBall.GetComponent<BallUpdater>();
                 shootBallUpdater.Set(currentBallUpdater);
                 shootBallUpdater.Index = currentBallUpdater.Index;
-                shootBall.transform.parent = currentBall.transform.parent;
-                shootBall.layer = currentBall.layer;
+                ShootBall.transform.parent = HittingBall.transform.parent;
+                ShootBall.layer = HittingBall.layer;
 
                 var ballList = Utils.BallManager.BallUpdaterList;
                 // update ball list.
