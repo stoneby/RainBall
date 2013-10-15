@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DraganBallManager : MonoBehaviour
+public class BallManager : MonoBehaviour
 {
     public GameObject KeyBall;
 
@@ -58,6 +58,8 @@ public class DraganBallManager : MonoBehaviour
             return;
         }
 
+        Debug.Log("MoveStart, lead ball: " + KeyBall.name);
+
         OnStart();
 
         if (OnBorn != null)
@@ -75,6 +77,8 @@ public class DraganBallManager : MonoBehaviour
             return;
         }
 
+        Debug.Log("MoveComplete, lead ball: " + KeyBall.name);
+
         OnStop();
 
         if (OnDying != null)
@@ -83,37 +87,18 @@ public class DraganBallManager : MonoBehaviour
         }
     }
 
-    void OnBoomingStart(object sender, EventArgs args)
+    void OnShootStart(object sender, EventArgs args)
     {
-        Debug.Log("On Booming Start");
-
+        Debug.Log("On Shoot Start, key ball: " + KeyBall.name);
+         
         iTween.Pause(KeyBall);
-
-        // shooter ball as key ball.
-        KeyBall = sender as GameObject;
-        KeyBall.GetComponent<BallUpdater>().Running = true;
     }
 
-    void OnBoomingComplete(object sender, EventArgs args)
+    void OnShootStop(object sender, EventArgs args)
     {
-        Debug.Log("On Booming Complete");
-
-        var shooter = sender as GameObject;
-        var shootBallUpdater = shooter.GetComponent<BallUpdater>();
-        var currentBallUpdater = BallUpdaterList[shootBallUpdater.Index - 1];
-        currentBallUpdater.NextBall = shootBallUpdater.gameObject;
-        shootBallUpdater.LastBall = BallUpdaterList[shootBallUpdater.Index - 1].gameObject;
-        GameObject nextBall = null;
-        if (shootBallUpdater.Index + 1 < BallUpdaterList.Count)
-        {
-            nextBall = BallUpdaterList[shootBallUpdater.Index + 1].gameObject;
-            var nextballUpdater = nextBall.GetComponent<BallUpdater>();
-            nextballUpdater.LastBall = shootBallUpdater.gameObject;
-        }
-        shootBallUpdater.NextBall = nextBall;
+        Debug.Log("On Shoot Complete, key ball: " + KeyBall.name);
 
         iTween.Resume(KeyBall);
-        KeyBall.GetComponent<BallUpdater>().Running = false;
     }
 
     private void OnStart()
@@ -142,8 +127,8 @@ public class DraganBallManager : MonoBehaviour
 
     void Start()
     {
-        Utils.Shooter.BoomingOccuringEvent += OnBoomingStart;
-        Utils.Shooter.BoomingEndingEvent += OnBoomingComplete;
+        Utils.ShootStateMachine.GoStart += OnShootStart;
+        Utils.ShootStateMachine.GoStop += OnShootStop;
     }
 
     /// <summary>

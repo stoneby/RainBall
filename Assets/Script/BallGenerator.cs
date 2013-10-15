@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DraganBallGenerator : MonoBehaviour
+public class BallGenerator : MonoBehaviour
 {
     public GameObject Parent;
 

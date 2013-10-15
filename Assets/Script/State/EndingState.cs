@@ -1,12 +1,15 @@
-﻿using System;
+﻿using UnityEngine;
 
-public class EndingState : IState
+public class EndingState : AbstractState
 {
-    public event EventHandler<EventArgs> End;
-    public bool Pass { get; set; }
-
-    public void Go()
+    public override void Go()
     {
-        End(this, new EventArgs());
+        var ballList = Utils.BallManager.BallUpdaterList;
+        if (ballList.Count == 0)
+        {
+            Debug.Log("We meet super big celebration hit, all balls are gone.");
+        }
+
+        OnEnd();
     }
 }

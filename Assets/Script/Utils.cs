@@ -11,37 +11,32 @@ public static class Utils
 {
     public static Vector3 InvalidPoint = Vector3.zero;
 
-    private static DraganBallManager ballManager;
+    private static BallManager ballManager;
     private static PathAnimationController pathController;
     private static Settings settings;
     private static Shooter shooter;
     private static SelectionDetector selectionDetector;
     private static PathSampler pathSampler;
     private static LevelManager levelManager;
+    private static Evaluator evaluator;
+    private static ShootStateMachine shootStateMachine;
 
     #region Instance Helper
 
-    public static DraganBallManager BallManager
+    public static BallManager BallManager
     {
-        get
-        {
-            if (ballManager == null)
-            {
-                ballManager = GameObject.FindGameObjectWithTag("BallManager").GetComponent<DraganBallManager>();
-            }
-            return ballManager;
+        get {
+            return ballManager ??
+                   (ballManager = GameObject.FindGameObjectWithTag("BallManager").GetComponent<BallManager>());
         }
     }
 
     public static PathAnimationController PathController
     {
-        get
-        {
-            if (pathController == null)
-            {
-                pathController = GameObject.FindGameObjectWithTag("PathController").GetComponent<PathAnimationController>();
-            }
-            return pathController;
+        get {
+            return pathController ??
+                   (pathController =
+                    GameObject.FindGameObjectWithTag("PathController").GetComponent<PathAnimationController>());
         }
     }
 
@@ -59,51 +54,52 @@ public static class Utils
 
     public static Shooter Shooter
     {
-        get
-        {
-            if (shooter == null)
-            {
-                shooter = GameObject.FindGameObjectWithTag("Shooter").GetComponent<Shooter>();
-            }
-            return shooter;
-        }
+        get { return shooter ?? (shooter = GameObject.FindGameObjectWithTag("Shooter").GetComponent<Shooter>()); }
     }
 
     public static SelectionDetector SelectionDetector
     {
-        get
-        {
-            if (selectionDetector == null)
-            {
-                selectionDetector = GameObject.FindGameObjectWithTag("SelectionDetector").GetComponent<SelectionDetector>();
-            }
-            return selectionDetector;
+        get {
+            return selectionDetector ??
+                   (selectionDetector =
+                    GameObject.FindGameObjectWithTag("SelectionDetector").GetComponent<SelectionDetector>());
         }
     }
 
     public static PathSampler PathSampler
     {
-        get
-        {
-            if (pathSampler == null)
-            {
-                pathSampler = GameObject.FindGameObjectWithTag("PathSampler").GetComponent<PathSampler>();
-            }
-            return pathSampler;
+        get {
+            return pathSampler ??
+                   (pathSampler = GameObject.FindGameObjectWithTag("PathSampler").GetComponent<PathSampler>());
         }
     }
 
     public static LevelManager LevelManager
     {
-        get
-        {
-            if (levelManager == null)
-            {
-                levelManager = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>();
-            }
-            return levelManager;
+        get {
+            return levelManager ??
+                   (levelManager = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>());
         }
     }
+
+    public static Evaluator Evaluator
+    {
+        get
+        {
+            return evaluator ??
+                   (evaluator = GameObject.FindGameObjectWithTag("Evaluator").GetComponent<Evaluator>());
+        }
+    }
+
+    public static ShootStateMachine ShootStateMachine
+    {
+        get
+        {
+            return shootStateMachine ??
+                   (shootStateMachine = GameObject.FindGameObjectWithTag("ShootStateMachine").GetComponent<ShootStateMachine>());
+        }
+    }
+
     #endregion
 
     #region Intersection

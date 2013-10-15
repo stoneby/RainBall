@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,11 +11,7 @@ public class Shooter : MonoBehaviour
 
     public float LifeTime = 5f;
 
-    public float BoomedDuration = 1f;
-
-    public float BoomedWaitDuration = 1f;
-
-    public GameObject ShootBall { get; private set; }
+    public GameObject ShootBall { get; set; }
     public GameObject HittingBall { get; private set; }
 
     public Vector3 ShootDirection { get; private set; }
@@ -32,11 +27,11 @@ public class Shooter : MonoBehaviour
 
     private Vector3 stackerPoint;
 
-    private StateMachine stateMachine = new StateMachine();
-
     IEnumerator StartShoot()
     {
         yield return new WaitForSeconds(LifeTime);
+
+        Utils.ShootStateMachine.End();
 
         shooting = false;
         canShoot = true;
@@ -74,33 +69,21 @@ public class Shooter : MonoBehaviour
         shootBallUpdater.Color = index;
     }
 
-    private void BoomingOccuring()
-    {
-        if (BoomingOccuringEvent != null)
-        {
-            BoomingOccuringEvent(ShootBall, new EventArgs());
-        }
-    }
-
-    private void BoomingEnding()
+    private void OnShootStart(object sender, EventArgs args)
     {
         shooting = false;
-
-        StartCoroutine(DoBoomingEnding());
     }
 
-    IEnumerator DoBoomingEnding()
+    private void OnShootStop(object sender, EventArgs args)
     {
-        yield return new WaitForSeconds(BoomedDuration + BoomedWaitDuration);
-
         canShoot = true;
-
-        if (BoomingEndingEvent != null)
-        {
-            BoomingEndingEvent(ShootBall, new EventArgs());
-        }
-
         Reset(false);
+    }
+
+    void Awake()
+    {
+        Utils.ShootStateMachine.GoStart += OnShootStart;
+        Utils.ShootStateMachine.GoStop += OnShootStop;
     }
 
     // Update is called once per frame
@@ -140,67 +123,15 @@ public class Shooter : MonoBehaviour
 
             Debug.DrawRay(ShootBall.transform.position, direction * Utils.BallManager.Diameter / 2, Color.red);
 
-            stateMachine.Go();
-
-            // Collision occurs.
-            var shooterPoint = new Vector3(ShootBall.transform.position.x, KeyBall.transform.position.y,
+            var shooterPoint = new Vector3(ShootBall.transform.position.x, Utils.Shooter.KeyBall.transform.position.y,
                                            ShootBall.transform.position.z);
-            HittingBall = Utils.FindNearestBySphear(shooterPoint, Utils.BallManager.Diameter / 2, ShootDirection);
-            if (HittingBall != null)
+            var currentBall = Utils.FindNearestBySphear(shooterPoint, Utils.BallManager.Diameter / 2, Utils.Shooter.ShootDirection);
+            if (currentBall != null)
             {
-                Debug.Log("Current hitting ball: " + HittingBall.name);
+                HittingBall = currentBall;
 
-                BoomingOccuring();
-
-                // [TODO] Correct the hit point. (may overlap this time two balls)
-                // [TODO] Check shoot ball join before or after current ball.
-                // [FIXME] Shoot ball join after the current ball.
-                var currentBallUpdater = HittingBall.GetComponent<BallUpdater>();
-                var nextBall = currentBallUpdater.NextBall;
-                // Break link between current ball and next ball.
-                currentBallUpdater.NextBall = null;
-
-                // handle shoot ball.
-                var shootBallUpdater = ShootBall.GetComponent<BallUpdater>();
-                shootBallUpdater.Set(currentBallUpdater);
-                shootBallUpdater.Index = currentBallUpdater.Index;
-                ShootBall.transform.parent = HittingBall.transform.parent;
-                ShootBall.layer = HittingBall.layer;
-
-                var ballList = Utils.BallManager.BallUpdaterList;
-                // update ball list.
-                ballList.Insert((nextBall == null) ? ballList.Count : (nextBall.GetComponent<BallUpdater>().Index), shootBallUpdater);
-
-                // update following balls' index.
-                for (var index = currentBallUpdater.Index + 1; index < ballList.Count; ++index)
-                {
-                    ++ballList[index].Index;
-                    ballList[index].name = ballList[index].Name;
-                }
-
-                Debug.Log("Insert ball " + shootBallUpdater.name + ", to index: " + shootBallUpdater.Index);
-
-                // get last ball's final position.
-                Utils.BallManager.MoveDirection = MoveDirection.Backward;
-                var lastBall = (nextBall == null) ? ballList[ballList.Count - 2] : ballList[ballList.Count - 1];
-                var finalBallNodeList = Utils.TrimPath(Utils.LevelManager.GetPathNodes(), lastBall.transform.position,
-                                                       MoveDirection.Backward, Utils.BallManager.Diameter);
-                var finalBallPosition = finalBallNodeList[finalBallNodeList.Count - 1];
-
-                for (var i = shootBallUpdater.Index; i < ballList.Count - 1; ++i)
-                {
-                    Utils.MoveDirectly(ballList[i].gameObject, ballList[i + 1].transform.position, Utils.Settings.InsertSpeed);
-                }
-                Utils.MoveDirectly(ballList[ballList.Count - 1].gameObject, finalBallPosition, Utils.Settings.InsertSpeed);
-
-                // update next ball's linkage.
-                if (nextBall)
-                {
-                    var nextBallUpdater = nextBall.GetComponent<BallUpdater>();
-                    nextBallUpdater.LastBall = null;
-                }
-
-                BoomingEnding();
+                Utils.ShootStateMachine.Reset();
+                Utils.ShootStateMachine.Go();
 
                 StopCoroutine("StartShoot");
             }

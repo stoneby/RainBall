@@ -6,9 +6,9 @@ public class GUIMenu : MonoBehaviour
 {
     public GameObject Puzzle;
 
-    public DraganBallManager Manager;
+    public BallManager Manager;
 
-    public DraganBallGenerator Generator;
+    public BallGenerator Generator;
 
     public GameObject Shooter;
 

@@ -1,43 +1,40 @@
-﻿using System;
+﻿using System.Collections;
 using UnityEngine;
 
-public class BoomingState : IState
+public class BoomingState : AbstractState
 {
-    public event EventHandler<EventArgs> End;
-    public bool Pass { get; set; }
+    public float BoomedDuration = 1f;
 
-    public void Go()
+    public override void Go()
     {
         var shooter = Utils.Shooter;
         var hittingBall = shooter.HittingBall;
         if (hittingBall == null)
         {
+            Debug.LogError(GetType().Name + ", hitting ball should not be null.");
+
+            OnEnd();
             return;
         }
 
         Debug.Log("Current hitting ball: " + hittingBall.name);
         
-        //BoomingOccuring();
-
         // [TODO] Correct the hit point. (may overlap this time two balls)
         // [TODO] Check shoot ball join before or after current ball.
         // [FIXME] Shoot ball join after the current ball.
         var currentBallUpdater = hittingBall.GetComponent<BallUpdater>();
         var nextBall = currentBallUpdater.NextBall;
-        // Break link between current ball and next ball.
-        currentBallUpdater.NextBall = null;
-
         // handle shoot ball.
         var shootBall = shooter.ShootBall;
-        var shooterBallUpdater = shootBall.GetComponent<BallUpdater>();
-        shooterBallUpdater.Set(currentBallUpdater);
-        shooterBallUpdater.Index = currentBallUpdater.Index;
+        var shootBallUpdater = shootBall.GetComponent<BallUpdater>();
+        shootBallUpdater.Set(currentBallUpdater);
+        shootBallUpdater.Index = currentBallUpdater.Index;
         shootBall.transform.parent = hittingBall.transform.parent;
         shootBall.layer = hittingBall.layer;
 
         var ballList = Utils.BallManager.BallUpdaterList;
         // update ball list.
-        ballList.Insert((nextBall == null) ? ballList.Count : (nextBall.GetComponent<BallUpdater>().Index), shooterBallUpdater);
+        ballList.Insert((nextBall == null) ? ballList.Count : (nextBall.GetComponent<BallUpdater>().Index), shootBallUpdater);
 
         // update following balls' index.
         for (var index = currentBallUpdater.Index + 1; index < ballList.Count; ++index)
@@ -46,7 +43,7 @@ public class BoomingState : IState
             ballList[index].name = ballList[index].Name;
         }
 
-        Debug.Log("Insert ball " + shooterBallUpdater.name + ", to index: " + shooterBallUpdater.Index);
+        Debug.Log("Insert ball " + shootBallUpdater.name + ", to index: " + shootBallUpdater.Index);
 
         // get last ball's final position.
         Utils.BallManager.MoveDirection = MoveDirection.Backward;
@@ -55,19 +52,34 @@ public class BoomingState : IState
                                                MoveDirection.Backward, Utils.BallManager.Diameter);
         var finalBallPosition = finalBallNodeList[finalBallNodeList.Count - 1];
 
-        for (var i = shooterBallUpdater.Index; i < ballList.Count - 1; ++i)
+        for (var i = shootBallUpdater.Index; i < ballList.Count - 1; ++i)
         {
             Utils.MoveDirectly(ballList[i].gameObject, ballList[i + 1].transform.position, Utils.Settings.InsertSpeed);
         }
         Utils.MoveDirectly(ballList[ballList.Count - 1].gameObject, finalBallPosition, Utils.Settings.InsertSpeed);
 
-        // update next ball's linkage.
+        // update balls' linkage.
+        currentBallUpdater.NextBall = shootBall;
+        shootBallUpdater.LastBall = currentBallUpdater.gameObject;
         if (nextBall)
         {
             var nextBallUpdater = nextBall.GetComponent<BallUpdater>();
-            nextBallUpdater.LastBall = null;
+            nextBallUpdater.LastBall = shootBall;
+            shootBallUpdater.NextBall = nextBall;
         }
 
-        End(this, new EventArgs());
+        BoomingEnding();
+    }
+
+    private void BoomingEnding()
+    {
+        StartCoroutine(DoBoomingEnding());
+    }
+
+    IEnumerator DoBoomingEnding()
+    {
+        yield return new WaitForSeconds(BoomedDuration);
+
+        OnEnd();
     }
 }

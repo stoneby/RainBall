@@ -44,8 +44,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Script\Editor\DraganBallGeneratorEditor.cs" />
-     <Compile Include="Assets\Script\Editor\DraganBallManagerEditor.cs" />
+     <Compile Include="Assets\Script\Editor\BallGeneratorEditor.cs" />
+     <Compile Include="Assets\Script\Editor\BallManagerEditor.cs" />
      <Compile Include="Assets\Script\Editor\EditorTestEditor.cs" />
      <Compile Include="Assets\Script\Editor\LevelEditor.cs" />
      <Compile Include="Assets\Script\Editor\PathGeneratorEditor.cs" />
