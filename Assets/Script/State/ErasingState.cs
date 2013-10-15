@@ -41,6 +41,25 @@ public class ErasingState : AbstractState
             ballList[i].Index = i;
             ballList[i].name = ballList[i].Name;
         }
+
+        if (ballList.Count == 0)
+        {
+            return;
+        }
+        // build relationship after erasing.
+        if (awardInfor.StartIndex == ballList.Count)
+        {
+            ballList[awardInfor.StartIndex - 1].NextBall = null;
+        }
+        else if (awardInfor.StartIndex == 0)
+        {
+            ballList[awardInfor.StartIndex].LastBall = null;
+        }
+        else
+        {
+            ballList[awardInfor.StartIndex - 1].NextBall = ballList[awardInfor.StartIndex].gameObject;
+            ballList[awardInfor.StartIndex].LastBall = ballList[awardInfor.StartIndex - 1].gameObject;
+        }
     }
 
     private void Move()

@@ -46,7 +46,6 @@ public class BoomingState : AbstractState
         Debug.Log("Insert ball " + shootBallUpdater.name + ", to index: " + shootBallUpdater.Index);
 
         // get last ball's final position.
-        Utils.BallManager.MoveDirection = MoveDirection.Backward;
         var lastBall = (nextBall == null) ? ballList[ballList.Count - 2] : ballList[ballList.Count - 1];
         var finalBallNodeList = Utils.TrimPath(Utils.LevelManager.GetPathNodes(), lastBall.transform.position,
                                                MoveDirection.Backward, Utils.BallManager.Diameter);

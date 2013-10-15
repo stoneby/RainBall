@@ -409,9 +409,9 @@ public static class Utils
                 var secondDistance = Math.Abs(Vector3.Distance(position, nodeList[endIndex]));
                 if (secondDistance < distance)
                 {
-                    Debug.LogError(
-                        "TrimPath fails. The node list distance between nodes are too tightly. Better to be done with greater or equal to ball's diameter.");
-                    return null;
+                    Debug.LogWarning(
+                        "TrimPath warns. The node list distance between nodes are a little tightly. Better to be done with greater or equal to ball's diameter.");
+                    //return null;
                 }
 
                 var finalPosition = (nodeList[beginIndex] + nodeList[endIndex]) / 2;

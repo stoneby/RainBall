@@ -16,5 +16,5 @@ public class Settings : MonoBehaviour
     /// <summary>
     /// Speed for moving after booming
     /// </summary>
-    public float BoomSpeed;
+    public float BoomMovingSpeed;
 }

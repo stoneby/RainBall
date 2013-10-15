@@ -56,11 +56,11 @@ public class EvaluateEraseState : AbstractState
 
             Utils.Evaluator.Check(currentBallUpdater.Color, counter, startIndex);
             // reset shoot ball to ball located on start index for checking loop.
-            Utils.Shooter.ShootBall = (startIndex != 0)
+            Utils.Shooter.ShootBall = (startIndex > 0)
                                           ? ballList[startIndex - 1].gameObject
-                                          : (startIndex + counter != ballList.Count - 1)
+                                          : (startIndex + counter < ballList.Count - 1)
                                                 ? ballList[startIndex + counter].gameObject
-                                                : null;
+                                                : (ballList.Count != 0) ? ballList[startIndex].gameObject : null;
         }
         else
         {
