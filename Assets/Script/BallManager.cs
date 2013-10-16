@@ -32,8 +32,8 @@ public class BallManager : MonoBehaviour
     [HideInInspector]
     public MoveDirection MoveDirection;
 
-    public event EventHandler<EventArgs> OnBorn;
-    public event EventHandler<EventArgs> OnDying;
+    public event EventHandler<EventArgs> Born;
+    public event EventHandler<EventArgs> Die;
 
     private const float Theta = 0.1f;
 
@@ -62,9 +62,9 @@ public class BallManager : MonoBehaviour
 
         OnStart();
 
-        if (OnBorn != null)
+        if (Born != null)
         {
-            OnBorn(this, new EventArgs());
+            Born(this, new EventArgs());
         }
     }
 
@@ -81,9 +81,9 @@ public class BallManager : MonoBehaviour
 
         OnStop();
 
-        if (OnDying != null)
+        if (Die != null)
         {
-            OnDying(this, new EventArgs());
+            Die(this, new EventArgs());
         }
     }
 

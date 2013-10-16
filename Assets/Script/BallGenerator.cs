@@ -27,6 +27,8 @@ public class BallGenerator : MonoBehaviour
 
         var startLocation = iTweenPath.GetPath(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path)[0];
 
+        var ballList = Utils.BallManager.BallUpdaterList;
+        ballList.Clear();
         for (var i = 0; i < Size; ++i)
         {
             var currentBall = Instantiate(KeyBall, startLocation, Quaternion.identity) as GameObject;
@@ -38,28 +40,29 @@ public class BallGenerator : MonoBehaviour
             ballUpdater.Index = i;
             ballUpdater.Color = index;
             currentBall.name = ballUpdater.Name;
-            Utils.BallManager.BallUpdaterList.Add(ballUpdater);
+            ballList.Add(ballUpdater);
 
             Debug.Log("Current ball: " + currentBall.name + " adding to dragan ball manager.");
         }
 
-        var manager = Utils.BallManager.BallUpdaterList;
-        var size = manager.Count;
+        var size = ballList.Count;
         // handle link relationship between balls.
         for (var i = 0; i < size; ++i)
         {
             if (i == 0)
             {
-                manager[i].NextBall = manager[i + 1].gameObject;
+                ballList[i].NextBall = ballList[i + 1].gameObject;
+                ballList[i].LastBall = null;
             }
-            else if (i == Utils.BallManager.BallUpdaterList.Count - 1)
+            else if (i == ballList.Count - 1)
             {
-                manager[i].LastBall = manager[i - 1].gameObject;
+                ballList[i].NextBall = null;
+                ballList[i].LastBall = ballList[i - 1].gameObject;
             }
             else
             {
-                manager[i].NextBall = manager[i + 1].gameObject;
-                manager[i].LastBall = manager[i - 1].gameObject;
+                ballList[i].NextBall = ballList[i + 1].gameObject;
+                ballList[i].LastBall = ballList[i - 1].gameObject;
             }
         }
     }

@@ -66,7 +66,7 @@ public class GUIMenu : MonoBehaviour
         if (GUILayout.Button("Moving Forward"))
         {
             Utils.BallManager.MoveDirection = MoveDirection.Forward;
-            
+
             var leadingBall = Utils.BallManager.BallUpdaterList[0];
             MoveFreely(leadingBall);
         }
@@ -74,7 +74,7 @@ public class GUIMenu : MonoBehaviour
         if (GUILayout.Button("Moving Backward"))
         {
             Utils.BallManager.MoveDirection = MoveDirection.Backward;
-            
+
             var leadingBall = Utils.BallManager.BallUpdaterList[Utils.BallManager.BallUpdaterList.Count - 1];
             MoveFreely(leadingBall);
         }
