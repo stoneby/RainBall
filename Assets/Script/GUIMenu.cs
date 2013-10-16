@@ -1,27 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GUIMenu : MonoBehaviour
 {
-    public GameObject Puzzle;
-
     public BallManager Manager;
-
     public BallGenerator Generator;
-
-    public GameObject Shooter;
-
-    public bool UseTrimNodeCount;
-
-    public int TrimNodeCount;
-
-    public string Path;
-
-    public float LeadingBallSpeed;
-
     public MoveDirection MoveDirection;
-
     public Transform BeginLocation;
     public Transform EndLocation;
 
@@ -29,7 +13,7 @@ public class GUIMenu : MonoBehaviour
     {
         if (GUILayout.Button("ITween path"))
         {
-            Utils.BallManager.MoveDirection = MoveDirection.Forward;
+            Manager.MoveDirection = MoveDirection.Forward;
             Utils.MoveLevel(Utils.BallManager.BallUpdaterList[0].gameObject, Utils.Settings.MoveSpeed);
         }
 
@@ -138,8 +122,6 @@ public class GUIMenu : MonoBehaviour
     IEnumerator Generate()
     {
         Manager.BallUpdaterList.Clear();
-        var startPoint = iTweenPath.GetPath(Path)[0];
-        iTween.MoveTo(Manager.KeyBall, startPoint, 1f);
         yield return new WaitForSeconds(1f);
         Generator.Generate();
     }

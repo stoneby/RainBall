@@ -21,6 +21,9 @@ public static class Utils
     private static Evaluator evaluator;
     private static ShootStateMachine shootStateMachine;
 
+    private const float MaxAngleEdge = 135f;
+    private const float DistanceTheta = 0.1f;
+
     #region Instance Helper
 
     public static BallManager BallManager
@@ -292,12 +295,44 @@ public static class Utils
 
     private static int GetTrimNodeIndex(Vector3[] nodeList, Vector3 position)
     {
+        if (nodeList == null || nodeList.Length == 0)
+        {
+            throw new NotSupportedException("Node list is empty or null.");
+        }
+
+        if (nodeList.Length == 1)
+        {
+            Debug.LogWarning("Node list contains only one item.");
+            return 0;
+        }
+
         var index = -1;
         var maxAngle = 0f;
-        for (var i = 0; i < nodeList.Length - 2; ++i)
+        for (var i = 0; i < nodeList.Length - 1; ++i)
         {
             var left = nodeList[i];
             var right = nodeList[i + 1];
+            var leftVec = position - left;
+            var rightVec = position - right;
+
+            if (leftVec.sqrMagnitude < DistanceTheta)
+            {
+                Debug.LogWarning("The positon " + position + " you give is right on the path. " + "Left vec " + left +
+                                 ", index: " + i + ", magnitude: " +
+                                 leftVec.sqrMagnitude + ", right vec: " + right + ", index: " + (i + 1) +
+                                 ", magnitude: " + rightVec.sqrMagnitude);
+                return i;
+            }
+
+            if (rightVec.sqrMagnitude < DistanceTheta)
+            {
+                Debug.LogWarning("The positon " + position + " you give is right on the path. " + "Left vec " + left +
+                                 ", index: " + i + ", magnitude: " +
+                                 leftVec.sqrMagnitude + ", right vec: " + right + ", index: " + (i + 1) +
+                                 ", magnitude: " + rightVec.sqrMagnitude);
+                return i + 1;
+            }
+
             var angle = Vector3.Angle(position - left, position - right);
             if (angle > maxAngle)
             {
@@ -305,6 +340,13 @@ public static class Utils
                 index = i;
             }
         }
+
+        if (maxAngle < MaxAngleEdge)
+        {
+            Debug.LogWarning("Max angle get " + maxAngle + " is less than max angle edge " + MaxAngleEdge +
+                             ", please double check whether point " + position + " is on the path or not.");
+        }
+
         return index;
     }
 
