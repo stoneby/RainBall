@@ -153,4 +153,32 @@ public class BallManager : MonoBehaviour
                               : currentBallUpdater.LastBall;
         }
     }
+
+    public void InsertTrackingTail(int startIndex, MoveDirection moveDirection)
+    {
+        if (moveDirection == MoveDirection.Forward)
+        {
+            for (var i = startIndex; i < BallUpdaterList.Count - 1; ++i)
+            {
+                BallUpdaterList[i].TrackingTail.Clear();
+                var intersectionList = Utils.GetIntersectionList(BallUpdaterList[i].transform.position, BallUpdaterList[i + 1].transform.position, 10);
+                foreach (var node in intersectionList)
+                {
+                    BallUpdaterList[i].TrackingTail.AddFirst(node);
+                }
+            }
+        }
+        else if (moveDirection == MoveDirection.Backward)
+        {
+            for (var i = startIndex; i > 0; --i)
+            {
+                BallUpdaterList[i].TrackingTail.Clear();
+                var intersectionList = Utils.GetIntersectionList(BallUpdaterList[i].transform.position, BallUpdaterList[i + 1].transform.position, 10);
+                foreach (var node in intersectionList)
+                {
+                    BallUpdaterList[i].TrackingTail.AddLast(node);
+                }
+            }
+        }
+    }
 }

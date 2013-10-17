@@ -74,6 +74,7 @@ public class ErasingState : AbstractState
         Utils.BallManager.MoveDirection = MoveDirection.Forward;
 
         var moveObject = Utils.BallManager.BallUpdaterList[awardInfor.StartIndex].gameObject;
+        Utils.BallManager.InsertTrackingTail(awardInfor.StartIndex, Utils.BallManager.MoveDirection);
         Utils.ConfigureTweenPath(moveObject, moveObject.transform.position, endLocation);
         Utils.MovePartical(moveObject, Utils.Settings.BoomMovingSpeed);
 

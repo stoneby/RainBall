@@ -230,7 +230,7 @@ public static class Utils
     {
         GameObject result = null;
         RaycastHit hit;
-        if (Physics.SphereCast(center, radius, direction, out hit, radius))
+        if (Physics.SphereCast(center, radius, direction, out hit, 0.1f))
         {
             result = hit.transform.gameObject;
         }
