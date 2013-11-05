@@ -10,6 +10,8 @@ public class ErasingState : AbstractState
 
     public override void Go()
     {
+        Debug.Log(GetType().Name + ": Go.");
+
         Erase();
 
         Move();

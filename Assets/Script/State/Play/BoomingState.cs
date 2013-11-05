@@ -7,6 +7,8 @@ public class BoomingState : AbstractState
 
     public override void Go()
     {
+        Debug.Log(GetType().Name + ": Go.");
+
         var shooter = Utils.Shooter;
         var hittingBall = shooter.HittingBall;
         if (hittingBall == null)

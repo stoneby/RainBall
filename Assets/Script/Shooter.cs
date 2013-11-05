@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,13 +12,16 @@ public class Shooter : MonoBehaviour
 
     public float LifeTime = 5f;
 
+    public List<GameObject> ShootBallList { get; set; }
     public GameObject ShootBall { get; set; }
-    public GameObject HittingBall { get; private set; }
+    public GameObject HittingBall { get; set; }
 
     public Vector3 ShootDirection { get; private set; }
 
     public EventHandler<EventArgs> BoomingOccuringEvent;
     public EventHandler<EventArgs> BoomingEndingEvent;
+
+    public bool Enabled { get; set; }
 
     private bool shooting;
 
@@ -55,11 +59,11 @@ public class Shooter : MonoBehaviour
         GenerateBall();
     }
 
-    private void GenerateBall()
+    public void GenerateBall()
     {
         ShootBall =
             Instantiate(KeyBall, new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z),
-                        new Quaternion()) as GameObject;
+                        Quaternion.identity) as GameObject;
         var index = Random.Range(0, Utils.Settings.ColorList.Count);
         ShootBall.renderer.material.color = Utils.Settings.ColorList[index];
         ShootBall.transform.parent = transform.parent;
@@ -89,6 +93,11 @@ public class Shooter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!Enabled)
+        {
+            return;
+        }
+
         var mouseWorldPosition =
             Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,
                                                        (Camera.main.transform.position.y - transform.position.y)));

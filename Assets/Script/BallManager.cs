@@ -32,8 +32,8 @@ public class BallManager : MonoBehaviour
     [HideInInspector]
     public MoveDirection MoveDirection;
 
-    public event EventHandler<EventArgs> Born;
-    public event EventHandler<EventArgs> Die;
+    public event EventHandler<EventArgs> StartMoving;
+    public event EventHandler<EventArgs> StopMoving;
 
     private const float Theta = 0.1f;
 
@@ -62,9 +62,9 @@ public class BallManager : MonoBehaviour
 
         OnStart();
 
-        if (Born != null)
+        if (StartMoving != null)
         {
-            Born(this, new EventArgs());
+            StartMoving(this, new EventArgs());
         }
     }
 
@@ -81,9 +81,9 @@ public class BallManager : MonoBehaviour
 
         OnStop();
 
-        if (Die != null)
+        if (StopMoving != null)
         {
-            Die(this, new EventArgs());
+            StopMoving(this, new EventArgs());
         }
     }
 
@@ -112,8 +112,8 @@ public class BallManager : MonoBehaviour
         KeyBall.GetComponent<BallUpdater>().Running = false;
         KeyBall = BallUpdaterList[0].gameObject;
 
-        BallUpdaterList.ForEach(
-            ball => Debug.Log("TrackingTail list cout: " + ball.TrackingTail.Count + ", gameobject: " + ball.name));
+        //BallUpdaterList.ForEach(
+        //    ball => Debug.Log("TrackingTail list cout: " + ball.TrackingTail.Count + ", gameobject: " + ball.name));
         
         Debug.Log("Clear up tracking tail list.");
         BallUpdaterList.ForEach(ball => ball.TrackingTail.Clear());

@@ -7,6 +7,8 @@ public class EvaluateEraseState : AbstractState
 
     public override void Go()
     {
+        Debug.Log(GetType().Name + ": Go.");
+
         var ballList = Utils.BallManager.BallUpdaterList;
         if (ballList.Count == 0)
         {

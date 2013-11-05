@@ -54,7 +54,8 @@
      <Compile Include="Assets\Script\Evaluation\AwardInformation.cs" />
      <Compile Include="Assets\Script\Evaluation\Evaluator.cs" />
      <Compile Include="Assets\Script\GUIMenu.cs" />
-     <Compile Include="Assets\Script\IState.cs" />
+     <Compile Include="Assets\Script\GameData\GameData.cs" />
+     <Compile Include="Assets\Script\GameMenu.cs" />
      <Compile Include="Assets\Script\Level.cs" />
      <Compile Include="Assets\Script\LevelManager.cs" />
      <Compile Include="Assets\Script\PathAnimationController.cs" />
@@ -63,13 +64,25 @@
      <Compile Include="Assets\Script\Player.cs" />
      <Compile Include="Assets\Script\QuaternionTest.cs" />
      <Compile Include="Assets\Script\SelectionDetector.cs" />
+     <Compile Include="Assets\Script\Serializer\GameSerializer.cs" />
+     <Compile Include="Assets\Script\Serializer\ISerializer.cs" />
      <Compile Include="Assets\Script\Settings.cs" />
      <Compile Include="Assets\Script\Shooter.cs" />
+     <Compile Include="Assets\Script\State\AbstractContainerState.cs" />
      <Compile Include="Assets\Script\State\AbstractState.cs" />
-     <Compile Include="Assets\Script\State\BoomingState.cs" />
-     <Compile Include="Assets\Script\State\EndingState.cs" />
-     <Compile Include="Assets\Script\State\ErasingState.cs" />
-     <Compile Include="Assets\Script\State\EvaluateEraseState.cs" />
+     <Compile Include="Assets\Script\State\Evaluate\ErasingState.cs" />
+     <Compile Include="Assets\Script\State\Evaluate\EvaluateEndingState.cs" />
+     <Compile Include="Assets\Script\State\Evaluate\EvaluateEraseState.cs" />
+     <Compile Include="Assets\Script\State\Evaluate\GameEvaluateState.cs" />
+     <Compile Include="Assets\Script\State\GameStateMachine.cs" />
+     <Compile Include="Assets\Script\State\IState.cs" />
+     <Compile Include="Assets\Script\State\Idle\GameIdleState.cs" />
+     <Compile Include="Assets\Script\State\Play\BoomingState.cs" />
+     <Compile Include="Assets\Script\State\Play\CleaningupState.cs" />
+     <Compile Include="Assets\Script\State\Play\GamePlayState.cs" />
+     <Compile Include="Assets\Script\State\Play\InitializingState.cs" />
+     <Compile Include="Assets\Script\State\Play\PlayEndingState.cs" />
+     <Compile Include="Assets\Script\State\Play\ShootingState.cs" />
      <Compile Include="Assets\Script\State\ShootStateMachine.cs" />
      <Compile Include="Assets\Script\Utils.cs" />
      <Compile Include="Assets\iTweenEditor\Examples\StartAndStopTween.cs" />
@@ -81,6 +94,7 @@
      <Compile Include="Assets\iTweenEditor\iTweenPath.cs" />
      <None Include="Assets\iTweenEditor\README.txt" />
      <None Include="Assets\TEST_2.txt" />
+     <None Include="Assets\Script\GameData\GameData.txt" />
      <None Include="Assets\TEST_1.txt" />
      <None Include="Assets\LEVEL_1.txt" />
   </ItemGroup>

@@ -12,6 +12,8 @@ public static class Utils
     public static Vector3 InvalidPoint = Vector3.zero;
 
     private static BallManager ballManager;
+    private static BallGenerator ballGenerator;
+    private static GameObject templateBall;
     private static PathAnimationController pathController;
     private static Settings settings;
     private static Shooter shooter;
@@ -20,6 +22,9 @@ public static class Utils
     private static LevelManager levelManager;
     private static Evaluator evaluator;
     private static ShootStateMachine shootStateMachine;
+    private static GameStateMachine gameStateMachine;
+    private static GameSerializer gameSerializer;
+    private static GameData gameData;
 
     private const float MaxAngleEdge = 135f;
     private const float DistanceTheta = 0.1f;
@@ -31,6 +36,23 @@ public static class Utils
         get {
             return ballManager ??
                    (ballManager = GameObject.FindGameObjectWithTag("BallManager").GetComponent<BallManager>());
+        }
+    }
+
+    public static BallGenerator BallGenerator
+    {
+        get {
+            return ballGenerator ??
+                   (ballGenerator = GameObject.FindGameObjectWithTag("BallManager").GetComponent<BallGenerator>());
+        }
+    }
+
+    public static GameObject TemplateBall
+    {
+        get
+        {
+            return templateBall ??
+                   (templateBall = GameObject.FindGameObjectWithTag("TemplateBall"));
         }
     }
 
@@ -100,6 +122,33 @@ public static class Utils
         {
             return shootStateMachine ??
                    (shootStateMachine = GameObject.FindGameObjectWithTag("ShootStateMachine").GetComponent<ShootStateMachine>());
+        }
+    }
+
+    public static GameStateMachine GameStateMachine
+    {
+        get
+        {
+            return gameStateMachine ??
+                   (gameStateMachine = GameObject.FindGameObjectWithTag("GameStateMachine").GetComponent<GameStateMachine>());
+        }
+    }
+
+    public static GameSerializer GameSerializer
+    {
+        get
+        {
+            return gameSerializer ??
+                   (gameSerializer = GameObject.FindGameObjectWithTag("GameSerializer").GetComponent<GameSerializer>());
+        }
+    }
+
+    public static GameData GameData
+    {
+        get
+        {
+            return gameData ??
+                   (gameData = GameObject.FindGameObjectWithTag("GameData").GetComponent<GameData>());
         }
     }
 

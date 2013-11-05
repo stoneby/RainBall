@@ -54,6 +54,7 @@
      <Compile Include="Assets\iTweenEditor\Editor\iTweenPathEditor.cs" />
      <None Include="Assets\iTweenEditor\README.txt" />
      <None Include="Assets\TEST_2.txt" />
+     <None Include="Assets\Script\GameData\GameData.txt" />
      <None Include="Assets\TEST_1.txt" />
      <None Include="Assets\LEVEL_1.txt" />
  <Reference Include="UnityEditor.Graphs">

@@ -13,7 +13,7 @@ public class BallGenerator : MonoBehaviour
         Generate();
     }
 
-    private void DestroyChildren()
+    public void Cleanup()
     {
         for (var i = 0; i < transform.childCount; ++i)
         {
@@ -23,7 +23,7 @@ public class BallGenerator : MonoBehaviour
 
     public void Generate()
     {
-        DestroyChildren();
+        Cleanup();
 
         var startLocation = iTweenPath.GetPath(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path)[0];
 

@@ -26,7 +26,7 @@ public class ShootStateMachine : MonoBehaviour
     public void End()
     {
         Debug.Log("ShootStateMachine ends at current state: " + CurrentState);
-        CurrentState = StateType.Ending;
+        CurrentState = StateType.EvaluateEnding;
     }
 
     private void OnGoStart()
@@ -49,7 +49,7 @@ public class ShootStateMachine : MonoBehaviour
     {
         Debug.Log("ShootStateMachine ends at current state: " + CurrentState);
 
-        if (CurrentState == StateType.Ending)
+        if (CurrentState == StateType.EvaluateEnding)
         {
             OnGoStop();
             return;
@@ -61,7 +61,7 @@ public class ShootStateMachine : MonoBehaviour
                 CurrentState = StateType.EvaluateErase;
                 break;
             case StateType.EvaluateErase:
-                CurrentState = statesDict[CurrentState].Pass ? StateType.Erasing : StateType.Ending;
+                CurrentState = statesDict[CurrentState].Pass ? StateType.Erasing : StateType.EvaluateEnding;
                 break;
             case StateType.Erasing:
                 CurrentState = StateType.EvaluateErase;

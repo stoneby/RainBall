@@ -23,13 +23,6 @@ public class QuaternionTestEditor : Editor
 
         EditorGUIUtility.LookLikeControls();
 
-        //EditorGUILayout.Slider(speedProp, 0f, 1f, new GUIContent("Set Speed"));
-
-        //if (!angleProp.hasMultipleDifferentValues)
-        {
-            //EditorGUILayout.Slider(angleProp, 0f, 1f, "Set Angle");
-        }
-
         DrawDefaultInspector();
 
         EditorGUIUtility.LookLikeInspector();

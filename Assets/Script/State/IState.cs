@@ -2,10 +2,17 @@
 
 public enum StateType
 {
+    GameIdle,
+    GamePlay,
+    Cleaningup,
+    Initializing,
+    Shooting,
     Booming,
+    PlayEnding,
+    GameEvaluate,
     EvaluateErase,
     Erasing,
-    Ending
+    EvaluateEnding
 }
 
 /// <summary>
@@ -13,6 +20,7 @@ public enum StateType
 /// </summary>
 public interface IState
 {
+    event EventHandler<EventArgs> Begin;
     event EventHandler<EventArgs> End;
     bool Pass { get; set; }
     StateType Type { get; set; }

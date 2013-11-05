@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 
-public class EndingState : AbstractState
+public class EvaluateEndingState : AbstractState
 {
     public override void Go()
     {
+        Debug.Log(GetType().Name + ": Go.");
+
         var ballList = Utils.BallManager.BallUpdaterList;
         if (ballList.Count == 0)
         {
