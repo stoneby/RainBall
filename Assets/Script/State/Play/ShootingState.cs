@@ -16,8 +16,8 @@ public class ShootingState : AbstractState
     {
         Utils.Shooter.GenerateBall();
 
-        Utils.GameData.Next();
-        var index = Utils.GameData.ShootBallList[Utils.GameData.ShootBallIndex];
+        // need to update hitting ball index according to shoot ball shooting into it.
+        var index = Utils.GameData.ShootBallList[Utils.GameData.ShootBallIndex] + Utils.GameData.ShootBallIndex;
         Utils.Shooter.HittingBall = Utils.BallManager.BallUpdaterList[index].gameObject;
         
         Debug.Log("Shooting to ball: " + index + ", hitting ball: " + Utils.Shooter.HittingBall.name);

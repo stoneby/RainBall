@@ -10,6 +10,7 @@ public enum StateType
     Booming,
     PlayEnding,
     GameEvaluate,
+    InitControll,
     EvaluateErase,
     Erasing,
     EvaluateEnding

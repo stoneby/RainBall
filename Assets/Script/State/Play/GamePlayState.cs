@@ -3,6 +3,14 @@ using UnityEngine;
 
 public class GamePlayState : AbstractContainerState
 {
+    public override void Go()
+    {
+        base.Go();
+
+        Utils.GameData.Next();
+        Utils.GameData.Display();
+    }
+
     protected override void OnStateEnd(object sender, EventArgs args)
     {
         Debug.Log(GetType().Name + ": ends at current sub state: " + CurrentState);
@@ -48,9 +56,9 @@ public class GamePlayState : AbstractContainerState
 
     private void OnExit()
     {
-        OnEnd();
-        
         Reset();
+        
+        OnEnd();
     }
 
     public void Reset()

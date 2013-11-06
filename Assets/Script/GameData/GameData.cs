@@ -37,4 +37,10 @@ public class GameData : MonoBehaviour
             allSet.Add(list);
         }
     }
+
+    public void Display()
+    {
+        Debug.Log("Current shoot ball list.");
+        ShootBallList.ForEach(item => Debug.Log(" " + item));
+    }
 }
