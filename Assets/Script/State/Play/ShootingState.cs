@@ -27,9 +27,6 @@ public class ShootingState : AbstractState
                                           Utils.Shooter.HittingBall.transform.position.y,
                                           Utils.Shooter.ShootBall.transform.position.z);
         var direction = Vector3.Normalize(targetPosition - shooterPosition);
-
-        Debug.Log("Direction: " + direction);
-
         do
         {
             var distance = Mathf.Abs(Vector3.Distance(shooterPosition, targetPosition));
