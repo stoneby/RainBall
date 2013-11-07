@@ -24,6 +24,9 @@ public class GameStateMachine : MonoBehaviour
         {
             case StateType.GameIdle:
                 CurrentState = StateType.GamePlay;
+
+                Utils.GameData.Next();
+                Utils.GameData.Display();
                 break;
             case StateType.GamePlay:
                 CurrentState = StateType.GameEvaluate;

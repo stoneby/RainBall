@@ -32,8 +32,8 @@ public class BallManager : MonoBehaviour
     [HideInInspector]
     public MoveDirection MoveDirection;
 
-    public event EventHandler<EventArgs> StartMoving;
-    public event EventHandler<EventArgs> StopMoving;
+    public event EventHandler<BallMoveArgs> StartMoving;
+    public event EventHandler<BallMoveArgs> StopMoving;
 
     private const float Theta = 0.1f;
 
@@ -64,7 +64,15 @@ public class BallManager : MonoBehaviour
 
         if (StartMoving != null)
         {
-            StartMoving(this, new EventArgs());
+            var path = iTweenEvent.GetEvent(KeyBall, "Move").Values["path"];
+            var levelMoving = path.Equals(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
+            Debug.LogWarning("actual path: " + path + ", level Path: " + Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
+            StartMoving(this,
+                        new BallMoveArgs
+                            {
+                                LeaderName = leaderName,
+                                IsLevelMoving = levelMoving
+                            });
         }
     }
 
@@ -83,7 +91,13 @@ public class BallManager : MonoBehaviour
 
         if (StopMoving != null)
         {
-            StopMoving(this, new EventArgs());
+            var path = iTweenEvent.GetEvent(KeyBall, "Move").Values["path"];
+            var levelMoving = path.Equals(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
+            StopMoving(this, new BallMoveArgs
+                {
+                    LeaderName = leaderName,
+                    IsLevelMoving = levelMoving
+                });
         }
     }
 

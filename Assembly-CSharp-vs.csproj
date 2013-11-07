@@ -1,103 +1,107 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-	<ProductVersion>10.0.20506</ProductVersion>
-	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{8321420E-E17E-593C-8B32-01272869AFF0}</ProjectGuid>
-	<OutputType>Library</OutputType>
-	<AppDesignerFolder>Properties</AppDesignerFolder>
-	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp</AssemblyName>
-	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-	<FileAlignment>512</FileAlignment>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8321420E-E17E-593C-8B32-01272869AFF0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-	<DebugSymbols>true</DebugSymbols>
-	<DebugType>full</DebugType>
-	<Optimize>false</Optimize>
-	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_NETWORK;ENABLE_MONO;ENABLE_PHYSICS;ENABLE_TERRAIN;ENABLE_CACHING;ENABLE_SUBSTANCE;ENABLE_GENERICS;ENABLE_CLOTH;ENABLE_MOVIES;ENABLE_AUDIO;ENABLE_WWW;ENABLE_SHADOWS;ENABLE_DUCK_TYPING;UNITY_4_1_2;UNITY_4_1;ENABLE_PROFILER;UNITY_EDITOR;UNITY_TEAM_LICENSE</DefineConstants>
-	<ErrorReport>prompt</ErrorReport>
-	<WarningLevel>4</WarningLevel>
-	<NoWarn>0169</NoWarn>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_NETWORK;ENABLE_MONO;ENABLE_PHYSICS;ENABLE_TERRAIN;ENABLE_CACHING;ENABLE_SUBSTANCE;ENABLE_GENERICS;ENABLE_CLOTH;ENABLE_MOVIES;ENABLE_AUDIO;ENABLE_WWW;ENABLE_SHADOWS;ENABLE_DUCK_TYPING;UNITY_4_1_2;UNITY_4_1;ENABLE_PROFILER;UNITY_EDITOR</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-	<DebugType>pdbonly</DebugType>
-	<Optimize>true</Optimize>
-	<OutputPath>Temp\bin\Release\</OutputPath>
-	<DefineConstants>TRACE</DefineConstants>
-	<ErrorReport>prompt</ErrorReport>
-	<WarningLevel>4</WarningLevel>
-	<NoWarn>0169</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Temp\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-	<Reference Include="System" />
+    <Reference Include="System" />
     <Reference Include="System.XML" />
-	<Reference Include="System.Core" />
-	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
-	</Reference>
-	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
-	</Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="UnityEngine">
+      <HintPath>C:/Program Files (x86)/Unity_FreePro_4.1.2/Editor/Data/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>C:/Program Files (x86)/Unity_FreePro_4.1.2/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Script\BallGenerator.cs" />
-     <Compile Include="Assets\Script\BallManager.cs" />
-     <Compile Include="Assets\Script\BallUpdater.cs" />
-     <Compile Include="Assets\Script\CameraTest.cs" />
-     <Compile Include="Assets\Script\CollisionTest.cs" />
-     <Compile Include="Assets\Script\EditorTest.cs" />
-     <Compile Include="Assets\Script\Evaluation\Award.cs" />
-     <Compile Include="Assets\Script\Evaluation\AwardInformation.cs" />
-     <Compile Include="Assets\Script\Evaluation\Evaluator.cs" />
-     <Compile Include="Assets\Script\GUIMenu.cs" />
-     <Compile Include="Assets\Script\GameData\GameData.cs" />
-     <Compile Include="Assets\Script\GameMenu.cs" />
-     <Compile Include="Assets\Script\Level.cs" />
-     <Compile Include="Assets\Script\LevelManager.cs" />
-     <Compile Include="Assets\Script\PathAnimationController.cs" />
-     <Compile Include="Assets\Script\PathGenerator.cs" />
-     <Compile Include="Assets\Script\PathSampler.cs" />
-     <Compile Include="Assets\Script\Player.cs" />
-     <Compile Include="Assets\Script\QuaternionTest.cs" />
-     <Compile Include="Assets\Script\SelectionDetector.cs" />
-     <Compile Include="Assets\Script\Serializer\GameSerializer.cs" />
-     <Compile Include="Assets\Script\Serializer\ISerializer.cs" />
-     <Compile Include="Assets\Script\Settings.cs" />
-     <Compile Include="Assets\Script\Shooter.cs" />
-     <Compile Include="Assets\Script\State\AbstractContainerState.cs" />
-     <Compile Include="Assets\Script\State\AbstractState.cs" />
-     <Compile Include="Assets\Script\State\Evaluate\ErasingState.cs" />
-     <Compile Include="Assets\Script\State\Evaluate\EvaluateEndingState.cs" />
-     <Compile Include="Assets\Script\State\Evaluate\EvaluateEraseState.cs" />
-     <Compile Include="Assets\Script\State\Evaluate\GameEvaluateState.cs" />
-     <Compile Include="Assets\Script\State\GameStateMachine.cs" />
-     <Compile Include="Assets\Script\State\IState.cs" />
-     <Compile Include="Assets\Script\State\Idle\GameIdleState.cs" />
-     <Compile Include="Assets\Script\State\Play\BoomingState.cs" />
-     <Compile Include="Assets\Script\State\Play\CleaningupState.cs" />
-     <Compile Include="Assets\Script\State\Play\GamePlayState.cs" />
-     <Compile Include="Assets\Script\State\Play\InitializingState.cs" />
-     <Compile Include="Assets\Script\State\Play\PlayEndingState.cs" />
-     <Compile Include="Assets\Script\State\Play\ShootingState.cs" />
-     <Compile Include="Assets\Script\State\ShootStateMachine.cs" />
-     <Compile Include="Assets\Script\Utils.cs" />
-     <Compile Include="Assets\iTweenEditor\Examples\StartAndStopTween.cs" />
-     <Compile Include="Assets\iTweenEditor\Helper Classes\EventParamMappings.cs" />
-     <Compile Include="Assets\iTweenEditor\Helper Classes\Vector3OrTransform.cs" />
-     <Compile Include="Assets\iTweenEditor\Helper Classes\Vector3OrTransformArray.cs" />
-     <Compile Include="Assets\iTweenEditor\iTween.cs" />
-     <Compile Include="Assets\iTweenEditor\iTweenEvent.cs" />
-     <Compile Include="Assets\iTweenEditor\iTweenPath.cs" />
-     <None Include="Assets\iTweenEditor\README.txt" />
-     <None Include="Assets\TEST_2.txt" />
-     <None Include="Assets\Script\GameData\GameData.txt" />
-     <None Include="Assets\TEST_1.txt" />
-     <None Include="Assets\LEVEL_1.txt" />
+    <Compile Include="Assets\Script\Core\BallGenerator.cs" />
+    <Compile Include="Assets\Script\Core\BallManager.cs" />
+    <Compile Include="Assets\Script\Core\BallMoveArgs.cs" />
+    <Compile Include="Assets\Script\Core\BallUpdater.cs" />
+    <Compile Include="Assets\Script\Test\CameraTest.cs" />
+    <Compile Include="Assets\Script\Test\CollisionTest.cs" />
+    <Compile Include="Assets\Script\Test\EditorTest.cs" />
+    <Compile Include="Assets\Script\Evaluation\Award.cs" />
+    <Compile Include="Assets\Script\Evaluation\AwardInformation.cs" />
+    <Compile Include="Assets\Script\Evaluation\Evaluator.cs" />
+    <Compile Include="Assets\Script\Menu\GUIMenu.cs" />
+    <Compile Include="Assets\Script\GameData\GameData.cs" />
+    <Compile Include="Assets\Script\Menu\GameMenu.cs" />
+    <Compile Include="Assets\Script\Level\Level.cs" />
+    <Compile Include="Assets\Script\Level\LevelManager.cs" />
+    <Compile Include="Assets\Script\Utils\PathAnimationController.cs" />
+    <Compile Include="Assets\Script\Utils\PathGenerator.cs" />
+    <Compile Include="Assets\Script\Utils\PathSampler.cs" />
+    <Compile Include="Assets\Script\Utils\Player.cs" />
+    <Compile Include="Assets\Script\Test\QuaternionTest.cs" />
+    <Compile Include="Assets\Script\Utils\SelectionDetector.cs" />
+    <Compile Include="Assets\Script\Serializer\GameSerializer.cs" />
+    <Compile Include="Assets\Script\Serializer\ISerializer.cs" />
+    <Compile Include="Assets\Script\Setting\Settings.cs" />
+    <Compile Include="Assets\Script\Core\Shooter.cs" />
+    <Compile Include="Assets\Script\State\AbstractContainerState.cs" />
+    <Compile Include="Assets\Script\State\AbstractState.cs" />
+    <Compile Include="Assets\Script\State\Evaluate\ErasingState.cs" />
+    <Compile Include="Assets\Script\State\Evaluate\EvaluateEndingState.cs" />
+    <Compile Include="Assets\Script\State\Evaluate\EvaluateEraseState.cs" />
+    <Compile Include="Assets\Script\State\Evaluate\GameEvaluateState.cs" />
+    <Compile Include="Assets\Script\State\Evaluate\InitControllState.cs" />
+    <Compile Include="Assets\Script\State\GameStateMachine.cs" />
+    <Compile Include="Assets\Script\State\IState.cs" />
+    <Compile Include="Assets\Script\State\Idle\GameIdleState.cs" />
+    <Compile Include="Assets\Script\State\Play\BoomingState.cs" />
+    <Compile Include="Assets\Script\State\Play\CleaningupState.cs" />
+    <Compile Include="Assets\Script\State\Play\GamePlayState.cs" />
+    <Compile Include="Assets\Script\State\Play\InitializingState.cs" />
+    <Compile Include="Assets\Script\State\Play\PlayEndingState.cs" />
+    <Compile Include="Assets\Script\State\Play\ShootingState.cs" />
+    <Compile Include="Assets\Script\State\ShootStateMachine.cs" />
+    <Compile Include="Assets\Script\Utils\Utils.cs" />
+    <Compile Include="Assets\iTweenEditor\Examples\StartAndStopTween.cs" />
+    <Compile Include="Assets\iTweenEditor\Helper Classes\EventParamMappings.cs" />
+    <Compile Include="Assets\iTweenEditor\Helper Classes\Vector3OrTransform.cs" />
+    <Compile Include="Assets\iTweenEditor\Helper Classes\Vector3OrTransformArray.cs" />
+    <Compile Include="Assets\iTweenEditor\iTween.cs" />
+    <Compile Include="Assets\iTweenEditor\iTweenEvent.cs" />
+    <Compile Include="Assets\iTweenEditor\iTweenPath.cs" />
+    <None Include="Assets\iTweenEditor\README.txt" />
+    <None Include="Assets\TEST_2.txt" />
+    <None Include="Assets\Script\GameData\GameData.txt" />
+    <None Include="Assets\TEST_1.txt" />
+    <None Include="Assets\LEVEL_1.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
 	   Other similar extension points exist, see Microsoft.Common.targets.
@@ -106,5 +110,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  
 </Project>

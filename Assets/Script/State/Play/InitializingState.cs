@@ -13,9 +13,12 @@ public class InitializingState : AbstractState
         Utils.MoveLevel(leaderBall.gameObject, Utils.Settings.MoveSpeed);
     }
 
-    private void OnStopMoving(object sender, EventArgs args)
+    private void OnStopMoving(object sender, BallMoveArgs args)
     {
-        OnEnd();
+        if (args.IsLevelMoving)
+        {
+            OnEnd();
+        }
     }
 
     protected override void Start()

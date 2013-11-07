@@ -16,17 +16,15 @@ public class GameEvaluateState : AbstractContainerState
         switch (CurrentState)
         {
             case StateType.InitControll:
-                CurrentState = (Utils.GameData.ShootBallIndex == Utils.GameData.ShootBallList.Count)
-                                   ? StateType.EvaluateEnding
-                                   : StateType.EvaluateErase;
+                CurrentState = StateType.EvaluateErase;
                 break;
             case StateType.EvaluateErase:
-                CurrentState = StatesDict[CurrentState].Pass ? StateType.Erasing : StateType.InitControll;
-
-                if (CurrentState == StateType.InitControll)
-                {
-                    ++Utils.GameData.ShootBallIndex;
-                }
+                CurrentState = StatesDict[CurrentState].Pass
+                                   ? StateType.Erasing
+                                   : (Utils.GameData.ShootBallIndex >= Utils.GameData.ShootBallList.Count)
+                                         ? StateType.EvaluateEnding
+                                         : StateType.InitControll;
+                Debug.LogWarning("--------------- shoot ball index: " + Utils.GameData.ShootBallIndex);
                 break;
             case StateType.Erasing:
                 CurrentState = StateType.EvaluateErase;
