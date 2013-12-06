@@ -44,11 +44,13 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Script\Bomb.cs" />
      <Compile Include="Assets\Script\Core\BallGenerator.cs" />
      <Compile Include="Assets\Script\Core\BallManager.cs" />
      <Compile Include="Assets\Script\Core\BallMoveArgs.cs" />
      <Compile Include="Assets\Script\Core\BallUpdater.cs" />
      <Compile Include="Assets\Script\Core\Shooter.cs" />
+     <Compile Include="Assets\Script\Emitter.cs" />
      <Compile Include="Assets\Script\Evaluation\Award.cs" />
      <Compile Include="Assets\Script\Evaluation\AwardInformation.cs" />
      <Compile Include="Assets\Script\Evaluation\Evaluator.cs" />
@@ -87,6 +89,7 @@
      <Compile Include="Assets\Script\Utils\Player.cs" />
      <Compile Include="Assets\Script\Utils\SelectionDetector.cs" />
      <Compile Include="Assets\Script\Utils\Utils.cs" />
+     <Compile Include="Assets\Script\Wrapper.cs" />
      <Compile Include="Assets\iTweenEditor\Examples\StartAndStopTween.cs" />
      <Compile Include="Assets\iTweenEditor\Helper Classes\EventParamMappings.cs" />
      <Compile Include="Assets\iTweenEditor\Helper Classes\Vector3OrTransform.cs" />
