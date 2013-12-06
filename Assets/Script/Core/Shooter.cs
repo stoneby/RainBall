@@ -30,9 +30,33 @@ public class Shooter : MonoBehaviour
     private float rot;
 
     private Vector3 stackerPoint;
+	
+	float lobHeight = 40;
+	float lobTime = 0.7f;
+	private GameObject ballWrapper;
 
     IEnumerator StartShoot()
     {
+		Vector3[] nodesList = iTweenPath.GetPath("Level_1");
+		int index = Random.Range(0,nodesList.Length);
+		Vector3 targetPosition = nodesList[index];
+		Vector3 direction = Vector3.Normalize(targetPosition - transform.position);
+		
+		iTween.MoveBy(ShootBall, iTween.Hash("y", lobHeight, "time", lobTime/2, "easeType", iTween.EaseType.easeOutQuad));
+		iTween.MoveBy(ShootBall, iTween.Hash("y", -lobHeight, "time", lobTime/2, "delay", lobTime/2, "easeType", iTween.EaseType.easeInCubic));     
+		iTween.MoveTo(ballWrapper, iTween.Hash("position", targetPosition, "time", lobTime, "easeType", iTween.EaseType.linear));
+		
+		var currentBall = Utils.FindNearestBySphear(targetPosition, Utils.BallManager.Diameter / 2, direction);
+        if (currentBall != null)
+        {
+            HittingBall = currentBall;
+
+            Utils.ShootStateMachine.Reset();
+            Utils.ShootStateMachine.Go();
+
+            StopCoroutine("StartShoot");
+        }
+		
         yield return new WaitForSeconds(LifeTime);
 
         Utils.ShootStateMachine.End();
@@ -61,12 +85,12 @@ public class Shooter : MonoBehaviour
 
     public void GenerateBall()
     {
-        ShootBall =
-            Instantiate(KeyBall, new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z),
-                        Quaternion.identity) as GameObject;
+		GameObject shooter = GameObject.Find("Shooter");
+        ballWrapper = Instantiate(KeyBall, shooter.transform.position, Quaternion.identity) as GameObject;
+		ShootBall = ballWrapper.transform.Find("TemplateKeyBall").gameObject;
+		ShootBall.transform.position=shooter.transform.position;
         var index = Random.Range(0, Utils.Settings.ColorList.Count);
         ShootBall.renderer.material.color = Utils.Settings.ColorList[index];
-        ShootBall.transform.parent = transform.parent;
         ShootBall.layer = LayerMask.NameToLayer("Ignore Raycast");
 
         var shootBallUpdater = ShootBall.AddComponent<BallUpdater>();
