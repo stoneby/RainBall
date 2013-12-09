@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,11 +11,10 @@ public class Shooter : MonoBehaviour
 
     public float LifeTime = 5f;
 
-    public List<GameObject> ShootBallList { get; set; }
     public GameObject ShootBall { get; set; }
     public GameObject HittingBall { get; set; }
 
-    public Vector3 ShootDirection { get; private set; }
+    private Vector3 ShootDirection { get; set; }
 
     public EventHandler<EventArgs> BoomingOccuringEvent;
     public EventHandler<EventArgs> BoomingEndingEvent;
@@ -85,7 +83,7 @@ public class Shooter : MonoBehaviour
 
     public void GenerateBall()
     {
-		GameObject shooter = GameObject.Find("Shooter");
+		var shooter = GameObject.Find("Shooter");
         ballWrapper = Instantiate(KeyBall, shooter.transform.position, Quaternion.identity) as GameObject;
 		ShootBall = ballWrapper.transform.Find("TemplateKeyBall").gameObject;
 		ShootBall.transform.position=shooter.transform.position;
@@ -156,9 +154,9 @@ public class Shooter : MonoBehaviour
 
             Debug.DrawRay(ShootBall.transform.position, direction * Utils.BallManager.Diameter / 2, Color.red);
 
-            var shooterPoint = new Vector3(ShootBall.transform.position.x, Utils.Shooter.KeyBall.transform.position.y,
+            var shooterPoint = new Vector3(ShootBall.transform.position.x, KeyBall.transform.position.y,
                                            ShootBall.transform.position.z);
-            var currentBall = Utils.FindNearestBySphear(shooterPoint, Utils.BallManager.Diameter / 2, Utils.Shooter.ShootDirection);
+            var currentBall = Utils.FindNearestBySphear(shooterPoint, Utils.BallManager.Diameter / 2, ShootDirection);
             if (currentBall != null)
             {
                 HittingBall = currentBall;
