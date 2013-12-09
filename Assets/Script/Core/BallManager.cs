@@ -136,7 +136,8 @@ public class BallManager : MonoBehaviour
     void Awake()
     {
         BallUpdaterList = new List<BallUpdater>();
-        Diameter = KeyBall.GetComponent<SphereCollider>().radius * 2;
+        // sphear collider, which x and z equals diameter in our case.
+        Diameter = KeyBall.collider.bounds.size.x;
     }
 
     void Start()

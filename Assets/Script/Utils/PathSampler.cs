@@ -13,7 +13,7 @@ public class PathSampler : MonoBehaviour
 
     private iTweenEvent sampleEvent;
 
-    private Dictionary<string, float> durationList = new Dictionary<string, float>();
+    private readonly Dictionary<string, float> durationList = new Dictionary<string, float>();
 
     public void Sample()
     {

@@ -17,4 +17,13 @@ public class Settings : MonoBehaviour
     /// Speed for moving after booming
     /// </summary>
     public float BoomMovingSpeed;
+
+    /// <summary>
+    /// Total ball count
+    /// </summary>
+    public int TotalBallCount;
+    /// <summary>
+    /// Total shoot ball count
+    /// </summary>
+    public int TotalShootBallCount;
 }

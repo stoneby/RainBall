@@ -16,3 +16,4 @@ Enhancement:
 4. Shooting ball insertion decision. (insert before or after hitting ball, now alway after..)
 
 5. refactor -> shooter, shoot ball generator / shoot ball shooting algorithm.
+6. improvement settings editor window.
