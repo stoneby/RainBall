@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class ShootingState : AbstractState
 {
-    public float Speed;
+	public float lobHeight = 20;
+	public float lobTime = 0.7f;
 
     public override void Go()
     {
@@ -27,21 +28,26 @@ public class ShootingState : AbstractState
                                           Utils.Shooter.HittingBall.transform.position.y,
                                           Utils.Shooter.ShootBall.transform.position.z);
         var direction = Vector3.Normalize(targetPosition - shooterPosition);
-        do
-        {
-            var distance = Mathf.Abs(Vector3.Distance(shooterPosition, targetPosition));
-            if (distance <= Utils.BallManager.Diameter)
-            {
-                break;
-            }
-
-            var deta = direction * Time.deltaTime * Speed;
-            Utils.Shooter.ShootBall.transform.position += deta;
-            shooterPosition = new Vector3(Utils.Shooter.ShootBall.transform.position.x,
-                                          Utils.Shooter.HittingBall.transform.position.y,
-                                          Utils.Shooter.ShootBall.transform.position.z);
-            yield return null;
-        } while (true);
+//        do
+//        {
+//            var distance = Mathf.Abs(Vector3.Distance(shooterPosition, targetPosition));
+//            if (distance <= Utils.BallManager.Diameter)
+//            {
+//                break;
+//            }
+//
+//            var deta = direction * Time.deltaTime * Speed;
+//            Utils.Shooter.ShootBall.transform.position += deta;
+//            shooterPosition = new Vector3(Utils.Shooter.ShootBall.transform.position.x,
+//                                          Utils.Shooter.HittingBall.transform.position.y,
+//                                          Utils.Shooter.ShootBall.transform.position.z);
+//            yield return null;
+//        } while (true);
+		iTween.MoveBy(Utils.Shooter.ShootBall, iTween.Hash("y", lobHeight, "time", lobTime/2, "easeType", iTween.EaseType.easeOutQuad));
+		iTween.MoveBy(Utils.Shooter.ShootBall, iTween.Hash("y", -lobHeight, "time", lobTime/2, "delay", lobTime/2, "easeType", iTween.EaseType.easeInCubic));     
+		iTween.MoveTo(Utils.Shooter.BallWrapper, iTween.Hash("position", targetPosition, "time", lobTime, "easeType", iTween.EaseType.linear));
+		
+		yield return new WaitForSeconds(lobTime);
 
         OnEnd();
     }
