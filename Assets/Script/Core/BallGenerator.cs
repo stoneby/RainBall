@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BallGenerator : MonoBehaviour
@@ -6,7 +7,23 @@ public class BallGenerator : MonoBehaviour
 
     public GameObject KeyBall;
 
+    public List<GameObject> TemplateBallList;
+
     public int Size;
+
+    void Awake()
+    {
+        if(TemplateBallList == null || TemplateBallList.Count != Utils.Settings.TotalColorCount)
+        {
+            Debug.LogError("Please double check whether template ball list has been attached or " +
+                           "the count is not equal to total color count according to globel game settings.");
+
+            return;
+        }
+
+        // sphear collider, which x and z equals diameter in our case.
+        Utils.BallManager.Diameter = TemplateBallList[0].collider.bounds.size.x;
+    }
 
     void Start()
     {
@@ -31,10 +48,9 @@ public class BallGenerator : MonoBehaviour
         ballList.Clear();
         for (var i = 0; i < Size; ++i)
         {
-            var currentBall = Instantiate(KeyBall, startLocation, Quaternion.identity) as GameObject;
+            var index = Random.Range(0, Utils.Settings.TotalColorCount);
+            var currentBall = Instantiate(TemplateBallList[index], startLocation, Quaternion.identity) as GameObject;
             currentBall.transform.parent = Parent.transform;
-            var index = Random.Range(0, Utils.Settings.ColorList.Count);
-            currentBall.renderer.material.color = Utils.Settings.ColorList[index];
 
             var ballUpdater = currentBall.AddComponent<BallUpdater>();
             ballUpdater.Index = i;

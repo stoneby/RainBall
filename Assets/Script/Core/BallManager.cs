@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BallManager : MonoBehaviour
 {
-    public GameObject KeyBall;
-
     public List<BallUpdater> BallUpdaterList { get; set; }
 
     public float Diameter { get; set; }
@@ -37,6 +35,8 @@ public class BallManager : MonoBehaviour
 
     private const float Theta = 0.1f;
 
+    public GameObject HeadBall { get; private set; }
+
     public void Set()
     {
         foreach (var ballUpdater in BallUpdaterList)
@@ -51,20 +51,20 @@ public class BallManager : MonoBehaviour
 
     void MoveStart(string leaderName)
     {
-        KeyBall = transform.FindChild(leaderName).gameObject;
-        if (KeyBall == null)
+        HeadBall = transform.FindChild(leaderName).gameObject;
+        if (HeadBall == null)
         {
             Debug.LogWarning(string.Format("Please make sure you add leader name {0} to onstartparams correctly itween.", leaderName));
             return;
         }
 
-        Debug.Log("MoveStart, lead ball: " + KeyBall.name);
+        Debug.Log("MoveStart, lead ball: " + HeadBall.name);
 
         OnStart();
 
         if (StartMoving != null)
         {
-            var path = iTweenEvent.GetEvent(KeyBall, "Move").Values["path"];
+            var path = iTweenEvent.GetEvent(HeadBall, "Move").Values["path"];
             var levelMoving = path.Equals(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
             Debug.LogWarning("actual path: " + path + ", level Path: " + Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
             StartMoving(this,
@@ -78,20 +78,20 @@ public class BallManager : MonoBehaviour
 
     void MoveComplete(string leaderName)
     {
-        KeyBall = transform.FindChild(leaderName).gameObject;
-        if (KeyBall == null)
+        HeadBall = transform.FindChild(leaderName).gameObject;
+        if (HeadBall == null)
         {
             Debug.LogWarning(string.Format("Please make sure you add leader name {0} to oncompleteparams correctly itween.", leaderName));
             return;
         }
 
-        Debug.Log("MoveComplete, lead ball: " + KeyBall.name);
+        Debug.Log("MoveComplete, lead ball: " + HeadBall.name);
 
         OnStop();
 
         if (StopMoving != null)
         {
-            var path = iTweenEvent.GetEvent(KeyBall, "Move").Values["path"];
+            var path = iTweenEvent.GetEvent(HeadBall, "Move").Values["path"];
             var levelMoving = path.Equals(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
             StopMoving(this, new BallMoveArgs
                 {
@@ -103,28 +103,28 @@ public class BallManager : MonoBehaviour
 
     void OnShootStart(object sender, EventArgs args)
     {
-        Debug.Log("On Shoot Start, key ball: " + KeyBall.name);
+        Debug.Log("On Shoot Start, key ball: " + HeadBall.name);
          
-        iTween.Pause(KeyBall);
+        iTween.Pause(HeadBall);
     }
 
     void OnShootStop(object sender, EventArgs args)
     {
-        Debug.Log("On Shoot Complete, key ball: " + KeyBall.name);
+        Debug.Log("On Shoot Complete, key ball: " + HeadBall.name);
 
-        iTween.Resume(KeyBall);
+        iTween.Resume(HeadBall);
     }
 
     private void OnStart()
     {
-        KeyBall.GetComponent<BallUpdater>().Running = true;
+        HeadBall.GetComponent<BallUpdater>().Running = true;
         Set();
     }
 
     private void OnStop()
     {
-        KeyBall.GetComponent<BallUpdater>().Running = false;
-        KeyBall = BallUpdaterList[0].gameObject;
+        HeadBall.GetComponent<BallUpdater>().Running = false;
+        HeadBall = BallUpdaterList[0].gameObject;
 
         //BallUpdaterList.ForEach(
         //    ball => Debug.Log("TrackingTail list cout: " + ball.TrackingTail.Count + ", gameobject: " + ball.name));
@@ -136,8 +136,6 @@ public class BallManager : MonoBehaviour
     void Awake()
     {
         BallUpdaterList = new List<BallUpdater>();
-        // sphear collider, which x and z equals diameter in our case.
-        Diameter = KeyBall.collider.bounds.size.x;
     }
 
     void Start()
@@ -152,12 +150,12 @@ public class BallManager : MonoBehaviour
     /// <remarks>Since leading ball's itween move in update, computing in late update, or leading ball move forward one frame</remarks>
     void LateUpdate()
     {
-        if (KeyBall == null || KeyBall.GetComponent<BallUpdater>() == null || !KeyBall.GetComponent<BallUpdater>().Running)
+        if (HeadBall == null || HeadBall.GetComponent<BallUpdater>() == null || !HeadBall.GetComponent<BallUpdater>().Running)
         {
             return;
         }
 
-        var currentBall = KeyBall;
+        var currentBall = HeadBall;
         while (currentBall != null)
         {
             var currentBallUpdater = currentBall.GetComponent<BallUpdater>();

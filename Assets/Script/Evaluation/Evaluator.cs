@@ -39,7 +39,7 @@ public class Evaluator : MonoBehaviour
     private void Init()
     {
         Awards = new List<Award>();
-        for (var i = 0; i < Utils.Settings.ColorList.Count; ++i)
+        for (var i = 0; i < Utils.Settings.TotalColorCount; ++i)
         {
             foreach (var pair in AmountDict)
             {

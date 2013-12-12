@@ -1,5 +1,4 @@
 using UnityEditor;
-using UnityEngine;
 
 [CustomEditor(typeof(QuaternionTest))]
 [CanEditMultipleObjects]
@@ -18,8 +17,6 @@ public class QuaternionTestEditor : Editor
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-
-        var quaternionTest = target as QuaternionTest;
 
         EditorGUIUtility.LookLikeControls();
 

@@ -19,12 +19,12 @@ public class GUIMenu : MonoBehaviour
 
         if (GUILayout.Button("Pause Itween"))
         {
-            iTween.Pause(Manager.KeyBall);
+            iTween.Pause(Manager.HeadBall);
         }
 
         if (GUILayout.Button("Resume Itween"))
         {
-            iTween.Resume(Manager.KeyBall);
+            iTween.Resume(Manager.HeadBall);
         }
 
         if (GUILayout.Button("Sample All Paths"))

@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Settings : MonoBehaviour
 {
-    public List<Color> ColorList;
-
     /// <summary>
     /// Speed that for the whole move procedure
     /// </summary>
@@ -26,4 +24,9 @@ public class Settings : MonoBehaviour
     /// Total shoot ball count
     /// </summary>
     public int TotalShootBallCount;
+
+    /// <summary>
+    /// Total ball color count
+    /// </summary>
+    public int TotalColorCount;
 }

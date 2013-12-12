@@ -84,13 +84,9 @@ public class Shooter : MonoBehaviour
 
     public void GenerateBall()
     {
-		var shooter = GameObject.Find("Shooter");
-        BallWrapper = Instantiate(KeyBall, shooter.transform.position, Quaternion.identity) as GameObject;
-		// Find child in BallWrapper.
-		ShootBall = BallWrapper.transform.Find("TemplateKeyBall").gameObject;
-		ShootBall.transform.position=shooter.transform.position;
-        var index = Random.Range(0, Utils.Settings.ColorList.Count);
-        ShootBall.renderer.material.color = Utils.Settings.ColorList[index];
+        var index = Random.Range(0, Utils.Settings.TotalColorCount);
+        ShootBall = Instantiate(Utils.BallGenerator.TemplateBallList[index], transform.position, Quaternion.identity) as GameObject;
+        ShootBall.transform.position = transform.position;
         ShootBall.layer = LayerMask.NameToLayer("Ignore Raycast");
 
         var shootBallUpdater = ShootBall.AddComponent<BallUpdater>();
