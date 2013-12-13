@@ -5,8 +5,6 @@ public class BallGenerator : MonoBehaviour
 {
     public GameObject Parent;
 
-    public GameObject KeyBall;
-
     public List<GameObject> TemplateBallList;
 
     public int Size;
