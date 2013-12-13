@@ -24,14 +24,14 @@ public class ShootingState : AbstractState
         Debug.Log("Shooting to ball: " + index + ", hitting ball: " + Utils.Shooter.HittingBall.name);
 
         var targetPosition = Utils.Shooter.HittingBall.transform.position;
-        var shooterPosition = new Vector3(Utils.Shooter.ShootBall.transform.position.x,
-                                          Utils.Shooter.HittingBall.transform.position.y,
-                                          Utils.Shooter.ShootBall.transform.position.z);
-        var shift = Vector3.Normalize(targetPosition - shooterPosition);
+        var ball = Utils.Shooter.ShootBall.transform.GetChild(0).gameObject;
 
-        iTween.MoveBy(Utils.Shooter.ShootBall, iTween.Hash("y", -EruptHeight, "time", EruptTime / 2, "easeType", iTween.EaseType.easeOutQuad));
-        iTween.MoveBy(Utils.Shooter.ShootBall, iTween.Hash("y", EruptHeight, "time", EruptTime / 2, "delay", EruptTime / 2, "easeType", iTween.EaseType.easeInCubic));
-        iTween.MoveBy(Utils.Shooter.ShootBall, iTween.Hash("position", shift, "time", EruptTime, "easeType", iTween.EaseType.linear));
+        iTween.MoveBy(ball, iTween.Hash("y", EruptHeight, "time", EruptTime / 2, "easeType", iTween.EaseType.easeOutQuad));
+        iTween.MoveBy(ball,
+                      iTween.Hash("y", -EruptHeight, "time", EruptTime / 2, "delay", EruptTime / 2, "easeType",
+                                  iTween.EaseType.easeInCubic));
+        iTween.MoveTo(Utils.Shooter.ShootBall,
+                      iTween.Hash("position", targetPosition, "time", EruptTime, "easeType", iTween.EaseType.linear));
 
         yield return new WaitForSeconds(EruptTime);
 

@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Shooter : MonoBehaviour
 {
-    public GameObject KeyBall;
 	public GameObject ShootBall { get; set; }
     public GameObject HittingBall { get; set; }
 	public GameObject BallWrapper {get; set;}
@@ -13,8 +10,6 @@ public class Shooter : MonoBehaviour
 //    public float Speed = 1f;
 //
 //    public float LifeTime = 5f;
-//
-//
 //
 //    private Vector3 ShootDirection { get; set; }
 //
@@ -86,6 +81,7 @@ public class Shooter : MonoBehaviour
     {
         var index = Random.Range(0, Utils.Settings.TotalColorCount);
         ShootBall = Instantiate(Utils.BallGenerator.TemplateBallList[index], transform.position, Quaternion.identity) as GameObject;
+        ShootBall.transform.parent = transform;
         ShootBall.transform.position = transform.position;
         ShootBall.layer = LayerMask.NameToLayer("Ignore Raycast");
 

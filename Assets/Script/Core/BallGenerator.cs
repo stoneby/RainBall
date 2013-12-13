@@ -22,7 +22,7 @@ public class BallGenerator : MonoBehaviour
         }
 
         // sphear collider, which x and z equals diameter in our case.
-        Utils.BallManager.Diameter = TemplateBallList[0].collider.bounds.size.x;
+        Utils.BallManager.Diameter = TemplateBallList[0].transform.GetChild(0).collider.bounds.size.x;
     }
 
     void Start()
@@ -49,7 +49,7 @@ public class BallGenerator : MonoBehaviour
         for (var i = 0; i < Size; ++i)
         {
             var index = Random.Range(0, Utils.Settings.TotalColorCount);
-            var currentBall = Instantiate(TemplateBallList[index], startLocation, Quaternion.identity) as GameObject;
+            var currentBall = Instantiate(TemplateBallList[index], startLocation, TemplateBallList[index].transform.rotation) as GameObject;
             currentBall.transform.parent = Parent.transform;
 
             var ballUpdater = currentBall.AddComponent<BallUpdater>();
