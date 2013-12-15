@@ -9,22 +9,25 @@ public class GUIMenu : MonoBehaviour
     public Transform BeginLocation;
     public Transform EndLocation;
 
+    private GameObject leadBall;
+
     void OnGUI()
     {
         if (GUILayout.Button("ITween path"))
         {
+            leadBall = Utils.BallManager.BallUpdaterList[0].gameObject;
             Manager.MoveDirection = MoveDirection.Forward;
-            Utils.MoveLevel(Utils.BallManager.BallUpdaterList[0].gameObject, Utils.Settings.MoveSpeed);
+            Utils.MoveLevel(leadBall, Utils.Settings.MoveSpeed);
         }
 
         if (GUILayout.Button("Pause Itween"))
         {
-            iTween.Pause(Manager.HeadBall);
+            iTween.Pause(leadBall);
         }
 
         if (GUILayout.Button("Resume Itween"))
         {
-            iTween.Resume(Manager.HeadBall);
+            iTween.Resume(leadBall);
         }
 
         if (GUILayout.Button("Sample All Paths"))

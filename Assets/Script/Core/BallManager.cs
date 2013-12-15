@@ -35,7 +35,7 @@ public class BallManager : MonoBehaviour
 
     private const float Theta = 0.1f;
 
-    public GameObject HeadBall { get; private set; }
+    private GameObject headBall;
 
     public void Set()
     {
@@ -49,55 +49,43 @@ public class BallManager : MonoBehaviour
         }
     }
 
-    void MoveStart(string leaderName)
+    void MoveStart(string leadBallName)
     {
-        //HeadBall = transform.FindChild(leaderName).gameObject;
-        HeadBall = transform.GetChild(0).gameObject;
-        if (HeadBall == null)
-        {
-            Debug.LogWarning(string.Format("Please make sure you add leader name {0} to onstartparams correctly itween.", leaderName));
-            return;
-        }
+        headBall = transform.FindChild(leadBallName).gameObject;
 
-        Debug.Log("MoveStart, lead ball: " + HeadBall.name + ", count: " + transform.childCount + ", frame: " + Time.frameCount);
+        Debug.Log("MoveStart, lead ball: " + headBall.name + ", count: " + transform.childCount + ", frame: " + Time.frameCount);
 
         OnStart();
 
         if (StartMoving != null)
         {
-            var path = iTweenEvent.GetEvent(HeadBall, "Move").Values["path"];
+            var path = iTweenEvent.GetEvent(headBall, "Move").Values["path"];
             var levelMoving = path.Equals(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
             Debug.LogWarning("actual path: " + path + ", level Path: " + Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
             StartMoving(this,
                         new BallMoveArgs
                             {
-                                LeaderName = leaderName,
+                                LeaderName = leadBallName,
                                 IsLevelMoving = levelMoving
                             });
         }
     }
 
-    void MoveComplete(string leaderName)
+    void MoveComplete(string leadBallName)
     {
-        //HeadBall = transform.FindChild(leaderName).gameObject;
-        HeadBall = transform.GetChild(0).gameObject;
-        if (HeadBall == null)
-        {
-            Debug.LogWarning(string.Format("Please make sure you add leader name {0} to oncompleteparams correctly itween.", leaderName));
-            return;
-        }
+        headBall = transform.FindChild(leadBallName).gameObject;
 
-        Debug.Log("MoveComplete, lead ball: " + HeadBall.name);
+        Debug.Log("MoveComplete, lead ball: " + headBall.name);
 
         OnStop();
 
         if (StopMoving != null)
         {
-            var path = iTweenEvent.GetEvent(HeadBall, "Move").Values["path"];
+            var path = iTweenEvent.GetEvent(headBall, "Move").Values["path"];
             var levelMoving = path.Equals(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
             StopMoving(this, new BallMoveArgs
                 {
-                    LeaderName = leaderName,
+                    LeaderName = leadBallName,
                     IsLevelMoving = levelMoving
                 });
         }
@@ -105,31 +93,27 @@ public class BallManager : MonoBehaviour
 
     void OnShootStart(object sender, EventArgs args)
     {
-        Debug.Log("On Shoot Start, key ball: " + HeadBall.name);
+        Debug.Log("On Shoot Start, key ball: " + headBall.name);
          
-        iTween.Pause(HeadBall);
+        iTween.Pause(headBall);
     }
 
     void OnShootStop(object sender, EventArgs args)
     {
-        Debug.Log("On Shoot Complete, key ball: " + HeadBall.name);
+        Debug.Log("On Shoot Complete, key ball: " + headBall.name);
 
-        iTween.Resume(HeadBall);
+        iTween.Resume(headBall);
     }
 
     private void OnStart()
     {
-        HeadBall.GetComponent<BallUpdater>().Running = true;
+        headBall.GetComponent<BallUpdater>().Running = true;
         Set();
     }
 
     private void OnStop()
     {
-        HeadBall.GetComponent<BallUpdater>().Running = false;
-        HeadBall = BallUpdaterList[0].gameObject;
-
-        //BallUpdaterList.ForEach(
-        //    ball => Debug.Log("TrackingTail list cout: " + ball.TrackingTail.Count + ", gameobject: " + ball.name));
+        headBall.GetComponent<BallUpdater>().Running = false;
         
         Debug.Log("Clear up tracking tail list.");
         BallUpdaterList.ForEach(ball => ball.TrackingTail.Clear());
@@ -152,13 +136,12 @@ public class BallManager : MonoBehaviour
     /// <remarks>Since leading ball's itween move in update, computing in late update, or leading ball move forward one frame</remarks>
     void LateUpdate()
     {
-        HeadBall = transform.GetChild(0).gameObject;
-        if (HeadBall == null || HeadBall.GetComponent<BallUpdater>() == null || !HeadBall.GetComponent<BallUpdater>().Running)
+        if (headBall == null || headBall.GetComponent<BallUpdater>() == null || !headBall.GetComponent<BallUpdater>().Running)
         {
             return;
         }
 
-        var currentBall = HeadBall;
+        var currentBall = headBall;
         while (currentBall != null)
         {
             var currentBallUpdater = currentBall.GetComponent<BallUpdater>();
