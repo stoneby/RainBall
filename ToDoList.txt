@@ -12,7 +12,8 @@ Bug:
 2. only one ball move out during one shoot play sometimes.(done)
 3. Evaluation state will crash. (done by upgrade issue, head ball from ball manager.)
 4. Balls movement does not smooth. (done by change settings from ball manager.)
-5. Shooter ball's rotation is not correct. 
+5. Shooter ball's rotation is not correct. (done)
+6. Shadow of everything especial for balls.
 
 Enhancement:
 1. Ballupdater does not care about ball util ball's running out of one diameter. (done) (now is half ball's diameter)

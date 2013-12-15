@@ -26,9 +26,9 @@ public class ShootingState : AbstractState
         var targetPosition = Utils.Shooter.HittingBall.transform.position;
         var ball = Utils.Shooter.ShootBall.transform.GetChild(0).gameObject;
 
-        iTween.MoveBy(ball, iTween.Hash("y", EruptHeight, "time", EruptTime / 2, "easeType", iTween.EaseType.easeOutQuad));
+        iTween.MoveBy(ball, iTween.Hash("z", EruptHeight, "time", EruptTime / 2, "easeType", iTween.EaseType.easeOutQuad));
         iTween.MoveBy(ball,
-                      iTween.Hash("y", -EruptHeight, "time", EruptTime / 2, "delay", EruptTime / 2, "easeType",
+                      iTween.Hash("z", -EruptHeight, "time", EruptTime / 2, "delay", EruptTime / 2, "easeType",
                                   iTween.EaseType.easeInCubic));
         iTween.MoveTo(Utils.Shooter.ShootBall,
                       iTween.Hash("position", targetPosition, "time", EruptTime, "easeType", iTween.EaseType.linear));
