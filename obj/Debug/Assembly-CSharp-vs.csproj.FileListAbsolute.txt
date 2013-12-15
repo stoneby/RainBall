@@ -1,0 +1,10 @@
+D:\code\GitHub\RainBall\Temp\bin\Debug\Assembly-CSharp.dll
+D:\code\GitHub\RainBall\Temp\bin\Debug\Assembly-CSharp.pdb
+D:\code\GitHub\RainBall\Temp\bin\Debug\UnityEditor.dll
+D:\code\GitHub\RainBall\Temp\bin\Debug\UnityEngine.dll
+D:\code\GitHub\RainBall\Temp\bin\Debug\Mono.Cecil.dll
+D:\code\GitHub\RainBall\Temp\bin\Debug\nunit.framework.dll
+D:\code\GitHub\RainBall\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+D:\code\GitHub\RainBall\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
+D:\code\GitHub\RainBall\obj\Debug\Assembly-CSharp.dll
+D:\code\GitHub\RainBall\obj\Debug\Assembly-CSharp.pdb
