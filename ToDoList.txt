@@ -14,7 +14,7 @@ Bug:
 4. Balls movement does not smooth. (done by change settings from ball manager.)
 
 Enhancement:
-1. Ballupdater does not care about ball util ball's running out of one diameter.
+1. Ballupdater does not care about ball util ball's running out of one diameter. (done) (now is half ball's diameter)
 2. First ball <-> Second ball tracking list generation (intersection point is not so good). (done) (issue is TrimTargetPosition())
 3. Shooting ball inserting to the list. The movement need improve.
 4. Shooting ball insertion decision. (insert before or after hitting ball, now alway after..)
