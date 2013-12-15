@@ -51,14 +51,15 @@ public class BallManager : MonoBehaviour
 
     void MoveStart(string leaderName)
     {
-        HeadBall = transform.FindChild(leaderName).gameObject;
+        //HeadBall = transform.FindChild(leaderName).gameObject;
+        HeadBall = transform.GetChild(0).gameObject;
         if (HeadBall == null)
         {
             Debug.LogWarning(string.Format("Please make sure you add leader name {0} to onstartparams correctly itween.", leaderName));
             return;
         }
 
-        Debug.Log("MoveStart, lead ball: " + HeadBall.name);
+        Debug.Log("MoveStart, lead ball: " + HeadBall.name + ", count: " + transform.childCount + ", frame: " + Time.frameCount);
 
         OnStart();
 
@@ -78,7 +79,8 @@ public class BallManager : MonoBehaviour
 
     void MoveComplete(string leaderName)
     {
-        HeadBall = transform.FindChild(leaderName).gameObject;
+        //HeadBall = transform.FindChild(leaderName).gameObject;
+        HeadBall = transform.GetChild(0).gameObject;
         if (HeadBall == null)
         {
             Debug.LogWarning(string.Format("Please make sure you add leader name {0} to oncompleteparams correctly itween.", leaderName));
@@ -150,6 +152,7 @@ public class BallManager : MonoBehaviour
     /// <remarks>Since leading ball's itween move in update, computing in late update, or leading ball move forward one frame</remarks>
     void LateUpdate()
     {
+        HeadBall = transform.GetChild(0).gameObject;
         if (HeadBall == null || HeadBall.GetComponent<BallUpdater>() == null || !HeadBall.GetComponent<BallUpdater>().Running)
         {
             return;

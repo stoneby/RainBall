@@ -80,7 +80,7 @@ public class Shooter : MonoBehaviour
     public void GenerateBall()
     {
         var index = Random.Range(0, Utils.Settings.TotalColorCount);
-        ShootBall = Instantiate(Utils.BallGenerator.TemplateBallList[index], transform.position, Quaternion.identity) as GameObject;
+        ShootBall = Instantiate(Utils.BallGenerator.TemplateBallList[index], transform.position, transform.rotation) as GameObject;
         ShootBall.transform.parent = transform;
         ShootBall.transform.position = transform.position;
         ShootBall.layer = LayerMask.NameToLayer("Ignore Raycast");

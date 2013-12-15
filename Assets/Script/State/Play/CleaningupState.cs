@@ -26,8 +26,6 @@ public class CleaningupState : AbstractState
         var disappearEvent = iTweenEvent.GetEvent(Utils.TemplateBall, "Disappear");
         yield return new WaitForSeconds(float.Parse(disappearEvent.Values["time"].ToString()));
         
-        Utils.BallGenerator.Cleanup();
-
         OnEnd();
     }
 }

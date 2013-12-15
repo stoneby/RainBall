@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class InitializingState : AbstractState
@@ -7,7 +8,16 @@ public class InitializingState : AbstractState
     {
         Debug.Log(GetType().Name + ": Go.");
 
+        StartCoroutine("DoGo");
+    }
+
+    IEnumerator DoGo()
+    {
         Utils.BallGenerator.Generate();
+
+        // wait one frame to destroy original balls.
+        yield return null;
+
         var leaderBall = Utils.BallManager.BallUpdaterList[0];
         Utils.MoveLevel(leaderBall.gameObject, Utils.Settings.MoveSpeed);
     }

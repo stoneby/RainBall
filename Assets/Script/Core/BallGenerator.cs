@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,6 +41,11 @@ public class BallGenerator : MonoBehaviour
     {
         Cleanup();
 
+        GenerateBalls();
+    }
+
+    private void GenerateBalls()
+    {
         var startLocation = iTweenPath.GetPath(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path)[0];
 
         var ballList = Utils.BallManager.BallUpdaterList;
@@ -47,7 +53,9 @@ public class BallGenerator : MonoBehaviour
         for (var i = 0; i < Size; ++i)
         {
             var index = Random.Range(0, Utils.Settings.TotalColorCount);
-            var currentBall = Instantiate(TemplateBallList[index], startLocation, TemplateBallList[index].transform.rotation) as GameObject;
+            var currentBall =
+                Instantiate(TemplateBallList[index], startLocation, TemplateBallList[index].transform.rotation) as
+                GameObject;
             currentBall.transform.parent = Parent.transform;
 
             var ballUpdater = currentBall.AddComponent<BallUpdater>();
