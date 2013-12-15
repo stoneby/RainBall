@@ -10,7 +10,7 @@ Feature:
 Bug:
 1. shooter ball collision test. (Ray cast hit test not good. sphear test is using) (done)
 2. only one ball move out during one shoot play sometimes.(done)
-3. Evaluation state will crash.
+3. Evaluation state will crash. (done by upgrade issue, head ball from ball manager.)
 4. Balls movement does not smooth. (done by change settings from ball manager.)
 
 Enhancement:
