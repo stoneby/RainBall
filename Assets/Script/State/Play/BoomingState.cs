@@ -10,7 +10,7 @@ public class BoomingState : AbstractState
         Debug.Log(GetType().Name + ": Go.");
 
         var shooter = Utils.Shooter;
-        var hittingBall = shooter.HittingBall;
+        var hittingBall = shooter.HitBall;
         if (hittingBall == null)
         {
             Debug.LogError(GetType().Name + ", hitting ball should not be null.");

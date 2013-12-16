@@ -44,10 +44,15 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Script\Core\AbstractShootBehaviour.cs" />
+     <Compile Include="Assets\Script\Core\AutomaticShootBehaviour.cs" />
      <Compile Include="Assets\Script\Core\BallGenerator.cs" />
      <Compile Include="Assets\Script\Core\BallManager.cs" />
      <Compile Include="Assets\Script\Core\BallMoveArgs.cs" />
      <Compile Include="Assets\Script\Core\BallUpdater.cs" />
+     <Compile Include="Assets\Script\Core\InteractDirectShootBehaviour.cs" />
+     <Compile Include="Assets\Script\Core\InteractShootBehaviour.cs" />
+     <Compile Include="Assets\Script\Core\ParabolaShootBehaviour.cs" />
      <Compile Include="Assets\Script\Core\Shooter.cs" />
      <Compile Include="Assets\Script\Emitter\Bomb.cs" />
      <Compile Include="Assets\Script\Emitter\Emitter.cs" />
