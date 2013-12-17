@@ -75,7 +75,7 @@
      <Compile Include="Assets\Script\State\Evaluate\EvaluateEraseState.cs" />
      <Compile Include="Assets\Script\State\Evaluate\GameEvaluateState.cs" />
      <Compile Include="Assets\Script\State\Evaluate\InitControllState.cs" />
-     <Compile Include="Assets\Script\State\FinalEndingState.cs" />
+     <Compile Include="Assets\Script\State\Final\FinalEndingState.cs" />
      <Compile Include="Assets\Script\State\GameStateMachine.cs" />
      <Compile Include="Assets\Script\State\IState.cs" />
      <Compile Include="Assets\Script\State\Idle\GameIdleState.cs" />
