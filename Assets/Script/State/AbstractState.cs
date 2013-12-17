@@ -29,7 +29,7 @@ public abstract class AbstractState : MonoBehaviour, IState
     protected virtual void Awake()
     {
         Debug.Log("AbstractState name: " + GetType().Name);
-        Type = (StateType)Enum.Parse(typeof(StateType), GetType().Name.Replace("State", string.Empty));
+        Type = (StateType)Enum.Parse(typeof(StateType), GetType().Name.Remove(GetType().Name.LastIndexOf("State")));
     }
 
     protected virtual void Start()

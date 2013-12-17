@@ -23,10 +23,11 @@ Enhancement:
 
 - refactor -> shooter, shoot ball generator / shoot ball shooting algorithm. (done)
 - states folder structure. (done)
-- remove gui menu.
+- remove gui menu.(done)
 - improvement settings editor window.
 
 Arts:
+- name it. with animation.
 - we need sound.
 - magic show, snow flowing to the background, balling the IGT logo.
 - explosion effect.

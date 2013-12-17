@@ -15,7 +15,9 @@ public enum StateType
     Erasing,
     EvaluateEnding,
     WaitForUserFire,
-    FinalEnding
+    FinalEnding,
+    StateMachineGamble,
+    StateMachineShoot
 }
 
 /// <summary>

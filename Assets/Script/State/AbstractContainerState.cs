@@ -40,8 +40,15 @@ public abstract class AbstractContainerState : AbstractState
         var states = Parent.GetComponents<AbstractState>();
         foreach (var state in states)
         {
-            Debug.Log("adding sub state name: " + state.GetType().Name + ", state type: " + state.Type + ", of base: " + GetType().Name);
-            StatesDict.Add(state.Type, state);
+            if (state.Type == Type)
+            {
+                Debug.Log("not add myself. " + GetType().Name + ", state type: " + Type);
+            }
+            else
+            {
+                Debug.Log("adding sub state name: " + state.GetType().Name + ", state type: " + state.Type + ", of base: " + GetType().Name);
+                StatesDict.Add(state.Type, state);
+            }
         }
 
         foreach (var state in StatesDict)

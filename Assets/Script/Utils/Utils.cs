@@ -22,8 +22,8 @@ public static class Utils
     private static LevelManager levelManager;
     private static Evaluator evaluator;
 	private static CreditBar creditBar;
-    private static ShootStateMachine shootStateMachine;
-    private static GameStateMachine gameStateMachine;
+    private static StateMachineShootState shootStateMachine;
+    private static StateMachineGambleState gameStateMachine;
     private static GameSerializer gameSerializer;
     private static GameData gameData;
 
@@ -125,21 +125,21 @@ public static class Utils
         }
     }
 
-    public static ShootStateMachine ShootStateMachine
+    public static StateMachineShootState ShootStateMachine
     {
         get
         {
             return shootStateMachine ??
-                   (shootStateMachine = GameObject.FindGameObjectWithTag("ShootStateMachine").GetComponent<ShootStateMachine>());
+                   (shootStateMachine = GameObject.FindGameObjectWithTag("ShootStateMachine").GetComponent<StateMachineShootState>());
         }
     }
 
-    public static GameStateMachine GameStateMachine
+    public static StateMachineGambleState GameStateMachine
     {
         get
         {
             return gameStateMachine ??
-                   (gameStateMachine = GameObject.FindGameObjectWithTag("GameStateMachine").GetComponent<GameStateMachine>());
+                   (gameStateMachine = GameObject.FindGameObjectWithTag("GameStateMachine").GetComponent<StateMachineGambleState>());
         }
     }
 

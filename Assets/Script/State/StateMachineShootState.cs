@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class ShootStateMachine : AbstractContainerState
+public class StateMachineShootState : AbstractContainerState
 {
     protected override void OnStateEnd(object sender, EventArgs args)
     {
@@ -45,6 +45,8 @@ public class ShootStateMachine : AbstractContainerState
 
     protected override void Awake()
     {
+        base.Awake();
+
         Reset();
     }
 
