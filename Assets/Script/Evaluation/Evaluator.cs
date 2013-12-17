@@ -28,7 +28,14 @@ public class Evaluator : MonoBehaviour
             CurrentAwardInfor.StartIndex = index;
         }
 
-        if (CurrentAwardInfor.Award == null)
+		// Display result in Menu
+		if (CurrentAwardInfor.Award != null)
+		{
+			CreditBar cb = Utils.CreditBar;
+			cb.PaidChange(CurrentAwardInfor.Award.Value);
+			cb.CreditChange(CurrentAwardInfor.Award.Value);
+		}
+		else
         {
             throw new NotSupportedException(
                 string.Format("Not support award with color: {0} and number: {1}, please double check.", color, number));

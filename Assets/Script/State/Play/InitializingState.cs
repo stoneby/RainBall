@@ -20,7 +20,15 @@ public class InitializingState : AbstractState
 
         var leaderBall = Utils.BallManager.BallUpdaterList[0];
         Utils.MoveLevel(leaderBall.gameObject, Utils.Settings.MoveSpeed);
+		// Decrease Credit number and clear up Paid number in Menu
+		CreditBar cb = Utils.CreditBar;
+		cb.PaidNum = 0;
+		if (cb.CreditNum >= cb.BetNum) {
+			cb.CreditNum -= cb.BetNum;
+		} else {
+			cb.CreditNum = 0;
     }
+	}
 
     private void OnStopMoving(object sender, BallMoveArgs args)
     {

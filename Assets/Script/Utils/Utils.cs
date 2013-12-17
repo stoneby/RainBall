@@ -21,6 +21,7 @@ public static class Utils
     private static PathSampler pathSampler;
     private static LevelManager levelManager;
     private static Evaluator evaluator;
+	private static CreditBar creditBar;
     private static ShootStateMachine shootStateMachine;
     private static GameStateMachine gameStateMachine;
     private static GameSerializer gameSerializer;
@@ -113,6 +114,14 @@ public static class Utils
         {
             return evaluator ??
                    (evaluator = GameObject.FindGameObjectWithTag("Evaluator").GetComponent<Evaluator>());
+        }
+    }
+	public static CreditBar CreditBar
+    {
+        get
+        {
+            return creditBar ??
+                   (creditBar = GameObject.FindGameObjectWithTag("CreditBar").GetComponent<CreditBar>());
         }
     }
 
