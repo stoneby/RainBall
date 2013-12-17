@@ -53,12 +53,12 @@
      <Compile Include="Assets\iTweenEditor\Editor\iTweenEventDataEditor.cs" />
      <Compile Include="Assets\iTweenEditor\Editor\iTweenPathEditor.cs" />
      <None Include="Assets\iTweenEditor\README.txt" />
-     <None Include="Assets\3_20组\BallLine20.txt" />
      <None Include="Assets\TEST_2.txt" />
-     <None Include="Assets\3_20组\BallTag20.txt" />
      <None Include="Assets\Script\GameData\GameData.txt" />
+     <None Include="Assets\Script\GameData\ShootBallList.txt" />
      <None Include="Assets\TEST_1.txt" />
      <None Include="Assets\LEVEL_1.txt" />
+     <None Include="Assets\Script\GameData\BallChainList.txt" />
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
  </Reference>
