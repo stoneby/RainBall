@@ -1,29 +1,33 @@
-1. selection detector script. (done)
-2. editor script for value (0, 1) (done)
+- selection detector script. (done)
+- editor script for value (0, 1) (done)
 
 Feature:
-1. Running ball with shooting.
-2. Balls booming with (3, 4, 5 balls) effects.	(done)
-3. Balls could moving backward (now forward only.) (done)
-4. Read ball data from files, including ball list and shoot ball location.
-5. shooting balls specification.
-6. explosion effect.
+- Running ball with shooting.
+- Balls booming with (3, 4, 5 balls) effects.	(done)
+- Balls could moving backward (now forward only.) (done)
+- Read ball data from files, including ball list and shoot ball location.
 
 Bug:
-1. shooter ball collision test. (Ray cast hit test not good. sphear test is using) (done)
-2. only one ball move out during one shoot play sometimes.(done)
-3. Evaluation state will crash. (done by upgrade issue, head ball from ball manager.)
-4. Balls movement does not smooth. (done by change settings from ball manager.)
-5. Shooter ball's rotation is not correct. (done)
-6. Shadow of everything especial for balls.
+- shooter ball collision test. (Ray cast hit test not good. sphear test is using) (done)
+- only one ball move out during one shoot play sometimes.(done)
+- Evaluation state will crash. (done by upgrade issue, head ball from ball manager.)
+- Balls movement does not smooth. (done by change settings from ball manager.)
+- Shooter ball's rotation is not correct. (done)
+- Shadow of everything especial for balls.
 
 Enhancement:
-1. Ballupdater does not care about ball util ball's running out of one diameter. (done) (now is half ball's diameter)
-2. First ball <-> Second ball tracking list generation (intersection point is not so good). (done) (issue is TrimTargetPosition())
-3. Shooting ball inserting to the list. The movement need improve.
-4. Shooting ball insertion decision. (insert before or after hitting ball, now alway after..)
+- Ballupdater does not care about ball util ball's running out of one diameter. (done) (now is half ball's diameter)
+- First ball <-> Second ball tracking list generation (intersection point is not so good). (done) (issue is TrimTargetPosition())
+- Shooting ball inserting to the list. The movement need improve.
+- Shooting ball insertion decision. (insert before or after hitting ball, now alway after..)
 
-5. refactor -> shooter, shoot ball generator / shoot ball shooting algorithm. (done)
-6. improvement settings editor window.
-7. states folder structure.
-8. remove gui menu.
+- refactor -> shooter, shoot ball generator / shoot ball shooting algorithm. (done)
+- states folder structure. (done)
+- remove gui menu.
+- improvement settings editor window.
+
+Arts:
+- we need sound.
+- magic show, snow flowing to the background, balling the IGT logo.
+- explosion effect.
+- shooting balls specification.
