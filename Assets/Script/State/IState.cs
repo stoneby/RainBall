@@ -13,7 +13,9 @@ public enum StateType
     InitControll,
     EvaluateErase,
     Erasing,
-    EvaluateEnding
+    EvaluateEnding,
+    WaitForUserFire,
+    FinalEnding
 }
 
 /// <summary>

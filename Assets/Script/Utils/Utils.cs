@@ -264,7 +264,7 @@ public static class Utils
         }
         if (result != null)
         {
-            Debug.Log("Find Nearest Ball 2: " + result.transform.position);
+            Debug.Log("Find Nearest Ball: " + result.transform.position + ", name: " + result.name);
         }
         return result;
     }

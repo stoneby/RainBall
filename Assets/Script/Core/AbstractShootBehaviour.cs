@@ -9,6 +9,8 @@ public abstract class AbstractShootBehaviour : MonoBehaviour
 
     public void EndShoot()
     {
+        Debug.Log("End Shoot.");
+
         if (ShootEnd != null)
         {
             ShootEnd(this, new EventArgs());

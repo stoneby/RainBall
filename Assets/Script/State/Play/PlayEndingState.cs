@@ -13,11 +13,10 @@ public class PlayEndingState : AbstractState
             Debug.Log("We meet super big celebration hit, all balls are gone.");
         }
 
-        StartCoroutine(Debugging());
-        //OnEnd();
+        StartCoroutine(DoEnd());
     }
 
-    IEnumerator Debugging()
+    IEnumerator DoEnd()
     {
         yield return null;
         OnEnd();

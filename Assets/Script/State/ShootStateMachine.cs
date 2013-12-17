@@ -1,97 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootStateMachine : MonoBehaviour
+public class ShootStateMachine : AbstractContainerState
 {
-    public StateType CurrentState { get; set; }
-
-    public event EventHandler<EventArgs> GoStart;
-    public event EventHandler<EventArgs> GoStop;
-
-    private readonly Dictionary<StateType, IState> statesDict = new Dictionary<StateType, IState>();
-
-    public void Go()
-    {
-        Debug.Log("ShootStateMachine goes at current state: " + CurrentState);
-
-        if (CurrentState == StateType.Booming)
-        {
-            OnGoStart();
-        }
-
-        statesDict[CurrentState].Go();
-    }
-
-    public void End()
-    {
-        Debug.Log("ShootStateMachine ends at current state: " + CurrentState);
-        CurrentState = StateType.EvaluateEnding;
-    }
-
-    private void OnGoStart()
-    {
-        if (GoStart != null)
-        {
-            GoStart(this, new EventArgs());
-        }
-    }
-
-    private void OnGoStop()
-    {
-        if (GoStop != null)
-        {
-            GoStop(this, new EventArgs());
-        }
-    }
-
-    private void OnStateEnd(object sender, EventArgs args)
+    protected override void OnStateEnd(object sender, EventArgs args)
     {
         Debug.Log("ShootStateMachine ends at current state: " + CurrentState);
 
-        if (CurrentState == StateType.EvaluateEnding)
+        // This is a looping statemachine, no ending.
+        if(CurrentState == EndState)
         {
-            OnGoStop();
-            return;
+            OnExit();
         }
 
-        switch (CurrentState)
+        switch(CurrentState)
         {
+            case StateType.Initializing:
+                CurrentState = StateType.WaitForUserFire;
+                break;
+            case StateType.WaitForUserFire:
+                CurrentState = StateType.Shooting;
+                break;
+            case StateType.Shooting:
+                CurrentState = StateType.Booming;
+                break;
             case StateType.Booming:
                 CurrentState = StateType.EvaluateErase;
                 break;
             case StateType.EvaluateErase:
-                CurrentState = statesDict[CurrentState].Pass ? StateType.Erasing : StateType.EvaluateEnding;
+                CurrentState = StatesDict[CurrentState].Pass ? StateType.Erasing : StateType.EvaluateEnding;
                 break;
             case StateType.Erasing:
                 CurrentState = StateType.EvaluateErase;
+                break;
+            case StateType.EvaluateEnding:
+                CurrentState = StatesDict[CurrentState].Pass ? StateType.FinalEnding : StateType.WaitForUserFire;
+                break;
+            case StateType.FinalEnding:
+                CurrentState = StateType.Initializing;
                 break;
         }
         Go();
     }
 
-    void Awake()
+    protected override void Awake()
     {
         Reset();
     }
 
-    void Start()
+    private void OnExit()
     {
-        var states = gameObject.GetComponents<AbstractState>();
-        foreach (var state in states)
-        {
-            Debug.Log("adding state name: " + state.GetType().Name + ", state type: " + state.Type);
-            statesDict.Add(state.Type, state);
-        }
+        Reset();
 
-        foreach (var state in statesDict)
-        {
-            state.Value.End += OnStateEnd;
-        }
+        OnEnd();
     }
 
     public void Reset()
     {
-        CurrentState = StateType.Booming;
+        InitState = StateType.Initializing;
+        CurrentState = InitState;
+        EndState = StateType.FinalEnding;
+
+        Utils.GameData.Next();
+        Utils.GameData.Display();
     }
 }

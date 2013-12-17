@@ -91,20 +91,6 @@ public class BallManager : MonoBehaviour
         }
     }
 
-    void OnShootStart(object sender, EventArgs args)
-    {
-        Debug.Log("On Shoot Start, key ball: " + headBall.name);
-         
-        iTween.Pause(headBall);
-    }
-
-    void OnShootStop(object sender, EventArgs args)
-    {
-        Debug.Log("On Shoot Complete, key ball: " + headBall.name);
-
-        iTween.Resume(headBall);
-    }
-
     private void OnStart()
     {
         headBall.GetComponent<BallUpdater>().Running = true;
@@ -122,12 +108,6 @@ public class BallManager : MonoBehaviour
     void Awake()
     {
         BallUpdaterList = new List<BallUpdater>();
-    }
-
-    void Start()
-    {
-        Utils.ShootStateMachine.GoStart += OnShootStart;
-        Utils.ShootStateMachine.GoStop += OnShootStop;
     }
 
     /// <summary>

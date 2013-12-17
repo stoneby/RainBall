@@ -63,7 +63,7 @@ public class BallGenerator : MonoBehaviour
             currentBall.name = ballUpdater.Name;
             ballList.Add(ballUpdater);
 
-            Debug.Log("Current ball: " + currentBall.name + " adding to dragan ball manager.");
+            //Debug.Log("Current ball: " + currentBall.name + " adding to dragan ball manager.");
         }
 
         var size = ballList.Count;
