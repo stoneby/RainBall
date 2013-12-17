@@ -6,6 +6,8 @@ Feature:
 2. Balls booming with (3, 4, 5 balls) effects.	(done)
 3. Balls could moving backward (now forward only.) (done)
 4. Read ball data from files, including ball list and shoot ball location.
+5. shooting balls specification.
+6. explosion effect.
 
 Bug:
 1. shooter ball collision test. (Ray cast hit test not good. sphear test is using) (done)
@@ -21,5 +23,7 @@ Enhancement:
 3. Shooting ball inserting to the list. The movement need improve.
 4. Shooting ball insertion decision. (insert before or after hitting ball, now alway after..)
 
-5. refactor -> shooter, shoot ball generator / shoot ball shooting algorithm.
+5. refactor -> shooter, shoot ball generator / shoot ball shooting algorithm. (done)
 6. improvement settings editor window.
+7. states folder structure.
+8. remove gui menu.
