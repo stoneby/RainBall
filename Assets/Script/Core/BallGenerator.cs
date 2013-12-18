@@ -4,10 +4,7 @@ using UnityEngine;
 public class BallGenerator : MonoBehaviour
 {
     public GameObject Parent;
-
     public List<GameObject> TemplateBallList;
-
-    public int Size;
 
     void Awake()
     {
@@ -25,7 +22,6 @@ public class BallGenerator : MonoBehaviour
 
     void Start()
     {
-        Generate();
     }
 
     public void Cleanup()
@@ -46,12 +42,13 @@ public class BallGenerator : MonoBehaviour
     private void GenerateBalls()
     {
         var startLocation = iTweenPath.GetPath(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path)[0];
+        var size = Utils.Settings.TotalBallCount;
 
         var ballList = Utils.BallManager.BallUpdaterList;
         ballList.Clear();
-        for (var i = 0; i < Size; ++i)
+        for (var i = 0; i < size; ++i)
         {
-            var index = Random.Range(0, Utils.Settings.TotalColorCount);
+            var index = Utils.GameDataManager.CurrentBallChain[i];
             var currentBall =
                 Instantiate(TemplateBallList[index], startLocation, TemplateBallList[index].transform.rotation) as
                 GameObject;
@@ -66,7 +63,6 @@ public class BallGenerator : MonoBehaviour
             //Debug.Log("Current ball: " + currentBall.name + " adding to dragan ball manager.");
         }
 
-        var size = ballList.Count;
         // handle link relationship between balls.
         for (var i = 0; i < size; ++i)
         {

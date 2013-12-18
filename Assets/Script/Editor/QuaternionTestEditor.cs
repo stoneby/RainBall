@@ -4,14 +4,11 @@ using UnityEditor;
 [CanEditMultipleObjects]
 public class QuaternionTestEditor : Editor
 {
-    private SerializedProperty speedProp;
-    private SerializedProperty angleProp;
-
     void OnEnable()
     {
         // Setup the SerializedProperties
-        speedProp = serializedObject.FindProperty("Speed");
-        angleProp = serializedObject.FindProperty("Angle");
+        serializedObject.FindProperty("Speed");
+        serializedObject.FindProperty("Angle");
     }
 
     public override void OnInspectorGUI()

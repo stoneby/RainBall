@@ -25,7 +25,7 @@ public static class Utils
     private static StateMachineShootState shootStateMachine;
     private static StateMachineGambleState gameStateMachine;
     private static GameSerializer gameSerializer;
-    private static GameData gameData;
+    private static GameDataManager gameDataManager;
 
     private const float MaxAngleEdge = 135f;
     private const float DistanceTheta = 0.1f;
@@ -152,12 +152,12 @@ public static class Utils
         }
     }
 
-    public static GameData GameData
+    public static GameDataManager GameDataManager
     {
         get
         {
-            return gameData ??
-                   (gameData = GameObject.FindGameObjectWithTag("GameData").GetComponent<GameData>());
+            return gameDataManager ??
+                   (gameDataManager = GameObject.FindGameObjectWithTag("GameData").GetComponent<GameDataManager>());
         }
     }
 

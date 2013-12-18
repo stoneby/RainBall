@@ -17,7 +17,7 @@ public class Shooter : MonoBehaviour
 
     public void GenerateBall()
     {
-        var index = Random.Range(0, Utils.Settings.TotalColorCount);
+        var index = Utils.GameDataManager.CurrentShootChain[Utils.GameDataManager.ShootBallIndex].Color;
         var templateBall = Utils.BallGenerator.TemplateBallList[index];
         ShootBall = Instantiate(templateBall, transform.position, templateBall.transform.rotation) as GameObject;
         ShootBall.transform.parent = transform;

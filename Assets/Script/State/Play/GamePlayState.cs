@@ -25,12 +25,12 @@ public class GamePlayState : AbstractContainerState
                 CurrentState = StateType.Booming;
                 break;
             case StateType.Booming:
-                CurrentState = (Utils.GameData.ShootBallIndex == Utils.GameData.ShootBallList.Count - 1)
+                CurrentState = (Utils.GameDataManager.ShootBallIndex == Utils.GameDataManager.CurrentShootChain.Count - 1)
                                    ? StateType.PlayEnding
                                    : StateType.Shooting;
-                Debug.Log("Current shooting ball index: " + Utils.GameData.ShootBallIndex + ", shoot balls total num: " +
-                          Utils.GameData.ShootBallList.Count);
-                ++Utils.GameData.ShootBallIndex;
+                Debug.Log("Current shooting ball index: " + Utils.GameDataManager.ShootBallIndex + ", shoot balls total num: " +
+                          Utils.GameDataManager.CurrentShootChain.Count);
+                ++Utils.GameDataManager.ShootBallIndex;
                 break;
             default:
                 throw new Exception("Invalid state: " + CurrentState);
@@ -59,6 +59,6 @@ public class GamePlayState : AbstractContainerState
         CurrentState = InitState;
         EndState = StateType.PlayEnding;
 
-        Utils.GameData.ShootBallIndex = 0;
+        Utils.GameDataManager.ShootBallIndex = 0;
     }
 }
