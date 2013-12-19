@@ -1,6 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\State\Evaluate\ErasingState.cs">
+    <Files>
+      <File FileName="Assets\Script\Core\BallManager.cs" Line="52" Column="40" />
+      <File FileName="Assets\Script\State\Evaluate\ErasingState.cs" Line="79" Column="102" />
+      <File FileName="Assets\Script\State\Evaluate\EvaluateEraseState.cs" Line="28" Column="21" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

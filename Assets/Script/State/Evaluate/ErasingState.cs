@@ -5,6 +5,7 @@ using UnityEngine;
 public class ErasingState : AbstractState
 {
     public float MovingDuration;
+	public Transform Explosion;
 
     private Vector3 endLocation;
 
@@ -31,7 +32,9 @@ public class ErasingState : AbstractState
         for (var i = awardInfor.StartIndex; i < awardInfor.StartIndex + awardInfor.Award.Num; ++i)
         {
             var ball = ballList[i].gameObject;
-            Destroy(ball);
+            // Show the explosion effects, this gameobject will be destroyed later by itself.
+			Instantiate (Explosion, ball.transform.position, Quaternion.identity);
+			Destroy(ball);
         }
 
         ballList.RemoveRange(awardInfor.StartIndex, awardInfor.Award.Num);
