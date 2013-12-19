@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class ShootingState : AbstractState
 {
+    public ParticleSystem Burning;
+
+    private ParticleSystem burningInstance;
+
     public override void Go()
     {
         Debug.Log(GetType().Name + ": Go.");
@@ -10,7 +14,7 @@ public class ShootingState : AbstractState
         Shoot();
     }
 
-    private static void Shoot()
+    private void Shoot()
     {
         // need to update hitting ball index according to shoot ball shooting into it.
         var index = Utils.GameDataManager.CurrentShootChain[Utils.GameDataManager.ShootBallIndex].Location + Utils.GameDataManager.ShootBallIndex;
@@ -20,6 +24,8 @@ public class ShootingState : AbstractState
 
         Utils.Shooter.GenerateBall();
         Utils.Shooter.Shoot();
+        var shootBallController = Utils.Shooter.ShootBall.GetComponent<ShootBallController>();
+        shootBallController.StartBurning();
     }
 
     private void OnEndShoot(object sender, EventArgs args)

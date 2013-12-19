@@ -40,4 +40,6 @@ public class Settings : MonoBehaviour
     public int TotalColorCount;
 
     #endregion
+
+    public List<Color> ColorList;
 }

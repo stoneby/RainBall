@@ -1,8 +1,11 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Shooter : MonoBehaviour
 {
+    public List<GameObject> ShootBallList { get; set; }
+
 	public GameObject ShootBall { get; set; }
     public GameObject HitBall { get; set; }
 
@@ -26,5 +29,21 @@ public class Shooter : MonoBehaviour
 
         var shootBallUpdater = ShootBall.AddComponent<BallUpdater>();
         shootBallUpdater.Color = index;
+
+        ShootBallList.Add(ShootBall);
+    }
+
+    private void OnMoveStart(object sender, BallMoveArgs args)
+    {
+        if(args.IsLevelMoving)
+        {
+            ShootBallList.Clear();
+        }
+    }
+
+    void Start()
+    {
+        ShootBallList = new List<GameObject>();
+        Utils.BallManager.StartMoving += OnMoveStart;
     }
 }
