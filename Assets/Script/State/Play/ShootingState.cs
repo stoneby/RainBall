@@ -24,7 +24,7 @@ public class ShootingState : AbstractState
 
         Utils.Shooter.GenerateBall();
         Utils.Shooter.Shoot();
-        var shootBallController = Utils.Shooter.ShootBall.GetComponent<ShootBallController>();
+        var shootBallController = Utils.Shooter.ShootBall.GetComponent<BallController>();
         shootBallController.StartBurning();
     }
 

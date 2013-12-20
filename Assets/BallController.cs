@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class ShootBallController : MonoBehaviour
+public class BallController : MonoBehaviour
 {
-    public GameObject ShootBall;
+    public GameObject Ball;
 
     private ParticleSystem burning;
 

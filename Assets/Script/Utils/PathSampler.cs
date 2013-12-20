@@ -7,6 +7,10 @@ public class PathSampler : MonoBehaviour
 {
     public float InternalDuration = 3f;
 
+    public List<string> SampleList;
+
+    public bool SampleAll;
+
     private bool sampling;
 
     private readonly List<Vector3> sampleList = new List<Vector3>();
@@ -24,6 +28,11 @@ public class PathSampler : MonoBehaviour
     {
         foreach (var path in iTweenPath.Paths)
         {
+            if(!SampleAll && !SampleList.Contains(path.Key))
+            {
+                Debug.Log("Passing through itween path: " + path.Key);
+                continue;
+            }
             Setup(path.Key);
             Sample(path.Key);
             yield return new WaitForSeconds(durationList[path.Key]);
@@ -42,6 +51,10 @@ public class PathSampler : MonoBehaviour
     {
         foreach (var path in iTweenPath.Paths)
         {
+            if(!SampleAll && !SampleList.Contains(path.Key))
+            {
+                continue;
+            }
             var pathLength = iTween.PathLength(iTweenPath.GetPath(path.Key));
             var speed = (float)sampleEvent.Values["speed"];
             var duration = pathLength / speed;
@@ -77,8 +90,18 @@ public class PathSampler : MonoBehaviour
     {
         Debug.Log("Application path: " + Application.dataPath);
 
+        PreHandle();
+
         sampleEvent = iTweenEvent.GetEvent(gameObject, "Sample");
         InitializeDuration();
+    }
+
+    private void PreHandle()
+    {
+        for(var i = 0; i < SampleList.Count; ++i)
+        {
+            SampleList[i] = SampleList[i].ToLower();
+        }
     }
 
     private void Setup(string path)
