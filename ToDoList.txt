@@ -5,7 +5,7 @@ Feature:
 - Running ball with shooting.
 - Balls booming with (3, 4, 5 balls) effects.	(done)
 - Balls could moving backward (now forward only.) (done)
-- Read ball data from files, including ball list and shoot ball location.
+- Read ball data from files, including ball list and shoot ball location.(done)
 
 Bug:
 - shooter ball collision test. (Ray cast hit test not good. sphear test is using) (done)
@@ -26,9 +26,10 @@ Enhancement:
 - remove gui menu.(done)
 - improvement settings editor window.
 
-Arts:
+Arts dream:
 - name it. with animation.
 - we need sound.
 - magic show, snow flowing to the background, balling the IGT logo.
 - explosion effect.
-- shooting balls specification.
+- shooting balls specification. (done)
+- ball split up to 2 or up balls, balls combine to one huge ball.
