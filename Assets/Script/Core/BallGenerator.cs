@@ -17,7 +17,8 @@ public class BallGenerator : MonoBehaviour
         }
 
         // sphear collider, which x and z equals diameter in our case.
-        Utils.BallManager.Diameter = TemplateBallList[0].transform.GetChild(0).collider.bounds.size.x;
+        var ballController = Utils.BallGenerator.TemplateBallList[0].GetComponent<BallController>();
+        Utils.BallManager.Diameter = ballController.Diameter;
     }
 
     void Start()

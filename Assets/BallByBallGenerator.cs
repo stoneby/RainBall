@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BallByBallGenerator : MonoBehaviour
 {
-    public string InputPath;
+    public PathParser Parser;
 
     private List<Vector3> ballBallList;
     private float distance;
@@ -20,30 +20,31 @@ public class BallByBallGenerator : MonoBehaviour
             ballBallList = new List<Vector3>();
         }
         var ballController = Utils.BallGenerator.TemplateBallList[0].GetComponent<BallController>();
-        distance = ballController.Ball.GetComponent<SphereCollider>().radius * 2;
+        distance = ballController.Diameter;
     }
 
     public void Generate()
     {
+        Parser.ReadFromFile(Parser.SampleFile);
         ballBallList.Clear();
 
-        var nodeList = iTweenPath.GetPath(InputPath);
+        var nodeList = Parser.PositionList;
         var currentLoc = nodeList[0];
-        var lastLoc = nodeList[nodeList.Length - 1];
-        var counter = 0;
         do
         {
-            if(Vector3.Distance(currentLoc, lastLoc) < 0.1f || counter > 100)
-            {
-                break;
-            }
             ballBallList.Add(currentLoc);
             Debug.Log("Add location: " + currentLoc);
 
             var newPath = Utils.TrimPath(nodeList, currentLoc, MoveDirection.Forward, distance);
+            if (newPath == null)
+            {
+                break;
+            }
             var newLoc = newPath[newPath.Count - 1];
             currentLoc = newLoc;
-            counter++;
         } while(true);
+        Parser.PositionList.Clear();
+        Parser.PositionList.AddRange(ballBallList);
+        Parser.WriteToFile(Parser.SampleFile.name + "_BallByBall.txt");
     }
 }

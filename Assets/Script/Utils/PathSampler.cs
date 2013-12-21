@@ -11,6 +11,8 @@ public class PathSampler : MonoBehaviour
 
     public bool SampleAll;
 
+    public PathParser Parser;
+
     private bool sampling;
 
     private readonly List<Vector3> sampleList = new List<Vector3>();
@@ -73,16 +75,11 @@ public class PathSampler : MonoBehaviour
     {
         sampling = false;
 
-        var text = string.Empty;
-        sampleList.ForEach(position =>
-            {
-                text = string.Format("{0}\n{1}", text, position);
-            });
         var sampleFile = string.Format("{0}.txt", sampleEvent.Values["path"] as string);
         sampleFile = sampleFile.ToUpper();
-        var path = string.Format("{0}/{1}", Application.dataPath, sampleFile);
-        File.WriteAllText(path, text);
-        Debug.Log("Sample file save to: " + path);
+        Parser.PositionList = sampleList;
+        Parser.WriteToFile(sampleFile);
+        Debug.Log("Sample file save to: " + sampleFile);
     }
 
     // Use this for initialization

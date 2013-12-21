@@ -1,18 +1,14 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PathGenerator : MonoBehaviour
 {
     public GameObject PathParent;
 
-    public TextAsset SampleFile;
-
-    private readonly List<Vector3> positionList = new List<Vector3>();
+    public PathParser Parser;
 
     public bool GenerateTweenPath(TextAsset textAsset)
     {
-        if (!ReadFromFile(textAsset))
+        if (!Parser.ReadFromFile(textAsset))
         {
             return false;
         }
@@ -25,9 +21,9 @@ public class PathGenerator : MonoBehaviour
     {
         var pathName = LevelManager.GetDetailPath(textAsset.name);
 
-        var pathLength = iTween.PathLength(positionList.ToArray());
+        var pathLength = iTween.PathLength(Parser.PositionList.ToArray());
         var ballController = Utils.BallGenerator.TemplateBallList[0].GetComponent<BallController>();
-        var nodeCount = (int)(pathLength / ballController.Ball.GetComponent<SphereCollider>().radius * 2) + 1;
+        var nodeCount = (int)(pathLength / ballController.Diameter);
         nodeCount = (nodeCount >= iTweenPath.MaxNodeCount) ? iTweenPath.MaxNodeCount : nodeCount;
 
         Debug.Log("Generate path: name - " + pathName + ", length - " + pathLength + ", detail node count - " + nodeCount);
@@ -35,36 +31,10 @@ public class PathGenerator : MonoBehaviour
         var pathObject = new GameObject(pathName);
         pathObject.transform.parent = PathParent.transform;
         pathObject.layer = PathParent.layer;
-        var trimmedNodeList = Utils.TrimList(positionList, nodeCount);
+        var trimmedNodeList = Utils.TrimList(Parser.PositionList, nodeCount);
         Utils.ConfigureTweenPath(pathObject, trimmedNodeList, pathName);
-    }
-
-    private bool ReadFromFile(TextAsset textAsset)
-    {
-        positionList.Clear();
-        try
-        {
-            var lines = textAsset.text.Split('\n');
-            foreach (var line in lines)
-            {
-                if (string.IsNullOrEmpty(line))
-                {
-                    continue;
-                }
-
-                var thinLine = line.Trim().Substring(1, line.Length - 2);
-                var tokens = thinLine.Split(',');
-                var position = new Vector3(float.Parse(tokens[0].Trim()),
-                                           float.Parse(tokens[1].Trim()), float.Parse(tokens[2].Trim()));
-                positionList.Add(position);
-            }
-            Debug.Log("Read from file: " + SampleFile.name + ", position count = " + positionList.Count);
-        }
-        catch(Exception)
-        {
-            Debug.LogWarning("File: " + SampleFile.name + " is not a valid sample file.");
-            return false;
-        }
-        return true;
+        Parser.PositionList = trimmedNodeList;
+        Parser.WriteToFile(pathName + ".txt");
+        Debug.Log("Write to file: " + pathName + ".txt");
     }
 }

@@ -18,7 +18,7 @@ public class PathGeneratorEditor : Editor
                 return;
             }
 
-            if (!pathGenerator.GenerateTweenPath(pathGenerator.SampleFile))
+            if (!pathGenerator.GenerateTweenPath(pathGenerator.Parser.SampleFile))
             {
                 EditorUtility.DisplayDialog("Error", "Make sure objects are set correctly and Sample File is valid, please do re-selection.", "Gocha");
             }
@@ -49,7 +49,7 @@ public class PathGeneratorEditor : Editor
     private bool ErrorChecking()
     {
         var pathGenerator = target as PathGenerator;
-        if (pathGenerator.PathParent == null || pathGenerator.SampleFile == null)
+        if (pathGenerator.PathParent == null || pathGenerator.Parser.SampleFile == null)
         {
             EditorUtility.DisplayDialog("Error", "Make sure objects are set correctly.", "Gocha");
             return false;

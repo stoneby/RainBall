@@ -1,18 +1,8 @@
 using UnityEngine;
 
-public class PaintedEggController : MonoBehaviour
+public class OneBallShow : MagicShow
 {
-    public GameObject TemplateBall;
-
-    void OnGUI()
-    {
-        if (GUILayout.Button("Go"))
-        {
-            Go();
-        }
-    }
-
-    private void Go()
+    public override void ShowTime()
     {
         Move("I");
         Move("G");

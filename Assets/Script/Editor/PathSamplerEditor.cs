@@ -6,6 +6,7 @@ public class PathSamplerEditor : Editor
     private SerializedProperty sampleAllProperty;
     private SerializedProperty sampleListProperty;
     private SerializedProperty internalDurationProperty;
+    private SerializedProperty parserProperty;
 
     private string sampleListCount;
 
@@ -13,12 +14,14 @@ public class PathSamplerEditor : Editor
     {
         sampleAllProperty = serializedObject.FindProperty("SampleAll");
         internalDurationProperty = serializedObject.FindProperty("InternalDuration");
+        parserProperty = serializedObject.FindProperty("Parser");
     }
 
     public override void OnInspectorGUI()
     {
         EditorGUILayout.PropertyField(internalDurationProperty);
         EditorGUILayout.PropertyField(sampleAllProperty);
+        EditorGUILayout.PropertyField(parserProperty);
 
         if(!sampleAllProperty.boolValue)
         {

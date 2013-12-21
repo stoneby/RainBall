@@ -4,6 +4,8 @@ public class BallController : MonoBehaviour
 {
     public GameObject Ball;
 
+    public float Diameter {get { return Ball.collider.bounds.size.x; }}
+
     private ParticleSystem burning;
 
     public void StartBurning()

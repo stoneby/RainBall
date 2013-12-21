@@ -492,7 +492,15 @@ public static class Utils
         var result = new List<Vector3>();
 
         var beginIndex = GetTrimNodeIndex(nodeList, position);
+        if ((beginIndex == nodeList.Length - 1 && direction == MoveDirection.Forward) ||
+            (beginIndex == 0 && direction == MoveDirection.Backward))
+        {
+            Debug.LogWarning("You got the boundary case, please do the null check to the end of your job.");
+            return null;
+        }
+
         beginIndex = (direction == MoveDirection.Forward) ? beginIndex + 1 : beginIndex;
+
         var startPosition = nodeList[beginIndex];
         var firstDistance = Mathf.Abs(Vector3.Distance(position, nodeList[beginIndex]));
         if (firstDistance < distance)
@@ -515,10 +523,10 @@ public static class Utils
                 }
 
                 var finalPosition = (nodeList[beginIndex] + nodeList[endIndex]) / 2;
-                var finalVecgtor = finalPosition - position;
-                finalVecgtor.Normalize();
-                finalVecgtor = finalVecgtor*distance;
-                finalPosition = position + finalVecgtor;
+                var finalVector = finalPosition - position;
+                finalVector.Normalize();
+                finalVector = finalVector*distance;
+                finalPosition = position + finalVector;
 
                 result.Add(position);
                 result.Add(startPosition);
