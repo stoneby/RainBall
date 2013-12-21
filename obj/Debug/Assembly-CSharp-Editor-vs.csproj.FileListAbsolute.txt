@@ -10,3 +10,4 @@ D:\code\GitHub\RainBall\Temp\bin\Debug\Assembly-CSharp.pdb
 D:\code\GitHub\RainBall\obj\Debug\Assembly-CSharp-Editor-vs.csprojResolveAssemblyReference.cache
 D:\code\GitHub\RainBall\obj\Debug\Assembly-CSharp-Editor.dll
 D:\code\GitHub\RainBall\obj\Debug\Assembly-CSharp-Editor.pdb
+D:\code\GitHub\RainBall\Temp\bin\Debug\Assembly-UnityScript.dll
