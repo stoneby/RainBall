@@ -3,16 +3,16 @@ using UnityEngine;
 
 public abstract class AbstractShootBehaviour : MonoBehaviour
 {
+    public bool ShootEndEnabled;
     public event EventHandler<EventArgs> ShootEnd;
 
     public abstract void Shoot(GameObject shootObject, GameObject hitObject);
 
     public void EndShoot()
     {
-        Debug.Log("End Shoot.");
-
-        if (ShootEnd != null)
+        if (ShootEndEnabled && ShootEnd != null)
         {
+            Debug.Log("End Shoot.");
             ShootEnd(this, new EventArgs());
         }
     }

@@ -11,6 +11,8 @@ public class GameIdleState : AbstractState
 
         entered = true;
 
+        Utils.Shooter.ShootBehaviour.ShootEndEnabled = true;
+
         if (Utils.GameSerializer.HasPlayed)
         {
             CirclingBalls();

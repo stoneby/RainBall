@@ -8,6 +8,8 @@ public class InitializingState : AbstractState
     {
         Debug.Log(GetType().Name + ": Go.");
 
+        Utils.Shooter.ShootBehaviour.ShootEndEnabled = true;
+
         StartCoroutine("DoGo");
     }
 

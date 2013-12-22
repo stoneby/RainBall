@@ -26,6 +26,7 @@ public static class Utils
     private static StateMachineGambleState gameStateMachine;
     private static GameSerializer gameSerializer;
     private static GameDataManager gameDataManager;
+    private static GameStatus gameStatus;
 
     private const float MaxAngleEdge = 135f;
     private const float DistanceTheta = 0.1f;
@@ -161,6 +162,14 @@ public static class Utils
         }
     }
 
+    public static GameStatus GameStatus
+    {
+        get
+        {
+            return gameStatus ??
+                   (gameStatus = GameObject.FindGameObjectWithTag("GameStatus").GetComponent<GameStatus>());
+        }
+    }
     #endregion
 
     #region Intersection
@@ -587,6 +596,39 @@ public static class Utils
                 {"position", position},
                 {"speed", speed}
             });
+    }
+
+    #endregion
+
+    #region Shuffle
+
+    public static void InitRandomList(List<int> randomList, int count)
+    {
+        randomList.Clear();
+        for (var i = 0; i < count; ++i)
+        {
+            randomList.Add(i);
+        }
+    }
+
+    public static void Shuffle(List<int> randomList)
+    {
+        for (var i = 0; i < randomList.Count; ++i)
+        {
+            var index = UnityEngine.Random.Range(0, randomList.Count);
+            if (i == index)
+            {
+                continue;
+            }
+            Swap(randomList, i, index);
+        }
+    }
+
+    private static void Swap(List<int> list, int start, int end)
+    {
+        var temp = list[start];
+        list[start] = list[end];
+        list[end] = temp;
     }
 
     #endregion
