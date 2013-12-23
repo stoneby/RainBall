@@ -6,7 +6,6 @@ public class QuaternionTestEditor : Editor
 {
     void OnEnable()
     {
-        // Setup the SerializedProperties
         serializedObject.FindProperty("Speed");
         serializedObject.FindProperty("Angle");
     }

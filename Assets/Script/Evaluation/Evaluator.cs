@@ -31,9 +31,7 @@ public class Evaluator : MonoBehaviour
 		// Display result in Menu
 		if (CurrentAwardInfor.Award != null)
 		{
-			CreditBar cb = Utils.CreditBar;
-			cb.PaidChange(CurrentAwardInfor.Award.Value);
-			cb.CreditChange(CurrentAwardInfor.Award.Value);
+            Utils.CreditBar.UpdateMeter(CurrentAwardInfor.Award.Value);
 		}
 		else
         {
