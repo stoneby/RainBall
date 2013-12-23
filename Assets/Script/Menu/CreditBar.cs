@@ -42,13 +42,6 @@ public class CreditBar : MonoBehaviour
         GUI.Label(creditRect, "" + (CreditNum + meterIncrement), NumberStyle);
         GUI.Label(paidRect, "" + (PaidNum + meterIncrement), NumberStyle);
         GUI.EndGroup();
-
-        if(GUILayout.Button("get resolution"))
-        {
-            Debug.Log("Screen width: " + Screen.width + ", height: " + Screen.height + ", full screen: " + Screen.fullScreen);
-            Debug.Log(Screen.currentResolution.height + ", width: " + Screen.currentResolution.width + ", ratio: " + Screen.currentResolution.height / Screen.currentResolution.width);
-            Debug.Log("Screen mode: " + screenMode);
-        }
     }
 
     private ScreenMode GetScreenMode(float ratio)
