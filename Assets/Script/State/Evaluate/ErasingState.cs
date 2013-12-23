@@ -5,7 +5,7 @@ using UnityEngine;
 public class ErasingState : AbstractState
 {
     public float MovingDuration;
-	public Transform Explosion;
+    public Transform Explosion;
 
     private Vector3 endLocation;
 
@@ -29,34 +29,34 @@ public class ErasingState : AbstractState
 
         endLocation = endBall.transform.position;
 
-        for (var i = awardInfor.StartIndex; i < awardInfor.StartIndex + awardInfor.Award.Num; ++i)
+        for(var i = awardInfor.StartIndex; i < awardInfor.StartIndex + awardInfor.Award.Num; ++i)
         {
             var ball = ballList[i].gameObject;
             // Show the explosion effects, this gameobject will be destroyed later by itself.
-			Instantiate (Explosion, ball.transform.position, Quaternion.identity);
-			Destroy(ball);
+            Instantiate(Explosion, ball.transform.position, Quaternion.identity);
+            Destroy(ball);
         }
 
         ballList.RemoveRange(awardInfor.StartIndex, awardInfor.Award.Num);
 
         Debug.Log("Erasing ball number of " + awardInfor.Award.Num + ", starting with index of " + awardInfor.StartIndex);
 
-        for (var i = 0; i < ballList.Count; ++i)
+        for(var i = 0; i < ballList.Count; ++i)
         {
             ballList[i].Index = i;
             ballList[i].name = ballList[i].Name;
         }
 
-        if (ballList.Count == 0)
+        if(ballList.Count == 0)
         {
             return;
         }
         // build relationship after erasing.
-        if (awardInfor.StartIndex == ballList.Count)
+        if(awardInfor.StartIndex == ballList.Count)
         {
             ballList[awardInfor.StartIndex - 1].NextBall = null;
         }
-        else if (awardInfor.StartIndex == 0)
+        else if(awardInfor.StartIndex == 0)
         {
             ballList[awardInfor.StartIndex].LastBall = null;
         }
@@ -70,7 +70,7 @@ public class ErasingState : AbstractState
     private void Move()
     {
         var awardInfor = Utils.Evaluator.CurrentAwardInfor;
-        if (awardInfor.StartIndex >= Utils.BallManager.BallUpdaterList.Count)
+        if(awardInfor.StartIndex >= Utils.BallManager.BallUpdaterList.Count)
         {
             OnEnd();
             return;
