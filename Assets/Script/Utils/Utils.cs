@@ -11,8 +11,8 @@ public static class Utils
 {
     public static Vector3 InvalidPoint = Vector3.zero;
 
-    private static BallManager ballManager;
-    private static BallGenerator ballGenerator;
+    private static BallChainManager ballChainManager;
+    private static BallChainGenerator ballChainGenerator;
     private static GameObject templateBall;
     private static PathAnimationController pathController;
     private static Settings settings;
@@ -33,19 +33,19 @@ public static class Utils
 
     #region Instance Helper
 
-    public static BallManager BallManager
+    public static BallChainManager BallChainManager
     {
         get {
-            return ballManager ??
-                   (ballManager = GameObject.FindGameObjectWithTag("BallManager").GetComponent<BallManager>());
+            return ballChainManager ??
+                   (ballChainManager = GameObject.FindGameObjectWithTag("BallManager").GetComponent<BallChainManager>());
         }
     }
 
-    public static BallGenerator BallGenerator
+    public static BallChainGenerator BallChainGenerator
     {
         get {
-            return ballGenerator ??
-                   (ballGenerator = GameObject.FindGameObjectWithTag("BallManager").GetComponent<BallGenerator>());
+            return ballChainGenerator ??
+                   (ballChainGenerator = GameObject.FindGameObjectWithTag("BallManager").GetComponent<BallChainGenerator>());
         }
     }
 

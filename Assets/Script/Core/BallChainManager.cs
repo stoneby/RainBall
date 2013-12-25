@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallManager : MonoBehaviour
+public class BallChainManager : MonoBehaviour
 {
     public List<BallUpdater> BallUpdaterList { get; set; }
 
@@ -51,6 +51,7 @@ public class BallManager : MonoBehaviour
 
     void MoveStart(string leadBallName)
     {
+        Debug.LogWarning(leadBallName);
         headBall = transform.FindChild(leadBallName).gameObject;
 
         Debug.Log("MoveStart, lead ball: " + headBall.name + ", count: " + transform.childCount + ", frame: " + Time.frameCount);
@@ -61,7 +62,9 @@ public class BallManager : MonoBehaviour
         {
             var path = iTweenEvent.GetEvent(headBall, "Move").Values["path"];
             var levelMoving = path.Equals(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
-            Debug.LogWarning("actual path: " + path + ", level Path: " + Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
+            Debug.LogWarning("actual path: " + path + ", level Path: " +
+                             Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path + "\n Is level moving: " +
+                             levelMoving);
             StartMoving(this,
                         new BallMoveArgs
                             {
@@ -83,6 +86,9 @@ public class BallManager : MonoBehaviour
         {
             var path = iTweenEvent.GetEvent(headBall, "Move").Values["path"];
             var levelMoving = path.Equals(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
+            Debug.LogWarning("actual path: " + path + ", level Path: " +
+                             Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path + "\n Is level moving: " +
+                             levelMoving);
             StopMoving(this, new BallMoveArgs
                 {
                     LeaderName = leadBallName,

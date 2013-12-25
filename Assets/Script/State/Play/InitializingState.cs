@@ -15,12 +15,12 @@ public class InitializingState : AbstractState
 
     IEnumerator DoGo()
     {
-        Utils.BallGenerator.Generate();
+        Utils.BallChainGenerator.Generate();
 
         // wait one frame to destroy original balls.
         yield return null;
 
-        var leaderBall = Utils.BallManager.BallUpdaterList[0];
+        var leaderBall = Utils.BallChainManager.BallUpdaterList[0];
         Utils.MoveLevel(leaderBall.gameObject, Utils.Settings.MoveSpeed);
 
 		// Decrease Credit number and clear up Paid number in Menu
@@ -39,6 +39,6 @@ public class InitializingState : AbstractState
     {
         base.Start();
 
-        Utils.BallManager.StopMoving += OnStopMoving;
+        Utils.BallChainManager.StopMoving += OnStopMoving;
     }
 }

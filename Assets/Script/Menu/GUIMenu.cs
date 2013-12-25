@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class GUIMenu : MonoBehaviour
 {
-    public BallManager Manager;
-    public BallGenerator Generator;
+    public BallChainManager ChainManager;
+    public BallChainGenerator ChainGenerator;
     public MoveDirection MoveDirection;
     public Transform BeginLocation;
     public Transform EndLocation;
@@ -15,8 +15,8 @@ public class GUIMenu : MonoBehaviour
     {
         if (GUILayout.Button("ITween path"))
         {
-            leadBall = Utils.BallManager.BallUpdaterList[0].gameObject;
-            Manager.MoveDirection = MoveDirection.Forward;
+            leadBall = Utils.BallChainManager.BallUpdaterList[0].gameObject;
+            ChainManager.MoveDirection = MoveDirection.Forward;
             Utils.MoveLevel(leadBall, Utils.Settings.MoveSpeed);
         }
 
@@ -42,7 +42,7 @@ public class GUIMenu : MonoBehaviour
 
         if (GUILayout.Button("Shaking Fears"))
         {
-            Manager.BallUpdaterList.ForEach(ball => iTweenEvent.GetEvent(ball.gameObject, "Fear").Play());
+            ChainManager.BallUpdaterList.ForEach(ball => iTweenEvent.GetEvent(ball.gameObject, "Fear").Play());
         }
 
         if (GUILayout.Button("Generate Path By One Position"))
@@ -68,17 +68,17 @@ public class GUIMenu : MonoBehaviour
 
         if (GUILayout.Button("Moving Forward"))
         {
-            Utils.BallManager.MoveDirection = MoveDirection.Forward;
+            Utils.BallChainManager.MoveDirection = MoveDirection.Forward;
 
-            var leadingBall = Utils.BallManager.BallUpdaterList[0];
+            var leadingBall = Utils.BallChainManager.BallUpdaterList[0];
             MoveFreely(leadingBall);
         }
 
         if (GUILayout.Button("Moving Backward"))
         {
-            Utils.BallManager.MoveDirection = MoveDirection.Backward;
+            Utils.BallChainManager.MoveDirection = MoveDirection.Backward;
 
-            var leadingBall = Utils.BallManager.BallUpdaterList[Utils.BallManager.BallUpdaterList.Count - 1];
+            var leadingBall = Utils.BallChainManager.BallUpdaterList[Utils.BallChainManager.BallUpdaterList.Count - 1];
             MoveFreely(leadingBall);
         }
     }
@@ -124,9 +124,9 @@ public class GUIMenu : MonoBehaviour
 
     IEnumerator Generate()
     {
-        Manager.BallUpdaterList.Clear();
+        ChainManager.BallUpdaterList.Clear();
         yield return new WaitForSeconds(1f);
-        Generator.Generate();
+        ChainGenerator.Generate();
     }
 
     void Start()

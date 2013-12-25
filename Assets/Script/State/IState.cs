@@ -6,6 +6,7 @@ public enum StateType
     GamePlay,
     Cleaningup,
     Initializing,
+    PreShooting,
     Shooting,
     Booming,
     PlayEnding,

@@ -62,8 +62,5 @@ public class StateMachineShootState : AbstractContainerState
         InitState = StateType.Initializing;
         CurrentState = InitState;
         EndState = StateType.FinalEnding;
-
-        Utils.GameDataManager.Next();
-        Utils.GameDataManager.Display();
     }
 }

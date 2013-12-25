@@ -12,7 +12,7 @@ public abstract class MagicShow : MonoBehaviour
 
     public GameObject GenerateBall(Transform parent, Vector3 position)
     {
-        var templateBallList = Utils.BallGenerator.TemplateBallList;
+        var templateBallList = Utils.Settings.TemplateBallList;
         var index = Random.Range(0, templateBallList.Count);
         var ball =
             Instantiate(templateBallList[index], position, templateBallList[index].transform.rotation) as GameObject;

@@ -20,8 +20,8 @@ public class CleaningupState : AbstractState
 
     IEnumerator Disappear()
     {
-        Utils.BallManager.BallUpdaterList.ForEach(ball => iTweenEvent.GetEvent(ball.gameObject, "Disappear").Play());
-        Utils.BallManager.BallUpdaterList.ForEach(ball => iTweenEvent.GetEvent(ball.gameObject, "Fear").Play());
+        Utils.BallChainManager.BallUpdaterList.ForEach(ball => iTweenEvent.GetEvent(ball.gameObject, "Disappear").Play());
+        Utils.BallChainManager.BallUpdaterList.ForEach(ball => iTweenEvent.GetEvent(ball.gameObject, "Fear").Play());
 
         var disappearEvent = iTweenEvent.GetEvent(Utils.TemplateBall, "Disappear");
         yield return new WaitForSeconds(float.Parse(disappearEvent.Values["time"].ToString()));

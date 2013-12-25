@@ -19,6 +19,11 @@ public class GameDataManager : MonoBehaviour
         get { return ShootReader.ShootLocationsList[Shuffler.CurrentIndex]; }
     }
 
+    public ShootPair CurrentShoot
+    {
+        get { return CurrentShootChain[ShootBallIndex]; }
+    }
+
     /// <summary>
     /// Shoot ball index of current game play, say 5 shoot in total
     /// </summary>

@@ -19,6 +19,12 @@ public class GamePlayState : AbstractContainerState
                 CurrentState = StateType.Initializing;
                 break;
             case StateType.Initializing:
+                // prepare hitting ball list.
+                Utils.GameDataManager.CurrentShootChain.ForEach(
+                    shootPair => Utils.Shooter.HitBallList.Add(Utils.BallChainManager.BallUpdaterList[shootPair.Location].gameObject));
+                CurrentState = StateType.PreShooting;
+                break;
+            case StateType.PreShooting:
                 CurrentState = StateType.Shooting;
                 break;
             case StateType.Shooting:
@@ -27,7 +33,7 @@ public class GamePlayState : AbstractContainerState
             case StateType.Booming:
                 CurrentState = (Utils.GameDataManager.ShootBallIndex == Utils.GameDataManager.CurrentShootChain.Count - 1)
                                    ? StateType.PlayEnding
-                                   : StateType.Shooting;
+                                   : StateType.PreShooting;
                 Debug.Log("Current shooting ball index: " + Utils.GameDataManager.ShootBallIndex + ", shoot balls total num: " +
                           Utils.GameDataManager.CurrentShootChain.Count);
                 ++Utils.GameDataManager.ShootBallIndex;

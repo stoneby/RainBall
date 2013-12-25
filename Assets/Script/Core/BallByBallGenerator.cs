@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BallByBallGenerator : MonoBehaviour
 {
+    public GameObject TemplateBall;
     public PathParser Parser;
 
     private List<Vector3> ballBallList;
@@ -19,7 +20,7 @@ public class BallByBallGenerator : MonoBehaviour
         {
             ballBallList = new List<Vector3>();
         }
-        var ballController = Utils.BallGenerator.TemplateBallList[0].GetComponent<BallController>();
+        var ballController = TemplateBall.GetComponent<BallController>();
         distance = ballController.Diameter;
     }
 

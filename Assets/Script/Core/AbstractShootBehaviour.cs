@@ -16,4 +16,10 @@ public abstract class AbstractShootBehaviour : MonoBehaviour
             ShootEnd(this, new EventArgs());
         }
     }
+
+    public void Burning(GameObject shootObject)
+    {
+        var shootBallController = shootObject.GetComponent<BallController>();
+        shootBallController.StartBurning();
+    }
 }

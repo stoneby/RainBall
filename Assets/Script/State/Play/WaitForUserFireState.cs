@@ -56,7 +56,7 @@ public class WaitForUserFireState : AbstractState
 
     private void SetBallsPhysics(bool enable)
     {
-        Utils.BallManager.BallUpdaterList.ForEach(ball =>
+        Utils.BallChainManager.BallUpdaterList.ForEach(ball =>
                                                       {
                                                           var layer = (enable)
                                                                           ? LayerMask.NameToLayer("Default")
@@ -83,7 +83,7 @@ public class WaitForUserFireState : AbstractState
     {
         base.Awake();
 
-        var templateBall = Utils.BallGenerator.TemplateBallList[0];
+        var templateBall = Utils.Settings.TemplateBallList[0];
         axisY = templateBall.transform.position.y;
         // make sure the y axis is the same as all balls in.
         stackerPoint = new Vector3(gameObject.transform.position.x, axisY, gameObject.transform.position.z);

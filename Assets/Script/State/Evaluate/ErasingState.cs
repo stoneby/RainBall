@@ -20,7 +20,7 @@ public class ErasingState : AbstractState
 
     private void Erase()
     {
-        var ballList = Utils.BallManager.BallUpdaterList;
+        var ballList = Utils.BallChainManager.BallUpdaterList;
         var awardInfor = Utils.Evaluator.CurrentAwardInfor;
 
         var endBall = ballList[awardInfor.StartIndex];
@@ -70,16 +70,16 @@ public class ErasingState : AbstractState
     private void Move()
     {
         var awardInfor = Utils.Evaluator.CurrentAwardInfor;
-        if(awardInfor.StartIndex >= Utils.BallManager.BallUpdaterList.Count)
+        if(awardInfor.StartIndex >= Utils.BallChainManager.BallUpdaterList.Count)
         {
             OnEnd();
             return;
         }
 
-        Utils.BallManager.MoveDirection = MoveDirection.Forward;
+        Utils.BallChainManager.MoveDirection = MoveDirection.Forward;
 
-        var moveObject = Utils.BallManager.BallUpdaterList[awardInfor.StartIndex].gameObject;
-        Utils.BallManager.InsertTrackingTail(awardInfor.StartIndex, Utils.BallManager.MoveDirection);
+        var moveObject = Utils.BallChainManager.BallUpdaterList[awardInfor.StartIndex].gameObject;
+        Utils.BallChainManager.InsertTrackingTail(awardInfor.StartIndex, Utils.BallChainManager.MoveDirection);
         Utils.ConfigureTweenPath(moveObject, moveObject.transform.position, endLocation);
         Utils.MovePartical(moveObject, Utils.Settings.BoomMovingSpeed);
 

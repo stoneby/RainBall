@@ -9,7 +9,7 @@ public class EvaluateEraseState : AbstractState
     {
         Debug.Log(GetType().Name + ": Go.");
 
-        var ballList = Utils.BallManager.BallUpdaterList;
+        var ballList = Utils.BallChainManager.BallUpdaterList;
         if (ballList.Count == 0)
         {
             Debug.Log(GetType().Name + ", ball list is empty, you erase all balls, dude.");

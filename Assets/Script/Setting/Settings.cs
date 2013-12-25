@@ -42,4 +42,23 @@ public class Settings : MonoBehaviour
     #endregion
 
     public List<Color> ColorList;
+
+    public List<GameObject> TemplateBallList;
+
+    void Awake()
+    {
+        if(TemplateBallList == null || TemplateBallList.Count != Utils.Settings.TotalColorCount)
+        {
+            Debug.LogError("Please double check whether template ball list has been attached or " +
+                           "the count is not equal to total color count according to globel game settings.");
+
+        }
+    }
+
+    void Start()
+    {
+        // sphear collider, which x and z equals diameter in our case.
+        var ballController = TemplateBallList[0].GetComponent<BallController>();
+        Utils.BallChainManager.Diameter = ballController.Diameter;
+    }
 }

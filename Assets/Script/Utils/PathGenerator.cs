@@ -22,7 +22,7 @@ public class PathGenerator : MonoBehaviour
         var pathName = LevelManager.GetDetailPath(textAsset.name);
 
         var pathLength = iTween.PathLength(Parser.PositionList.ToArray());
-        var ballController = Utils.BallGenerator.TemplateBallList[0].GetComponent<BallController>();
+        var ballController = Utils.Settings.TemplateBallList[0].GetComponent<BallController>();
         var nodeCount = (int)(pathLength / ballController.Diameter);
         nodeCount = (nodeCount >= iTweenPath.MaxNodeCount) ? iTweenPath.MaxNodeCount : nodeCount;
 

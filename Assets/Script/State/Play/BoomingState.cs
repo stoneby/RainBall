@@ -34,7 +34,7 @@ public class BoomingState : AbstractState
         shootBall.transform.parent = hittingBall.transform.parent;
         shootBall.layer = hittingBall.layer;
 
-        var ballList = Utils.BallManager.BallUpdaterList;
+        var ballList = Utils.BallChainManager.BallUpdaterList;
         // update ball list.
         ballList.Insert((nextBall == null) ? ballList.Count : (nextBall.GetComponent<BallUpdater>().Index), shootBallUpdater);
 
@@ -50,7 +50,7 @@ public class BoomingState : AbstractState
         // get last ball's final position.
         var lastBall = (nextBall == null) ? ballList[ballList.Count - 2] : ballList[ballList.Count - 1];
         var finalBallNodeList = Utils.TrimPath(Utils.LevelManager.GetPathNodes(), lastBall.transform.position,
-                                               MoveDirection.Backward, Utils.BallManager.Diameter);
+                                               MoveDirection.Backward, Utils.BallChainManager.Diameter);
         var finalBallPosition = finalBallNodeList[finalBallNodeList.Count - 1];
 
         for (var i = shootBallUpdater.Index; i < ballList.Count - 1; ++i)

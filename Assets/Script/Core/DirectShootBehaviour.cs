@@ -7,6 +7,7 @@ public class DirectShootBehaviour : AbstractShootBehaviour
         iTween.MoveTo(shootObject,
                       iTween.Hash("position", hitObject.transform.position, "speed", Utils.Settings.ShootSpeed, "easetype",
                                   iTween.EaseType.linear, "oncomplete", "MoveComplete", "oncompletetarget", gameObject));
+        Burning(shootObject);
     }
 
     void MoveComplete()

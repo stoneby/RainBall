@@ -1,7 +1,7 @@
 using UnityEditor;
 
-[CustomEditor(typeof (BallGenerator))]
-public class BallGeneratorEditor : Editor
+[CustomEditor(typeof (BallChainGenerator))]
+public class BallChainGeneratorEditor : Editor
 {
     public override void OnInspectorGUI()
     {

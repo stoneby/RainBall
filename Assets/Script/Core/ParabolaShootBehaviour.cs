@@ -13,6 +13,8 @@ public class ParabolaShootBehaviour : AbstractShootBehaviour
 
     IEnumerator DoShoot(GameObject shootObject, GameObject hitObject)
     {
+        Burning(shootObject);
+
         var targetPosition = hitObject.transform.position;
         var shootBall = shootObject.transform.GetChild(0).gameObject;
 
