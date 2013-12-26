@@ -15,6 +15,8 @@ public class InitializingState : AbstractState
 
     IEnumerator DoGo()
     {
+        Utils.BallChainManager.StopMoving += OnStopMoving;
+
         Utils.BallChainGenerator.Generate();
 
         // wait one frame to destroy original balls.
@@ -29,16 +31,11 @@ public class InitializingState : AbstractState
 
     private void OnStopMoving(object sender, BallMoveArgs args)
     {
-        if (args.IsLevelMoving)
+        Utils.BallChainManager.StopMoving -= OnStopMoving;
+
+        if(args.IsLevelMoving)
         {
             OnEnd();
         }
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-
-        Utils.BallChainManager.StopMoving += OnStopMoving;
     }
 }

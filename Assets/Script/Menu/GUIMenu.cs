@@ -81,6 +81,47 @@ public class GUIMenu : MonoBehaviour
             var leadingBall = Utils.BallChainManager.BallUpdaterList[Utils.BallChainManager.BallUpdaterList.Count - 1];
             MoveFreely(leadingBall);
         }
+
+        if(GUILayout.Button("Snooze"))
+        {
+            Utils.BallChainManager.BallUpdaterList.ForEach(ball =>
+                                                               {
+                                                                   var tween = iTweenEvent.GetEvent(ball.gameObject,
+                                                                                                    "Fear");
+                                                                   tween.Play();
+                                                               });
+        }
+
+        if(GUILayout.Button("Cycling"))
+        {
+            StartCycling();
+        }
+
+        if(GUILayout.Button("Stop Cycling"))
+        {
+            StopCycling();
+        }
+    }
+
+    void StartCycling()
+    {
+        Utils.BallChainManager.StopMoving += OnStopMoving;
+
+        var headBall = Utils.BallChainManager.BallUpdaterList[0].gameObject;
+        var move = iTweenEvent.GetEvent(headBall, "Move");
+        move.Play();
+    }
+
+    void StopCycling()
+    {
+        Utils.BallChainManager.StopMoving -= OnStopMoving;
+    }
+
+    private void OnStopMoving(object sender, BallMoveArgs args)
+    {
+        var headBall = Utils.BallChainManager.BallUpdaterList[0].gameObject;
+        var move = iTweenEvent.GetEvent(headBall, "Move");
+        move.Play();
     }
 
     private static bool CheckGeneratePath(out BallUpdater ballUpdater)

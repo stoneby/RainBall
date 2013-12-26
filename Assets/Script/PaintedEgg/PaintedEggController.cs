@@ -6,7 +6,7 @@ public class PaintedEggController : MonoBehaviour
     
     void OnGUI()
     {
-        if (GUILayout.Button("Go"))
+        if (GUILayout.Button("Paint Egg Show"))
         {
             Go();
         }
