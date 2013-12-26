@@ -50,7 +50,7 @@ public class PathParser : MonoBehaviour
             text = string.Format("{0}\n{1}", text, position);
         });
         var path = string.Format("{0}/{1}", Application.dataPath, fileName);
-        File.WriteAllText(path, text);
+        //File.WriteAllText(path, text);
         Debug.Log("Path parser write to file: " + path);
     }
 }
