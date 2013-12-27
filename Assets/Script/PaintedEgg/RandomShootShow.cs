@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,18 +29,10 @@ public class RandomShootShow : MagicShow
         StartCoroutine("DoShowTime");
     }
 
-    private void Clean()
-    {
-        for (var i = 0; i < BallsParent.transform.childCount; ++i)
-        {
-            Destroy(BallsParent.transform.GetChild(i).gameObject);
-        }
-    }
-
     IEnumerator DoShowTime()
     {
         yield return null;
-
+		
         Shooter.ShootBehaviour.ShootEndEnabled = false;
 
         for (var i = 0; i < positionList.Count; ++i)
@@ -48,7 +41,6 @@ public class RandomShootShow : MagicShow
             Shooter.HitBall = GenerateBall(BallsParent.transform, positionList[randomList[i]]);
             Shooter.HitBall.SetActive(false);
             Shooter.Shoot();
-
             yield return new WaitForSeconds(TimeInterval);
         }
     }

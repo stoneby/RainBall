@@ -41,7 +41,14 @@ public class Shuffler : MonoBehaviour
     private bool initialized;
     private int totalNum;
     private List<int> randomList = new List<int>();
-
+	
+	public int Gaff(int gaffIndex)
+	{
+		var oldIndex = index;
+		index = gaffIndex;
+		return oldIndex;
+	}
+	
     public void Next()
     {
         if(index >= randomList.Count)
@@ -57,7 +64,12 @@ public class Shuffler : MonoBehaviour
             }
         }
         ++index;
-
+		
+		if(index >= randomList.Count)
+        {
+            index = 0;
+        }
+		
         Debug.Log("++++++++++++ Index of shuffler: " + index);
     }
 

@@ -15,6 +15,7 @@ public enum StateType
     EvaluateErase,
     Erasing,
     EvaluateEnding,
+	Celebration,
     WaitForUserFire,
     FinalEnding,
     StateMachineGamble,

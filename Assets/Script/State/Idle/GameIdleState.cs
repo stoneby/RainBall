@@ -4,7 +4,9 @@ using UnityEngine;
 public class GameIdleState : AbstractState
 {
     private bool entered;
-
+	
+	private bool gaffEnabled;
+	
     public override void Go()
     {
         Debug.Log(GetType().Name + ": Go.");
@@ -27,7 +29,19 @@ public class GameIdleState : AbstractState
     private void Exit()
     {
         entered = false;
-        OnEnd();
+		
+		if(gaffEnabled)
+		{
+			gaffEnabled = false;
+			Utils.GameDataManager.Shuffler.Gaff(20);
+		}
+		else
+		{
+        	Utils.GameDataManager.Next();
+        	Utils.GameDataManager.Display();
+		}
+
+		OnEnd();
     }
 
     void Update()
@@ -38,8 +52,13 @@ public class GameIdleState : AbstractState
         }
 
         if (Input.GetKey(KeyCode.Space))
-        {
+		{
             Exit();
         }
+		
+		if(Input.GetKey(KeyCode.G))
+		{
+			gaffEnabled = true;
+		}
     }
 }

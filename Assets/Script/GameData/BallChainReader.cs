@@ -39,7 +39,7 @@ public class BallChainReader : MonoBehaviour
                 var colorIndex = int.Parse(token);
                 if(colorIndex < 0 || colorIndex >= Utils.Settings.TotalColorCount)
                 {
-                    Debug.Log("Total ball color count is: " + Utils.Settings.TotalColorCount + ", but we got color: " +
+                    Debug.LogWarning("Total ball color count is: " + Utils.Settings.TotalColorCount + ", but we got color: " +
                               colorIndex + " from file: " + Text.name);
                     isColorCountValid = false;
                 }

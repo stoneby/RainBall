@@ -17,9 +17,6 @@ public class StateMachineGambleState : AbstractContainerState
         {
             case StateType.GameIdle:
                 CurrentState = StateType.GamePlay;
-
-                Utils.GameDataManager.Next();
-                Utils.GameDataManager.Display();
                 break;
             case StateType.GamePlay:
                 CurrentState = StateType.GameEvaluate;

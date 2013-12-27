@@ -22,13 +22,16 @@ public class GameEvaluateState : AbstractContainerState
                 CurrentState = StatesDict[CurrentState].Pass
                                    ? StateType.Erasing
                                    : (Utils.GameDataManager.ShootBallIndex >= Utils.GameDataManager.CurrentShootChain.Count)
-                                         ? StateType.EvaluateEnding
+                                         ? StateType.Celebration
                                          : StateType.InitControll;
                 Debug.LogWarning("--------------- shoot ball index: " + Utils.GameDataManager.ShootBallIndex);
                 break;
             case StateType.Erasing:
                 CurrentState = StateType.EvaluateErase;
                 break;
+			case StateType.Celebration:
+				CurrentState = StateType.EvaluateEnding;
+				break;
         }
         Go();
     }

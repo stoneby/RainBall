@@ -52,7 +52,8 @@ public class GameDataManager : MonoBehaviour
         {
             if(BallReader.BallChainList.Count != ShootReader.ShootLocationsList.Count)
             {
-                Debug.LogWarning("Ball chain list count does not match ball shoot location list count.");
+                Debug.LogWarning(string.Format("Ball chain list count-{0} does not match ball shoot location list count-{1}.", 
+					BallReader.BallChainList.Count, ShootReader.ShootLocationsList.Count));
                 return false;
             }
             return true;
