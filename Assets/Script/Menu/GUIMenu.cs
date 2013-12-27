@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GUIMenu : MonoBehaviour
@@ -107,14 +108,41 @@ public class GUIMenu : MonoBehaviour
     {
         Utils.BallChainManager.StopMoving += OnStopMoving;
 
+        var levelNodes = iTweenPath.GetPath(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
+        var nodeList = new List<Vector3>(levelNodes);
+        var beginNode = levelNodes[0];
+        var endNode = levelNodes[levelNodes.Length - 1];
+        var intersectList = Utils.GetIntersectionList(endNode, beginNode, 3);
+        nodeList.AddRange(intersectList);
+
+        Utils.BallChainManager.BallUpdaterList[0].gameObject.transform.position = nodeList[0];
+        Utils.ConfigureTweenPath(gameObject, nodeList, "Level_1_Idle");
         var headBall = Utils.BallChainManager.BallUpdaterList[0].gameObject;
         var move = iTweenEvent.GetEvent(headBall, "Move");
+        move.Values["path"] = "Level_1_Idle";
         move.Play();
+
+        StartCoroutine(DoChecking(levelNodes[0], levelNodes[levelNodes.Length - 1]));
+    }
+
+    IEnumerator DoChecking(Vector3 begin, Vector3 end)
+    {
+        while (true)
+        {
+            Utils.BallChainManager.BallUpdaterList.ForEach(
+                ball =>
+                    {
+                        var ballController = ball.gameObject.GetComponent<BallController>();
+                        ballController.Ball.SetActive(!ball.IsInSegment(begin, end));
+                    });
+            yield return null;
+        }
     }
 
     void StopCycling()
     {
         Utils.BallChainManager.StopMoving -= OnStopMoving;
+        StopCoroutine("DoChecking");
     }
 
     private void OnStopMoving(object sender, BallMoveArgs args)

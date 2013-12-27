@@ -565,6 +565,31 @@ public static class Utils
         return TrimPath(nodeList.ToArray(), position, direction, distance);
     }
 
+    public static bool IsInSegement(Vector3 begin, Vector3 end, Vector3 position)
+    {
+        const float angleToCheck = 175f;
+        var v1 = begin - position;
+        var v2 = end - position;
+        var angle = Vector3.Angle(v1, v2);
+        if (angle >= angleToCheck)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public static bool IsParallel(Vector3 begin, Vector3 end, Vector3 direction)
+    {
+        const float angleToCheck = 5f;
+        var directionLeft = begin - end;
+        var angle = Vector3.Angle(directionLeft, direction);
+        if (angle >= (180 - angleToCheck) || angle <= angleToCheck)
+        {
+            return true;
+        }
+        return false;
+    }
+
     #endregion
 
     #region Tween

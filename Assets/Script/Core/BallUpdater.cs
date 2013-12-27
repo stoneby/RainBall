@@ -31,6 +31,8 @@ public class BallUpdater : MonoBehaviour
 
     public LinkedList<Vector3> TrackingTail { get; set; }
 
+    public Vector3 Direction { get; set; }
+
     public bool Running { get; set; }
 
     public void UpdateBrotherBall()
@@ -53,6 +55,9 @@ public class BallUpdater : MonoBehaviour
         }
 
         TrackingTail.AddLast(end);
+
+        Direction = TrackingTail.Last.Value - begin;
+        Direction.Normalize();
 
         //Debug.Log("name: " + name + ", distance: " + distance + ", begin: " + begin + ", end: " + end + ", tracking list count: " + TrackingTail.Count);
 
@@ -110,6 +115,11 @@ public class BallUpdater : MonoBehaviour
         DistanceFactor = distanceFactor;
         IntersectFactor = intersectFactor;
         Theta = theta;
+    }
+
+    public bool IsInSegment(Vector3 begin, Vector3 end)
+    {
+        return Utils.IsInSegement(begin, end, transform.position) && Utils.IsParallel(begin, end, Direction);
     }
 
     void OnMouseDown()
