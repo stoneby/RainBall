@@ -15,8 +15,10 @@
 # All platforms:
 Library/
 Temp/
+obj/
 *.csproj
 *.pidb
 *.unityproj
 *.sln
+*.suo
 *.userprefs
