@@ -1,6 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2008
 
+Project("{48B822E3-24AC-A02D-C0E2-B18060475A94}") = "RainBall", "Assembly-CSharp-firstpass-vs.csproj", "{76935B51-2682-501F-2096-704FAC5EB617}"
+EndProject
 Project("{48B822E3-24AC-A02D-C0E2-B18060475A94}") = "RainBall", "Assembly-CSharp-vs.csproj", "{8321420E-E17E-593C-8B32-01272869AFF0}"
 EndProject
 Project("{48B822E3-24AC-A02D-C0E2-B18060475A94}") = "RainBall", "Assembly-CSharp-Editor-vs.csproj", "{B52C59A2-9D4F-82F6-3A81-42E50B877645}"
@@ -11,6 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{76935B51-2682-501F-2096-704FAC5EB617}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76935B51-2682-501F-2096-704FAC5EB617}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76935B51-2682-501F-2096-704FAC5EB617}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76935B51-2682-501F-2096-704FAC5EB617}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8321420E-E17E-593C-8B32-01272869AFF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8321420E-E17E-593C-8B32-01272869AFF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8321420E-E17E-593C-8B32-01272869AFF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -23,7 +29,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																																																																																GlobalSection(MonoDevelopProperties) = preSolution
+																																																																																																																		GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
