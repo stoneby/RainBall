@@ -1,8 +1,12 @@
-
+using System.Collections;
 using UnityEngine;
 
 public class GameIdleState : AbstractState
 {
+    public float JumpInterval;
+    public float JumpHeight;
+    public float JumpDuration;
+
     private bool entered;
 	
 	private bool gaffEnabled;
@@ -15,15 +19,55 @@ public class GameIdleState : AbstractState
 
         Utils.Shooter.ShootBehaviour.ShootEndEnabled = true;
 
-        if (Utils.GameSerializer.HasPlayed)
+        //if (Utils.GameSerializer.HasPlayed)
         {
             CirclingBalls();
+            JumpingBalls();
         }
     }
 
     private void CirclingBalls()
     {
         Debug.Log("Use to circling balls.");
+    }
+
+    private void JumpingBalls()
+    {
+        StartCoroutine("DoJumpingBalls");
+    }
+
+    IEnumerator DoJumpingBalls()
+    {
+        SetJumpData();
+
+        foreach(var ballUpdater in Utils.BallChainManager.BallUpdaterList)
+        {
+            var ball = ballUpdater.GetComponent<BallController>().Ball;
+            var jumpEvent = iTweenEvent.GetEvent(ball, "Jump");
+            jumpEvent.Play();
+
+            var fallEvent = iTweenEvent.GetEvent(ball, "Fall");
+            fallEvent.Play();
+
+            yield return new WaitForSeconds(JumpInterval);
+        }
+    }
+
+    private void SetJumpData()
+    {
+        Utils.BallChainManager.BallUpdaterList.ForEach(ballUpdater =>
+        {
+            var ball =
+                ballUpdater.GetComponent<BallController>().Ball;
+            var jumpEvent = iTweenEvent.GetEvent(ball, "Jump");
+            jumpEvent.Values["time"] = JumpDuration / 2;
+            jumpEvent.Values["amount"] = new Vector3(0, 0, JumpHeight);
+
+            var fallEvent = iTweenEvent.GetEvent(ball, "Fall");
+            fallEvent.Values["time"] = JumpDuration / 2;
+            fallEvent.Values["amount"] = new Vector3(0, 0, -JumpHeight);
+            fallEvent.Values["delay"] = JumpDuration / 2;
+        });
     }
 
     private void Exit()
@@ -41,7 +85,9 @@ public class GameIdleState : AbstractState
         	Utils.GameDataManager.Display();
 		}
 
-		OnEnd();
+		StopAllCoroutines();
+
+        OnEnd();
     }
 
     void Update()
