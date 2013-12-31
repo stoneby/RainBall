@@ -13,7 +13,7 @@ Bug:
 - Evaluation state will crash. (done by upgrade issue, head ball from ball manager.)
 - Balls movement does not smooth. (done by change settings from ball manager.)
 - Shooter ball's rotation is not correct. (done)
-- Shadow of everything especial for balls.
+- Shadow of everything especial for balls.(done with game quality settings.)
 
 Enhancement:
 - Ballupdater does not care about ball util ball's running out of one diameter. (done) (now is half ball's diameter)
@@ -26,10 +26,16 @@ Enhancement:
 - remove gui menu.(done)
 - improvement settings editor window.
 
-Arts dream:
+Imagination:
 - name it. with animation.
 - we need sound.
-- magic show, snow flowing to the background, balling the IGT logo.
-- explosion effect.
+- magic show, snow flowing to the background, balling the IGT logo. (done)
+- explosion effect.(done using unity partical system.)
 - shooting balls specification. (done)
+
+Flying Ideas:
 - ball split up to 2 or up balls, balls combine to one huge ball.
+
+Effects:
+- cycling balls. (inprogressing)
+- jumping balls. (done)

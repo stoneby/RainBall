@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class GameIdleState : AbstractState
@@ -20,6 +19,7 @@ public class GameIdleState : AbstractState
         //if (Utils.GameSerializer.HasPlayed)
         {
             CirclingBalls();
+
             Jump.ItemList = Utils.BallChainManager.ToList();
             Jump.Go();
         }
