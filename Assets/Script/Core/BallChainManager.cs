@@ -166,4 +166,15 @@ public class BallChainManager : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// To a list of ball game object
+    /// </summary>
+    /// <returns>The list of ball game object</returns>
+    public List<GameObject> ToList()
+    {
+        var result = new List<GameObject>();
+        BallUpdaterList.ForEach(ball => result.Add(ball.GetComponent<BallController>().Ball));
+        return result;
+    }
 }

@@ -40,7 +40,7 @@ public class Shuffler : MonoBehaviour
 
     private bool initialized;
     private int totalNum;
-    private List<int> randomList = new List<int>();
+    private readonly List<int> randomList = new List<int>();
 	
 	public int Gaff(int gaffIndex)
 	{
