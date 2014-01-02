@@ -112,7 +112,7 @@ public class GUIMenu : MonoBehaviour
         var nodeList = new List<Vector3>(levelNodes);
         var beginNode = levelNodes[0];
         var endNode = levelNodes[levelNodes.Length - 1];
-        var intersectList = Utils.GetIntersectionList(endNode, beginNode, 3);
+        var intersectList = Utils.GetIntersectionList(endNode, beginNode, 10);
         nodeList.AddRange(intersectList);
 
         Utils.BallChainManager.BallUpdaterList[0].gameObject.transform.position = nodeList[0];

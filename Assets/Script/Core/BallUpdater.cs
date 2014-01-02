@@ -38,7 +38,8 @@ public class BallUpdater : MonoBehaviour
     public void UpdateBrotherBall()
     {
         var brotherBall = (MoveDirection == MoveDirection.Forward) ? NextBall : LastBall;
-        if (brotherBall == null || TrackingTail.Count == 0)
+
+        if(TrackingTail.Count == 0)
         {
             TrackingTail.AddLast(transform.position);
             return;
@@ -48,7 +49,7 @@ public class BallUpdater : MonoBehaviour
         var end = transform.position;
         var distance = Vector3.Distance(begin, end);
 
-        if (distance <= Theta)
+        if(distance <= Theta)
         {
             //Debug.Log("name: " + name + "Too small update, pass by this vector.");
             return;
@@ -56,8 +57,11 @@ public class BallUpdater : MonoBehaviour
 
         TrackingTail.AddLast(end);
 
-        Direction = TrackingTail.Last.Value - begin;
+        Direction = end - begin;
         Direction.Normalize();
+        Direction.Scale(new Vector3(DiaMeter, 1, DiaMeter));
+
+        DrawDirection();
 
         //Debug.Log("name: " + name + ", distance: " + distance + ", begin: " + begin + ", end: " + end + ", tracking list count: " + TrackingTail.Count);
 
@@ -98,10 +102,21 @@ public class BallUpdater : MonoBehaviour
             var final = (begin - end);
             final.Normalize();
             final.Scale(new Vector3(DiaMeter * DistanceFactor, 1, DiaMeter * DistanceFactor));
-            brotherBall.transform.position = final + end;
+            
+            if(brotherBall != null)
+            {
+                brotherBall.transform.position = final + end;
+            }
 
             //Debug.Log("Name: " + name + "Current ball position: " + transform.position + ", Brother ball position: " + brotherBall.transform.position + ", distance: " + Vector3.Distance(brotherBall.transform.position, end) + ", distance vector: " + final.magnitude);
         }
+    }
+
+    private void DrawDirection()
+    {
+        var beginP = new Vector3(transform.position.x, transform.position.y + 10, transform.position.z);
+        var endP = beginP + Direction;
+        Debug.DrawLine(beginP, endP, UnityEngine.Color.yellow);
     }
 
     public void Set(BallUpdater other)
