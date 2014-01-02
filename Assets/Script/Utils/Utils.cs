@@ -181,15 +181,15 @@ public static class Utils
     /// <param name="p2">Ending point</param>
     /// <param name="intersectionNum">Intersection number</param>
     /// <returns>Position list</returns>
-    public static Vector3[] GetIntersectionList(Vector3 p1, Vector3 p2, int intersectionNum)
+    public static List<Vector3> GetIntersectionList(Vector3 p1, Vector3 p2, int intersectionNum)
     {
-        var intersectionList = new Vector3[intersectionNum + 1];
+        var intersectionList = new List<Vector3>();
         for (var i = 0; i <= intersectionNum; ++i)
         {
             var intersectionPoint =
                 new Vector3((p1.x * (intersectionNum - i) + p2.x * i) / intersectionNum, (p1.y * (intersectionNum - i) + p2.y * i) / intersectionNum,
                             (p1.z * (intersectionNum - i) + p2.z * i) / intersectionNum);
-            intersectionList[i] = intersectionPoint;
+            intersectionList.Add(intersectionPoint);
         }
         return intersectionList;
     }
@@ -511,7 +511,7 @@ public static class Utils
         beginIndex = (direction == MoveDirection.Forward) ? beginIndex + 1 : beginIndex;
 
         var startPosition = nodeList[beginIndex];
-        var firstDistance = Mathf.Abs(Vector3.Distance(position, nodeList[beginIndex]));
+        var firstDistance = Mathf.Abs(Vector3.Distance(position, startPosition));
         if (firstDistance < distance)
         {
             // edge case.
@@ -534,7 +534,7 @@ public static class Utils
                 var finalPosition = (nodeList[beginIndex] + nodeList[endIndex]) / 2;
                 var finalVector = finalPosition - position;
                 finalVector.Normalize();
-                finalVector = finalVector*distance;
+                finalVector.Scale(new Vector3(distance, 1, distance));
                 finalPosition = position + finalVector;
 
                 result.Add(position);
@@ -547,10 +547,10 @@ public static class Utils
         else
         {
             var finalPosition = (position + startPosition) / 2;
-            var finalVecgtor = finalPosition - position;
-            finalVecgtor.Normalize();
-            finalVecgtor = finalVecgtor * distance;
-            finalPosition = position + finalVecgtor;
+            var finalVector = finalPosition - position;
+            finalVector.Normalize();
+            finalVector.Scale(new Vector3(distance, 1, distance));
+            finalPosition = position + finalVector;
 
             result.Add(position);
             result.Add(finalPosition);
@@ -563,6 +563,27 @@ public static class Utils
     public static List<Vector3> TrimPath(List<Vector3> nodeList, Vector3 position, MoveDirection direction, float distance)
     {
         return TrimPath(nodeList.ToArray(), position, direction, distance);
+    }
+
+    public static List<Vector3> MakePathEqually(List<Vector3> nodeList, float distance)
+    {
+        var result = new List<Vector3>();
+        var currentLoc = nodeList[0];
+        do
+        {
+            result.Add(currentLoc);
+            Debug.Log("Add location: " + currentLoc);
+
+            var newPath = TrimPath(nodeList, currentLoc, MoveDirection.Backward, distance);
+            if (newPath == null)
+            {
+                break;
+            }
+            var newLoc = newPath[newPath.Count - 1];
+            currentLoc = newLoc;
+        } while (true);
+        nodeList.Add(nodeList[nodeList.Count - 1]);
+        return nodeList;
     }
 
     public static bool IsInSegement(Vector3 begin, Vector3 end, Vector3 position)

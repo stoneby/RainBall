@@ -41,7 +41,7 @@ public class iTweenPath : MonoBehaviour
     public float FixPositionY;
     public float FixPositionZ;
 
-    public static int MaxNodeCount = 100;
+    public static int MaxNodeCount = 150;
 
     private void OnEnable()
     {

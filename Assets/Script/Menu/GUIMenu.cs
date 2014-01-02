@@ -9,6 +9,7 @@ public class GUIMenu : MonoBehaviour
     public MoveDirection MoveDirection;
     public Transform BeginLocation;
     public Transform EndLocation;
+    public RandomBallGenerator BallGenerator;
 
     private GameObject leadBall;
 
@@ -106,16 +107,39 @@ public class GUIMenu : MonoBehaviour
 
     void StartCycling()
     {
-        Utils.BallChainManager.StopMoving += OnStopMoving;
+        ChainManager.StopMoving += OnStopMoving;
 
-        var levelNodes = iTweenPath.GetPath(Utils.LevelManager.LevelList[Utils.LevelManager.CurrentLevel].Path);
+        var levelNodes = iTweenPath.GetPath(Utils.LevelManager.GetDetailPath());
         var nodeList = new List<Vector3>(levelNodes);
+
+        // generating fill path to make the path looped.
         var beginNode = levelNodes[0];
         var endNode = levelNodes[levelNodes.Length - 1];
-        var intersectList = Utils.GetIntersectionList(endNode, beginNode, 10);
-        nodeList.AddRange(intersectList);
+        var fillNodeList = Utils.GetIntersectionList(beginNode, endNode, 10);
 
-        Utils.BallChainManager.BallUpdaterList[0].gameObject.transform.position = nodeList[0];
+        // make path begin node to the end position just as what you've got after one round play complete.
+        nodeList.Reverse();
+        nodeList.AddRange(fillNodeList);
+        nodeList.Reverse();
+
+        // fill balls to the gaps.
+        //var gapNodeList = Utils.TrimPath(levelNodes, beginNode, MoveDirection.Backward);
+        //var gapEqualNodeList = Utils.MakePathEqually(gapNodeList, ChainManager.Diameter);
+        //var fillEqualNodeList = Utils.MakePathEqually(fillNodeList, ChainManager.Diameter);
+        //gapEqualNodeList.AddRange(fillEqualNodeList);
+
+        //var lastBall = ChainManager.BallUpdaterList[ChainManager.BallUpdaterList.Count - 1];
+        //gapEqualNodeList.ForEach(node =>
+        //    {
+        //        BallGenerator.Position = node;
+        //        var ball = BallGenerator.Generator();
+        //        lastBall.NextBall = ball.gameObject;
+        //        ball.LastBall = lastBall.gameObject;
+        //        ChainManager.BallUpdaterList.Add(ball);
+        //        lastBall = ball;
+        //    });
+
+        // cycling the loop.
         Utils.ConfigureTweenPath(gameObject, nodeList, "Level_1_Idle");
         var headBall = Utils.BallChainManager.BallUpdaterList[0].gameObject;
         var move = iTweenEvent.GetEvent(headBall, "Move");
@@ -129,11 +153,11 @@ public class GUIMenu : MonoBehaviour
     {
         while (true)
         {
-            Utils.BallChainManager.BallUpdaterList.ForEach(
+            ChainManager.BallUpdaterList.ForEach(
                 ball =>
                     {
                         var ballController = ball.gameObject.GetComponent<BallController>();
-                        ballController.Ball.SetActive(!ball.IsInSegment(begin, end));
+                        ballController.Ball.renderer.enabled = !ball.IsInSegment(begin, end);
                     });
             yield return null;
         }
@@ -141,7 +165,7 @@ public class GUIMenu : MonoBehaviour
 
     void StopCycling()
     {
-        Utils.BallChainManager.StopMoving -= OnStopMoving;
+        ChainManager.StopMoving -= OnStopMoving;
         StopCoroutine("DoChecking");
     }
 

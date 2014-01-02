@@ -40,6 +40,8 @@ public class JumpingEffect : MonoBehaviour
         foreach(var item in ItemList)
         {
             iTween.MoveAdd(item, iTween.Hash("time", JumpDuration / 2, "amount", JumpAmount, "easetype", EaseType));
+            yield return null;
+            yield return null;
             iTween.MoveAdd(item, iTween.Hash("delay", JumpDuration / 2, "time", JumpDuration / 2, "amount", -JumpAmount, "easetype", EaseType));
 
             yield return new WaitForSeconds(ItemInterval);

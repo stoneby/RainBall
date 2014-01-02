@@ -8,10 +8,7 @@ public class HappyBallPoolMenu : MonoBehaviour
     {
         if(GUILayout.Button("Jump Effect"))
         {
-            if(Jump.ItemList == null)
-            {
-                Jump.ItemList = Utils.BallChainManager.ToList();
-            }
+            Jump.ItemList = Utils.BallChainManager.ToList();
             Jump.Go();
         }
     }

@@ -27,23 +27,10 @@ public class BallByBallGenerator : MonoBehaviour
     public void Generate()
     {
         Parser.ReadFromFile(Parser.SampleFile);
+
         ballBallList.Clear();
+        ballBallList = Utils.MakePathEqually(Parser.PositionList, distance);
 
-        var nodeList = Parser.PositionList;
-        var currentLoc = nodeList[0];
-        do
-        {
-            ballBallList.Add(currentLoc);
-            Debug.Log("Add location: " + currentLoc);
-
-            var newPath = Utils.TrimPath(nodeList, currentLoc, MoveDirection.Forward, distance);
-            if (newPath == null)
-            {
-                break;
-            }
-            var newLoc = newPath[newPath.Count - 1];
-            currentLoc = newLoc;
-        } while(true);
         Parser.PositionList.Clear();
         Parser.PositionList.AddRange(ballBallList);
         Parser.WriteToFile(Parser.SampleFile.name + "_BallByBall.txt");

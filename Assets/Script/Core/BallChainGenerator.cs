@@ -23,12 +23,13 @@ public class BallChainGenerator : MonoBehaviour
     private void GenerateBalls()
     {
         var size = Utils.Settings.TotalBallCount;
-
+        var startPosition = Utils.LevelManager.GetPathNodes()[0];
         var ballList = Utils.BallChainManager.BallUpdaterList;
         ballList.Clear();
         for (var i = 0; i < size; ++i)
         {
             BallGenerator.Index = i;
+            BallGenerator.Position = startPosition;
             var ballUpdater = BallGenerator.Generator();
             ballUpdater.Index = i;
             ballUpdater.transform.parent = Parent.transform;
