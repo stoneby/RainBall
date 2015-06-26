@@ -30,7 +30,7 @@ public class GameIdleState : AbstractState
         Debug.Log("Use to circling balls.");
     }
 
-    private void Exit()
+    public void Exit()
     {
         entered = false;
 		
@@ -50,6 +50,11 @@ public class GameIdleState : AbstractState
         OnEnd();
     }
 
+    public void Gaffing()
+    {
+        gaffEnabled = true;
+    }
+
     void Update()
     {
         if (!entered)
@@ -64,7 +69,7 @@ public class GameIdleState : AbstractState
 		
 		if(Input.GetKey(KeyCode.G))
 		{
-			gaffEnabled = true;
+		    Gaffing();
 		}
     }
 }
